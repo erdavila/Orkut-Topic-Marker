@@ -47,7 +47,10 @@ TopicListPage.prototype.processRow = function(row, topicId, totalMsgs) {
 		function(response) {
 			var statusText;
 			var statusColor;
-			if(response.exists) {
+			if(response.lastReadMsg == null) {
+				statusText = 'Tópico nunca lido';
+				statusColor = 'red';
+			} else {
 				if(response.lastReadMsg == totalMsgs) {
 					statusText = 'Tópico inteiramente lido';
 					statusColor = 'green';
@@ -58,9 +61,6 @@ TopicListPage.prototype.processRow = function(row, topicId, totalMsgs) {
 					statusText = 'Tópico inteiramente lido. Provavelmente mensagens foram apagadas!';
 					statusColor = 'yellow';
 				}
-			} else {
-				statusText = 'Tópico nunca lido';
-				statusColor = 'red';
 			}
 			
 			var newCell = me.doc.createElement('td');

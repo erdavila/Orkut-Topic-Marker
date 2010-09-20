@@ -4,13 +4,11 @@
 			function(request, sender, sendResponse) {
 				switch(request.type) {
 					case 'get':
-						var response = {};
-						if(request.topic in localStorage) {
-							response.exists = true;
-							response.lastReadMsg = parseInt(localStorage[request.topic]);
-						} else {
-							response.exists = false;
+						var lastReadMsg = localStorage[request.topic];
+						if(lastReadMsg != null) {
+							lastReadMsg = parseInt(lastReadMsg);
 						}
+						var response = { 'lastReadMsg' : lastReadMsg };
 						sendResponse(response);
 						break;
 						

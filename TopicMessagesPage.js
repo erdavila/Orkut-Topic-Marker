@@ -51,7 +51,10 @@ TopicMessagesPage.prototype.update = function() {
 	chrome.extension.sendRequest(
 		request,
 		function(response) {
-			if(response.exists) {
+			if(response.lastReadMsg == null) {
+				status = 'never';
+				markReadAction = true;
+			} else {
 				if(response.lastReadMsg >= me.lastDisplayedMsg) {
 					// Todas exibidas lidas
 					status = 'all';
@@ -66,9 +69,6 @@ TopicMessagesPage.prototype.update = function() {
 					markReadAction = true;
 					markUnreadAction = true;
 				}
-			} else {
-				status = 'never';
-				markReadAction = true;
 			}
 			
 			var statusText;
