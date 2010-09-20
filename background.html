@@ -4,16 +4,21 @@
 			function(request, sender, sendResponse) {
 				switch(request.type) {
 					case 'get':
-						var lastReadMsg = localStorage[request.topic];
-						if(lastReadMsg != null) {
-							lastReadMsg = parseInt(lastReadMsg);
+						var value = localStorage[request.topic];
+						var lastReadMsg = null;
+						var timestamp   = null;
+						if(value != null) {
+							var parts = value.split(':');
+							lastReadMsg = parseInt(parts[0]);
+							timestamp   = parseInt(parts[1]);
 						}
 						var response = { 'lastReadMsg' : lastReadMsg };
 						sendResponse(response);
 						break;
 						
 					case 'set':
-						localStorage[request.topic] = request.lastReadMsg;
+						var timestamp = Date.now();
+						localStorage[request.topic] = request.lastReadMsg + ':' + timestamp;
 						sendResponse({}); // snub them.
 						break;
 				}
