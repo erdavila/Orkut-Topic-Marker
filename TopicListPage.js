@@ -1,4 +1,6 @@
-﻿function TopicListPage(communityId) {
+﻿STATUS_COLUMN_POSITION = 3;
+
+function TopicListPage(communityId) {
 	this.communityId = communityId;
 	
 	var orkutFrame = document.getElementById('orkutFrame');
@@ -10,10 +12,10 @@
 	// Adiciona cabeçalho da nova coluna
 	var headerRow = rows[0];
 	var th = this.doc.createElement('th');
-	th.width = '56px';
 	th.textContent = 'status';
-	headerRow.appendChild(th);
-
+	th.style.textAlign = 'center';
+	headerRow.insertBefore(th, headerRow.getElementsByTagName('th')[STATUS_COLUMN_POSITION]);
+	
 	
 	var me = this;
 	
@@ -79,7 +81,7 @@ TopicListPage.prototype.processRow = function(row, topicId, totalMsgs) {
 				if(status.text) {
 					newCell.appendChild(me.doc.createTextNode(status.text));
 				}
-			row.appendChild(newCell);
+			row.insertBefore(newCell, row.getElementsByTagName('td')[STATUS_COLUMN_POSITION]);
 		}
 	);
 };
