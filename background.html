@@ -1,24 +1,57 @@
 <html>
 	<script>
+		function Mark(lastReadMsg, timestamp, ignored) {
+			this.lastReadMsg = parseInt(lastReadMsg);
+			this.timestamp   = parseInt(timestamp);
+			this.ignored     = ignored;
+		}
+		
+		Mark.prototype.toString = function() {
+			var str = this.lastReadMsg;
+			str = Mark._appendValue(str, this.timestamp);
+			str = Mark._appendValue(str, this.ignored);
+			str = str.replace(/:+$/, '');
+			return str;
+		};
+		
+		Mark.fromObject = function(obj) {
+			return new Mark(obj.lastReadMsg, obj.timestamp, obj.ignored);
+		};
+		
+		Mark.fromString = function(str) {
+			if(str == null) {
+				return new Mark();
+			}
+		
+			var parts = str.split(':');
+			var lastReadMsg = parts[0];
+			var timestamp   = parts[1];
+			var ignored     = parts[2];
+			return new Mark(lastReadMsg, timestamp, ignored);
+		};
+		
+		Mark._appendValue = function(str, value) {
+			str += ':';
+			if(value != null) {
+				str += value;
+			}
+			return str;
+		};
+		
+		
 		chrome.extension.onRequest.addListener(
 			function(request, sender, sendResponse) {
 				switch(request.type) {
 					case 'get':
 						var value = localStorage[request.topic];
-						var lastReadMsg = null;
-						var timestamp   = null;
-						if(value != null) {
-							var parts = value.split(':');
-							lastReadMsg = parseInt(parts[0]);
-							timestamp   = parseInt(parts[1]);
-						}
-						var response = { 'lastReadMsg' : lastReadMsg };
+						var response = Mark.fromString(value);
 						sendResponse(response);
 						break;
 						
 					case 'set':
-						var timestamp = Date.now();
-						localStorage[request.topic] = request.lastReadMsg + ':' + timestamp;
+						var mark = Mark.fromObject(request);
+						mark.timestamp = Date.now();
+						localStorage[request.topic] = mark.toString();
 						sendResponse({}); // snub them.
 						break;
 				}
