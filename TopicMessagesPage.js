@@ -52,41 +52,51 @@ TopicMessagesPage.prototype.update = function() {
 			var pageStatus;
 			var markReadAction = false;
 			var markUnreadAction = false;
+			var markIgnoredAction = false;
+			var markUnignoredAction = false;
 			
-			if(response.lastReadMsg == null) {
-				topicStatus.icon = 'exclamation';
-				topicStatus.tip  = 'Tópico nunca lido';
-				markReadAction = true;
+			if(response.ignored) {
+				topicStatus.icon = 'ignored';
+				topicStatus.tip  = 'Tópico ignorado';
+				markUnignoredAction = true;
 			} else {
-				if(response.lastReadMsg == me.totalMsgs) {
-					topicStatus.icon = 'check';
-					topicStatus.tip  = 'Nenhuma mensagem nova no tópico';
-					markUnreadAction = true;
-				} else if(me.totalMsgs > response.lastReadMsg) {
-					var unreadMsgs = me.totalMsgs - response.lastReadMsg;
-					topicStatus.icon = 'star';
-					topicStatus.tip  = unreadMsgs + " mensagens novas";
-					topicStatus.text = unreadMsgs;
-					
-					pageStatus = {};
-					if(response.lastReadMsg >= me.lastDisplayedMsg) {
-						pageStatus.icon = 'check';
-						pageStatus.tip = "Todas as mensagens desta página já foram lidas";
+				markIgnoredAction = true;
+				
+				if(response.lastReadMsg == null) {
+					topicStatus.icon = 'exclamation';
+					topicStatus.tip  = 'Tópico nunca lido';
+					markReadAction = true;
+				} else {
+					if(response.lastReadMsg == me.totalMsgs) {
+						topicStatus.icon = 'check';
+						topicStatus.tip  = 'Nenhuma mensagem nova no tópico';
 						markUnreadAction = true;
-					} else if(response.lastReadMsg < me.firstDisplayedMsg) {
-						pageStatus.icon = 'exclamation';
-						pageStatus.tip = "Nenhuma mensagem desta página foi lida";
-						markReadAction = true;
+					} else if(me.totalMsgs > response.lastReadMsg) {
+						var unreadMsgs = me.totalMsgs - response.lastReadMsg;
+						topicStatus.icon = 'star';
+						topicStatus.tip  = unreadMsgs + " mensagens novas no tópico";
+						topicStatus.text = unreadMsgs;
+						
+						pageStatus = {};
+						if(response.lastReadMsg >= me.lastDisplayedMsg) {
+							pageStatus.icon = 'check';
+							pageStatus.tip = "Todas as mensagens desta página já foram lidas";
+							markUnreadAction = true;
+						} else if(response.lastReadMsg < me.firstDisplayedMsg) {
+							pageStatus.icon = 'exclamation';
+							pageStatus.tip = "Nenhuma mensagem desta página foi lida";
+							markReadAction = true;
+						} else {
+							pageStatus.icon = 'star';
+							pageStatus.tip = "Algumas mensagens desta página não foram lidas";
+							markReadAction = true;
+							markUnreadAction = true;
+						}
 					} else {
-						pageStatus.icon = 'star';
-						pageStatus.tip = "Algumas mensagens desta página não foram lidas";
-						markReadAction = true;
+						topicStatus.icon = 'star';
+						topicStatus.tip = 'Tópico inteiramente lido. Provavelmente mensagens foram apagadas!';
 						markUnreadAction = true;
 					}
-				} else {
-					topicStatus.icon = 'star';
-					topicStatus.tip = 'Tópico inteiramente lido. Provavelmente mensagens foram apagadas!';
-					markUnreadAction = true;
 				}
 			}
 			
@@ -128,6 +138,8 @@ TopicMessagesPage.prototype.update = function() {
 				actionBar.appendChild(me.doc.createTextNode(' | '));
 				
 				if(markReadAction) {
+					actionBar.appendChild(me.doc.createTextNode(' '));
+					
 					var button = me.createActionButton('check', 'Marcar como lido até aqui', function() {
 						var request = {
 							'type'        : 'set',
@@ -142,11 +154,47 @@ TopicMessagesPage.prototype.update = function() {
 				}
 				
 				if(markUnreadAction) {
+					actionBar.appendChild(me.doc.createTextNode(' '));
+					
 					var button = me.createActionButton('exclamation', "Marcar como não-lido a partir daqui", function() {
 						var request = {
 							'type'        : 'set',
 							'topic'       : me.topicId,
 							'lastReadMsg' : me.firstDisplayedMsg - 1,
+						};
+						chrome.extension.sendRequest(request, function() {
+							me.update();
+						});
+					});
+					actionBar.appendChild(button);
+				}
+				
+				if(markIgnoredAction) {
+					actionBar.appendChild(me.doc.createTextNode(' '));
+					
+					var button = me.createActionButton('ignored', "Marcar o tópico como ignorado", function() {
+						var request = {
+							'type'        : 'set',
+							'topic'       : me.topicId,
+							'lastReadMsg' : response.lastReadMsg,
+							'ignored'     : true,
+						};
+						chrome.extension.sendRequest(request, function() {
+							me.update();
+						});
+					});
+					actionBar.appendChild(button);
+				}
+				
+				if(markUnignoredAction) {
+					actionBar.appendChild(me.doc.createTextNode(' '));
+					
+					var button = me.createActionButton('unignored', "Não ignorar o tópico", function() {
+						var request = {
+							'type'        : 'set',
+							'topic'       : me.topicId,
+							'lastReadMsg' : response.lastReadMsg,
+							'ignored'     : false,
 						};
 						chrome.extension.sendRequest(request, function() {
 							me.update();
@@ -164,8 +212,8 @@ TopicMessagesPage.prototype.createActionButton = function(icon, title, handler) 
 	button.src = ICONS[icon];
 	button.title = title;
 	button.style.cursor = 'pointer';
-	button.style.width = '10px';
-	button.style.height = '10px';
+	button.style.width = '8px';
+	button.style.height = '8px';
 	button.addEventListener('click', handler, true);
 	return button;
 };

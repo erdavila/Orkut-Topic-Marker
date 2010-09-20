@@ -46,21 +46,26 @@ TopicListPage.prototype.processRow = function(row, topicId, totalMsgs) {
 		request,
 		function(response) {
 			var status = {};
-			if(response.lastReadMsg == null) {
-				status.icon = "exclamation";
-				status.tip = "Nunca lido";
+			if(response.ignored) {
+				status.icon = "ignored";
+				status.tip = "Ignorado";
 			} else {
-				if(response.lastReadMsg == totalMsgs) {
-					status.icon = 'check';
-					status.tip = 'Nenhuma mensagem nova';
-				} else if(totalMsgs > response.lastReadMsg) {
-					var unreadMsgs = totalMsgs - response.lastReadMsg;
-					status.icon = 'star';
-					status.tip = unreadMsgs + " mensagens novas";
-					status.text = unreadMsgs;
+				if(response.lastReadMsg == null) {
+					status.icon = "exclamation";
+					status.tip = "Nunca lido";
 				} else {
-					status.icon = 'star'
-					status.tip = 'Tópico inteiramente lido. Provavelmente mensagens foram apagadas!';
+					if(response.lastReadMsg == totalMsgs) {
+						status.icon = 'check';
+						status.tip = 'Nenhuma mensagem nova';
+					} else if(totalMsgs > response.lastReadMsg) {
+						var unreadMsgs = totalMsgs - response.lastReadMsg;
+						status.icon = 'star';
+						status.tip = unreadMsgs + " mensagens novas";
+						status.text = unreadMsgs;
+					} else {
+						status.icon = 'star'
+						status.tip = 'Tópico inteiramente lido. Provavelmente mensagens foram apagadas!';
+					}
 				}
 			}
 			

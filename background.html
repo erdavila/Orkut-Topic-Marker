@@ -9,7 +9,7 @@
 		Mark.prototype.toString = function() {
 			var str = this.lastReadMsg;
 			str = Mark._appendValue(str, this.timestamp);
-			str = Mark._appendValue(str, this.ignored);
+			str = Mark._appendValue(str, this.ignored ? 'ignored' : null);
 			str = str.replace(/:+$/, '');
 			return str;
 		};
