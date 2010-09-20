@@ -42,94 +42,114 @@ TopicMessagesPage.prototype.update = function() {
 	var status;
 	var markReadAction = false;
 	var markUnreadAction = false;
-	
-	if(this.topicId in localStorage) {
-		var lastReadMsg = parseInt(localStorage[this.topicId]);
-		if(lastReadMsg >= this.lastDisplayedMsg) {
-			// Todas exibidas lidas
-			status = 'all';
-			markUnreadAction = true;
-		} else if(lastReadMsg < this.firstDisplayedMsg) {
-			// Nenhuma exibida lida
-			status = 'none';
-			markReadAction = true;
-		} else {
-			// Algumas exibidas lidas
-			status = 'some';
-			markReadAction = true;
-			markUnreadAction = true;
-		}
-	} else {
-		status = 'never';
-		markReadAction = true;
-	}
-	
-	var statusText;
-	var statusColor;
-	switch(status) {
-		case 'never':
-			statusText = 'Tópico nunca marcado!';
-			statusColor = 'red';
-			break;
-		case 'all':
-			statusText = 'Todas lidas';
-			statusColor = 'green';
-			break;
-		case 'some':
-			statusText = 'Algumas não lidas';
-			statusColor = 'yellow';
-			break;
-		case 'none':
-			statusText = 'Nenhuma lida';
-			statusColor = 'red';
-			break;
-		default:
-			alert('status desconhecido: "' + status + '"');
-	}
-	
 	me = this;
-	for(var ab = 0; ab < this.actionBars.length; ab++) {
-		var actionBar = this.actionBars[ab];
-		
-		// Limpa a barra de ações
-		while(actionBar.hasChildNodes()) {
-			actionBar.removeChild(actionBar.firstChild);
-		}
-		
-		actionBar.appendChild(this.doc.createTextNode(statusText));
-		
-		var node = this.doc.createElement('span');
-		node.style.borderLeft = "16px solid " + statusColor;
-		node.style.marginLeft = "2px";
-		node.style.marginRight = "2px";
-		actionBar.appendChild(node);
-		
-		if(markReadAction) {
-			actionBar.appendChild(this.doc.createTextNode(' - '));
+	
+	var request = {
+		'type'  : 'get',
+		'topic' : this.topicId,
+	};
+	chrome.extension.sendRequest(
+		request,
+		function(response) {
+			if(response.exists) {
+				if(response.lastReadMsg >= me.lastDisplayedMsg) {
+					// Todas exibidas lidas
+					status = 'all';
+					markUnreadAction = true;
+				} else if(response.lastReadMsg < me.firstDisplayedMsg) {
+					// Nenhuma exibida lida
+					status = 'none';
+					markReadAction = true;
+				} else {
+					// Algumas exibidas lidas
+					status = 'some';
+					markReadAction = true;
+					markUnreadAction = true;
+				}
+			} else {
+				status = 'never';
+				markReadAction = true;
+			}
 			
-			var node = this.doc.createElement('span');
-			node.textContent = 'Marcar como lido até aqui';
-			node.style.color = 'blue';
-			node.style.cursor = 'pointer';
-			node.addEventListener('click', function() {
-				localStorage[me.topicId] = me.lastDisplayedMsg;
-				me.update();
-			}, true);
-			actionBar.appendChild(node);
-		}
-		
-		if(markUnreadAction) {
-			actionBar.appendChild(this.doc.createTextNode(' - '));
+			var statusText;
+			var statusColor;
+			switch(status) {
+				case 'never':
+					statusText = 'Tópico nunca marcado!';
+					statusColor = 'red';
+					break;
+				case 'all':
+					statusText = 'Todas lidas';
+					statusColor = 'green';
+					break;
+				case 'some':
+					statusText = 'Algumas não lidas';
+					statusColor = 'yellow';
+					break;
+				case 'none':
+					statusText = 'Nenhuma lida';
+					statusColor = 'red';
+					break;
+				default:
+					alert('status desconhecido: "' + status + '"');
+			}
 			
-			var node = this.doc.createElement('span');
-			node.textContent = 'Marcar como não-lido até aqui';
-			node.style.color = 'blue';
-			node.style.cursor = 'pointer';
-			node.addEventListener('click', function() {
-				localStorage[me.topicId] = me.firstDisplayedMsg - 1;
-				me.update();
-			}, true);
-			actionBar.appendChild(node);
+			for(var ab = 0; ab < me.actionBars.length; ab++) {
+				var actionBar = me.actionBars[ab];
+				
+				// Limpa a barra de ações
+				while(actionBar.hasChildNodes()) {
+					actionBar.removeChild(actionBar.firstChild);
+				}
+				
+				actionBar.appendChild(me.doc.createTextNode(statusText));
+				
+				var node = me.doc.createElement('span');
+				node.style.borderLeft = "16px solid " + statusColor;
+				node.style.marginLeft = "2px";
+				node.style.marginRight = "2px";
+				actionBar.appendChild(node);
+				
+				if(markReadAction) {
+					actionBar.appendChild(me.doc.createTextNode(' - '));
+					
+					var node = me.doc.createElement('span');
+					node.textContent = 'Marcar como lido até aqui';
+					node.style.color = 'blue';
+					node.style.cursor = 'pointer';
+					node.addEventListener('click', function() {
+						var request = {
+							'type'        : 'set',
+							'topic'       : me.topicId,
+							'lastReadMsg' : me.lastDisplayedMsg,
+						};
+						chrome.extension.sendRequest(request, function() {
+							me.update();
+						});
+					}, true);
+					actionBar.appendChild(node);
+				}
+				
+				if(markUnreadAction) {
+					actionBar.appendChild(me.doc.createTextNode(' - '));
+					
+					var node = me.doc.createElement('span');
+					node.textContent = 'Marcar como não-lido até aqui';
+					node.style.color = 'blue';
+					node.style.cursor = 'pointer';
+					node.addEventListener('click', function() {
+						var request = {
+							'type'        : 'set',
+							'topic'       : me.topicId,
+							'lastReadMsg' : me.firstDisplayedMsg - 1,
+						};
+						chrome.extension.sendRequest(request, function() {
+							me.update();
+						});
+					}, true);
+					actionBar.appendChild(node);
+				}
+			}
 		}
-	}
+	);
 };

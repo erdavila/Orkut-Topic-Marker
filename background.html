@@ -1,0 +1,24 @@
+<html>
+	<script>
+		chrome.extension.onRequest.addListener(
+			function(request, sender, sendResponse) {
+				switch(request.type) {
+					case 'get':
+						var response = {};
+						if(request.topic in localStorage) {
+							response.exists = true;
+							response.lastReadMsg = parseInt(localStorage[request.topic]);
+						} else {
+							response.exists = false;
+						}
+						sendResponse(response);
+						break;
+						
+					case 'set':
+						localStorage[request.topic] = request.lastReadMsg;
+						sendResponse({}); // snub them.
+						break;
+				}
+			});
+	</script>
+</html>

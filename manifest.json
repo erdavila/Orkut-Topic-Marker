@@ -2,6 +2,7 @@
 	"name": "Orkut Thread Marker",
 	"version": "0.0.0.1",
 	"description": "Marks where you stopped reading Orkut threads",
+	"background_page" : "background.html",
 	"content_scripts": [
 		{
 			"matches" : [ "http://*.orkut.com/*", "http://*.orkut.com.br/*" ],

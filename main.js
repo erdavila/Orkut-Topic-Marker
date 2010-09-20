@@ -1,12 +1,4 @@
-﻿/*
-mudar de:
-	localStorage[topicId] = lastReadMsg
-para:
-	localStorage[communityId + ":" + topicId] = lastReadMsg + ":" + timestamp
-*/
-
-
-var currentHash = '';
+﻿var currentHash = '';
 var page;
 setInterval(function() {
 	var hash = document.location.hash;
