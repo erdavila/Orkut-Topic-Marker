@@ -28,7 +28,7 @@
 	
 	// Cria barra de ações no topo da lista
 	this.actionBars[0] = this.doc.createElement('span');
-	var txtSeparator = this.doc.createTextNode(' - ');
+	var txtSeparator = this.doc.createTextNode(' | ');
 	insertAfter(txtSeparator, elementTotal);
 	insertAfter(this.actionBars[0], txtSeparator);
 	
@@ -39,9 +39,6 @@
 
 
 TopicMessagesPage.prototype.update = function() {
-	var status;
-	var markReadAction = false;
-	var markUnreadAction = false;
 	me = this;
 	
 	var request = {
@@ -51,47 +48,46 @@ TopicMessagesPage.prototype.update = function() {
 	chrome.extension.sendRequest(
 		request,
 		function(response) {
+			var topicStatus = {};
+			var pageStatus;
+			var markReadAction = false;
+			var markUnreadAction = false;
+			
 			if(response.lastReadMsg == null) {
-				status = 'never';
+				topicStatus.icon = 'exclamation';
+				topicStatus.tip  = 'Tópico nunca lido';
 				markReadAction = true;
 			} else {
-				if(response.lastReadMsg >= me.lastDisplayedMsg) {
-					// Todas exibidas lidas
-					status = 'all';
+				if(response.lastReadMsg == me.totalMsgs) {
+					topicStatus.icon = 'check';
+					topicStatus.tip  = 'Nenhuma mensagem nova no tópico';
 					markUnreadAction = true;
-				} else if(response.lastReadMsg < me.firstDisplayedMsg) {
-					// Nenhuma exibida lida
-					status = 'none';
-					markReadAction = true;
+				} else if(me.totalMsgs > response.lastReadMsg) {
+					var unreadMsgs = me.totalMsgs - response.lastReadMsg;
+					topicStatus.icon = 'star';
+					topicStatus.tip  = unreadMsgs + " mensagens novas";
+					topicStatus.text = unreadMsgs;
+					
+					pageStatus = {};
+					if(response.lastReadMsg >= me.lastDisplayedMsg) {
+						pageStatus.icon = 'check';
+						pageStatus.tip = "Todas as mensagens desta página já foram lidas";
+						markUnreadAction = true;
+					} else if(response.lastReadMsg < me.firstDisplayedMsg) {
+						pageStatus.icon = 'exclamation';
+						pageStatus.tip = "Nenhuma mensagem desta página foi lida";
+						markReadAction = true;
+					} else {
+						pageStatus.icon = 'star';
+						pageStatus.tip = "Algumas mensagens desta página não foram lidas";
+						markReadAction = true;
+						markUnreadAction = true;
+					}
 				} else {
-					// Algumas exibidas lidas
-					status = 'some';
-					markReadAction = true;
+					topicStatus.icon = 'star';
+					topicStatus.tip = 'Tópico inteiramente lido. Provavelmente mensagens foram apagadas!';
 					markUnreadAction = true;
 				}
-			}
-			
-			var statusText;
-			var statusColor;
-			switch(status) {
-				case 'never':
-					statusText = 'Tópico nunca marcado!';
-					statusColor = 'red';
-					break;
-				case 'all':
-					statusText = 'Todas lidas';
-					statusColor = 'green';
-					break;
-				case 'some':
-					statusText = 'Algumas não lidas';
-					statusColor = 'yellow';
-					break;
-				case 'none':
-					statusText = 'Nenhuma lida';
-					statusColor = 'red';
-					break;
-				default:
-					alert('status desconhecido: "' + status + '"');
 			}
 			
 			for(var ab = 0; ab < me.actionBars.length; ab++) {
@@ -102,22 +98,37 @@ TopicMessagesPage.prototype.update = function() {
 					actionBar.removeChild(actionBar.firstChild);
 				}
 				
-				actionBar.appendChild(me.doc.createTextNode(statusText));
+				// Status do tópico
+				var statusNode = me.doc.createElement('span');
+					statusNode.title = topicStatus.tip;
+					
+					var img = me.doc.createElement('img');
+						img.src = ICONS[topicStatus.icon];
+					statusNode.appendChild(img);
+					
+					if(topicStatus.text) {
+						statusNode.appendChild(me.doc.createTextNode(topicStatus.text));
+					}
+				actionBar.appendChild(statusNode);
 				
-				var node = me.doc.createElement('span');
-				node.style.borderLeft = "16px solid " + statusColor;
-				node.style.marginLeft = "2px";
-				node.style.marginRight = "2px";
-				actionBar.appendChild(node);
 				
-				if(markReadAction) {
+				// Status da página
+				if(pageStatus) {
 					actionBar.appendChild(me.doc.createTextNode(' - '));
 					
-					var node = me.doc.createElement('span');
-					node.textContent = 'Marcar como lido até aqui';
-					node.style.color = 'blue';
-					node.style.cursor = 'pointer';
-					node.addEventListener('click', function() {
+					var img = me.doc.createElement('img');
+					img.src = ICONS[pageStatus.icon];
+					img.title = pageStatus.tip;
+					actionBar.appendChild(img);
+					if(pageStatus.text) {
+						actionBar.appendChild(me.doc.createTextNode(pageStatus.text));
+					}
+				}
+				
+				actionBar.appendChild(me.doc.createTextNode(' | '));
+				
+				if(markReadAction) {
+					var button = me.createActionButton('check', 'Marcar como lido até aqui', function() {
 						var request = {
 							'type'        : 'set',
 							'topic'       : me.topicId,
@@ -126,18 +137,12 @@ TopicMessagesPage.prototype.update = function() {
 						chrome.extension.sendRequest(request, function() {
 							me.update();
 						});
-					}, true);
-					actionBar.appendChild(node);
+					});
+					actionBar.appendChild(button);
 				}
 				
 				if(markUnreadAction) {
-					actionBar.appendChild(me.doc.createTextNode(' - '));
-					
-					var node = me.doc.createElement('span');
-					node.textContent = 'Marcar como não-lido até aqui';
-					node.style.color = 'blue';
-					node.style.cursor = 'pointer';
-					node.addEventListener('click', function() {
+					var button = me.createActionButton('exclamation', "Marcar como não-lido a partir daqui", function() {
 						var request = {
 							'type'        : 'set',
 							'topic'       : me.topicId,
@@ -146,10 +151,21 @@ TopicMessagesPage.prototype.update = function() {
 						chrome.extension.sendRequest(request, function() {
 							me.update();
 						});
-					}, true);
-					actionBar.appendChild(node);
+					});
+					actionBar.appendChild(button);
 				}
 			}
 		}
 	);
+};
+
+TopicMessagesPage.prototype.createActionButton = function(icon, title, handler) {
+	var button = me.doc.createElement('img');
+	button.src = ICONS[icon];
+	button.title = title;
+	button.style.cursor = 'pointer';
+	button.style.width = '10px';
+	button.style.height = '10px';
+	button.addEventListener('click', handler, true);
+	return button;
 };
