@@ -1,9 +1,10 @@
 {
-	"name": "Orkut Thread Marker",
-	"version": "0.0.0.1",
-	"description": "Marks where you stopped reading Orkut threads",
+	"name" : "Orkut Topic Marker",
+	"version" : "0.0.0.1",
+	"description" : "Marks where you stopped reading Orkut topic messages",
+	"options_page" : "options.html",
 	"background_page" : "background.html",
-	"content_scripts": [
+	"content_scripts" : [
 		{
 			"matches" : [ "http://*.orkut.com/*", "http://*.orkut.com.br/*" ],
 			"js"      : [ "TopicListPage.js", "TopicMessagesPage.js", "main.js" ],

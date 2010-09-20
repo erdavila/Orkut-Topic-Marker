@@ -1,0 +1,26 @@
+<html>
+	<body>
+		<textarea id='storage' style="width:100%;height:50%"></textarea>
+		<button value="Save" onclick="save()">Salvar</button>
+		<script>
+			var str = '';
+			for(key in localStorage) {
+				str += key + ' ' + localStorage[key] + '\n';
+			}
+			
+			document.getElementById('storage').value = str;
+			
+			function save() {
+				var str = document.getElementById('storage').value;
+				var values = str.split('\n');
+				for(var i = 0; i < values.length; i++) {
+					var value = values[i];
+					var parts = value.split(' ');
+					var key = parts[0];
+					var val = parts[1];
+					localStorage[key] = val;
+				}
+			}
+		</script>
+	</body>
+</html>
