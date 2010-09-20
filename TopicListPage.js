@@ -45,35 +45,37 @@ TopicListPage.prototype.processRow = function(row, topicId, totalMsgs) {
 	chrome.extension.sendRequest(
 		request,
 		function(response) {
+			var statusIcon;
 			var statusText;
-			var statusColor;
+			var statusTip;
 			if(response.lastReadMsg == null) {
-				statusText = 'Tópico nunca lido';
-				statusColor = 'red';
+				statusIcon = "exclamation";
+				statusTip = "Nunca lido";
 			} else {
 				if(response.lastReadMsg == totalMsgs) {
-					statusText = 'Tópico inteiramente lido';
-					statusColor = 'green';
+					statusIcon = 'check';
+					statusTip = 'Nenhuma mensagem nova';
 				} else if(totalMsgs > response.lastReadMsg) {
-					statusText = 'Tópico parcialmente lido';
-					statusColor = 'yellow';
+					var unreadMsgs = totalMsgs - response.lastReadMsg;
+					statusIcon = 'star';
+					statusTip = unreadMsgs + " mensagens novas";
+					statusText = unreadMsgs;
 				} else {
-					statusText = 'Tópico inteiramente lido. Provavelmente mensagens foram apagadas!';
-					statusColor = 'yellow';
+					statusIcon = 'star'
+					statusTip = 'Tópico inteiramente lido. Provavelmente mensagens foram apagadas!';
 				}
 			}
 			
 			var newCell = me.doc.createElement('td');
-				newCell.style.width = '20px';
-				newCell.width = '20px';
-				var status = me.doc.createElement('div');
-					status.title = statusText;
-					status.style.backgroundColor = statusColor;
-					status.style.width = '16px';
-					status.style.height = '16px';
-					status.style.marginLeft = '17px';
-					status.style.marginRight = '17px';
-				newCell.appendChild(status);
+				newCell.title = statusTip;
+				newCell.style.textAlign = 'center';
+				var img = me.doc.createElement('img');
+					img.src = ICONS[statusIcon];
+				newCell.appendChild(img);
+				
+				if(statusText) {
+					newCell.appendChild(me.doc.createTextNode(unreadMsgs));
+				}
 			row.appendChild(newCell);
 		}
 	);
