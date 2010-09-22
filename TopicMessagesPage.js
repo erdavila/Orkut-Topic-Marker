@@ -5,6 +5,25 @@
 	var orkutFrame = document.getElementById('orkutFrame');
 	this.doc = orkutFrame.contentDocument;
 	
+	var stylesheet = this.doc.createElement('style');
+	stylesheet.textContent = '.otmActionBar IMG {'
+	                       +     'border: 1px solid transparent;'
+	                       +     'padding: 2px;'
+	                       +     'vertical-align: -6px;'
+	                       + '}'
+	                       + '.otmActionBar IMG.button {'
+	                       +     'cursor: pointer;'
+	                       + '}'
+	                       + '.otmActionBar IMG.button:hover {'
+	                       +     'border-color: black !important;'
+	                       + '}'
+	                       + '.otmActionBar IMG.off {'
+	                       +     'opacity: 0.15;'
+	                       + '}'
+		                   ;
+	this.doc.getElementsByTagName('head')[0].appendChild(stylesheet);
+	
+	
 	var elements = this.doc.getElementsByClassName('rf');
 	
 	/*
@@ -28,6 +47,7 @@
 	
 	// Cria barra de ações no topo da lista
 	this.actionBars[0] = this.doc.createElement('span');
+	this.actionBars[0].className = 'otmActionBar';
 	var txtSeparator = this.doc.createTextNode(' | ');
 	insertAfter(txtSeparator, elementTotal);
 	insertAfter(this.actionBars[0], txtSeparator);
@@ -39,7 +59,7 @@
 
 
 TopicMessagesPage.prototype.update = function() {
-	me = this;
+	var me = this;
 	
 	var request = {
 		'type'  : 'get',
@@ -48,6 +68,23 @@ TopicMessagesPage.prototype.update = function() {
 	chrome.extension.sendRequest(
 		request,
 		function(response) {
+			var topicStatus = {};
+			
+			if(response.ignored) {
+				topicStatus.ignore = 'unmark';
+			} else {
+				var unreadMsgs = me.totalMsgs - response.lastReadMsg;
+				
+				topicStatus.allRead  = (unreadMsgs == 0)           ? 'sign' : 'mark';
+				topicStatus.noneRead = (response.lastReadMsg == 0) ? 'sign' : 'mark';
+				if(unreadMsgs != 0  &&  response.lastReadMsg != 0) {
+					topicStatus.unreadMsgs = unreadMsgs;
+				}
+				topicStatus.ignore = 'mark';
+			}
+			
+			
+			/*
 			var topicStatus = {};
 			var pageStatus;
 			var markReadAction = false;
@@ -99,6 +136,7 @@ TopicMessagesPage.prototype.update = function() {
 					}
 				}
 			}
+			*/
 			
 			for(var ab = 0; ab < me.actionBars.length; ab++) {
 				var actionBar = me.actionBars[ab];
@@ -108,6 +146,108 @@ TopicMessagesPage.prototype.update = function() {
 					actionBar.removeChild(actionBar.firstChild);
 				}
 				
+				
+				actionBar.appendChild(me.doc.createTextNode('Tópico: '));
+				
+				
+				switch(topicStatus.allRead) {
+					case 'sign':
+						actionBar.appendChild(me.doc.createTextNode(' '));
+						actionBar.appendChild(me.createIcon('check', 'Este tópico foi todo lido', [], null));
+						break;
+					
+					case 'mark':
+						actionBar.appendChild(me.doc.createTextNode(' '));
+						actionBar.appendChild(
+							me.createIcon('check', 'Marcar todo este tópico como lido', ['button', 'off'],
+								function() {
+									var request = {
+										'type'        : 'set',
+										'topic'       : me.topicId,
+										'lastReadMsg' : me.totalMsgs,
+									};
+									chrome.extension.sendRequest(request, function() {
+										me.update();
+									});
+								}
+							)
+						);
+						break;
+				}
+				
+				
+				switch(topicStatus.noneRead) {
+					case 'sign':
+						actionBar.appendChild(me.doc.createTextNode(' '));
+						actionBar.appendChild(me.createIcon('exclamation', 'Este tópico nunca foi lido', [], null));
+						break;
+					
+					case 'mark':
+						actionBar.appendChild(me.doc.createTextNode(' '));
+						actionBar.appendChild(me.createIcon('exclamation', 'Marcar todo este tópico como NÃO-lido', ['button', 'off'],
+								function() {
+									var request = {
+										'type'        : 'set',
+										'topic'       : me.topicId,
+										'lastReadMsg' : 0,
+									};
+									chrome.extension.sendRequest(request, function() {
+										me.update();
+									});
+								}
+							)
+						);
+						break;
+				}
+				
+				
+				if(topicStatus.unreadMsgs) {
+					actionBar.appendChild(me.doc.createTextNode(' '));
+					actionBar.appendChild(me.createIcon('star', topicStatus.unreadMsgs + ' mensagens não-lidas no tópico', [], null));
+					actionBar.appendChild(me.doc.createTextNode(topicStatus.unreadMsgs));
+				}
+				
+				
+				switch(topicStatus.ignore) {
+					case 'unmark':
+						actionBar.appendChild(me.doc.createTextNode(' '));
+						actionBar.appendChild(me.createIcon('ignored', 'Deixar de ignorar este tópico', ['button'],
+								function() {
+									var request = {
+										'type'        : 'set',
+										'topic'       : me.topicId,
+										'lastReadMsg' : response.lastReadMsg,
+										'ignored'     : false,
+									};
+									chrome.extension.sendRequest(request, function() {
+										me.update();
+									});
+								}
+							)
+						);
+						break;
+					
+					case 'mark':
+						actionBar.appendChild(me.doc.createTextNode(' '));
+						actionBar.appendChild(me.createIcon('ignored', 'Ignorar este tópico', ['button', 'off'],
+								function() {
+									var request = {
+										'type'        : 'set',
+										'topic'       : me.topicId,
+										'lastReadMsg' : response.lastReadMsg,
+										'ignored'     : true,
+									};
+									chrome.extension.sendRequest(request, function() {
+										me.update();
+									});
+								}
+							)
+						);
+						break;
+				}
+				
+				
+				/*
 				// Status do tópico
 				var statusNode = me.doc.createElement('span');
 					statusNode.title = topicStatus.tip;
@@ -202,11 +342,13 @@ TopicMessagesPage.prototype.update = function() {
 					});
 					actionBar.appendChild(button);
 				}
+				*/
 			}
 		}
 	);
 };
 
+/*
 TopicMessagesPage.prototype.createActionButton = function(icon, title, handler) {
 	var button = me.doc.createElement('img');
 	button.src = ICONS[icon];
@@ -216,4 +358,16 @@ TopicMessagesPage.prototype.createActionButton = function(icon, title, handler) 
 	button.style.height = '8px';
 	button.addEventListener('click', handler, true);
 	return button;
+};
+*/
+
+TopicMessagesPage.prototype.createIcon = function(type, tip, classes, handler) {
+	var icon = this.doc.createElement('img');
+	icon.src = ICONS[type];
+	icon.title = tip;
+	icon.className = classes.join(' ');
+	if(handler) {
+		icon.addEventListener('click', handler, true);
+	}
+	return icon;	
 };
