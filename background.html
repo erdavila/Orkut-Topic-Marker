@@ -4,6 +4,10 @@
 			this.lastReadMsg = parseInt(lastReadMsg);
 			this.timestamp   = parseInt(timestamp);
 			this.ignored     = ignored;
+			
+			if(isNaN(this.lastReadMsg)) {
+				this.lastReadMsg = 0;
+			}
 		}
 		
 		Mark.prototype.toString = function() {
