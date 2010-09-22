@@ -52,7 +52,7 @@ TopicListPage.prototype.processRow = function(row, topicId, totalMsgs) {
 				status.icon = "ignored";
 				status.tip = "Ignorado";
 			} else {
-				if(response.lastReadMsg == null) {
+				if(response.lastReadMsg == 0) {
 					status.icon = "exclamation";
 					status.tip = "Nunca lido";
 				} else {
