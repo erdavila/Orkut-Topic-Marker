@@ -153,7 +153,7 @@ TopicMessagesPage.prototype.update = function() {
 				switch(topicStatus.allRead) {
 					case 'sign':
 						actionBar.appendChild(me.doc.createTextNode(' '));
-						actionBar.appendChild(me.createIcon('check', 'Este tópico foi todo lido', [], null));
+						actionBar.appendChild(me.createIcon('check', 'Este tópico foi todo lido'));
 						break;
 					
 					case 'mark':
@@ -179,7 +179,7 @@ TopicMessagesPage.prototype.update = function() {
 				switch(topicStatus.noneRead) {
 					case 'sign':
 						actionBar.appendChild(me.doc.createTextNode(' '));
-						actionBar.appendChild(me.createIcon('exclamation', 'Este tópico nunca foi lido', [], null));
+						actionBar.appendChild(me.createIcon('exclamation', 'Este tópico nunca foi lido'));
 						break;
 					
 					case 'mark':
@@ -203,8 +203,11 @@ TopicMessagesPage.prototype.update = function() {
 				
 				if(topicStatus.unreadMsgs) {
 					actionBar.appendChild(me.doc.createTextNode(' '));
-					actionBar.appendChild(me.createIcon('star', topicStatus.unreadMsgs + ' mensagens não-lidas no tópico', [], null));
-					actionBar.appendChild(me.doc.createTextNode(topicStatus.unreadMsgs));
+					var span = me.doc.createElement('span');
+						span.title = topicStatus.unreadMsgs + ' mensagens não-lidas no tópico';
+						span.appendChild(me.createIcon('star'));
+						span.appendChild(me.doc.createTextNode(topicStatus.unreadMsgs));
+					actionBar.appendChild(span);
 				}
 				
 				
@@ -364,10 +367,8 @@ TopicMessagesPage.prototype.createActionButton = function(icon, title, handler) 
 TopicMessagesPage.prototype.createIcon = function(type, tip, classes, handler) {
 	var icon = this.doc.createElement('img');
 	icon.src = ICONS[type];
-	icon.title = tip;
-	icon.className = classes.join(' ');
-	if(handler) {
-		icon.addEventListener('click', handler, true);
-	}
+	if(tip)     icon.title = tip;
+	if(classes) icon.className = classes.join(' ');
+	if(handler) icon.addEventListener('click', handler, true);
 	return icon;	
 };
