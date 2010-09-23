@@ -12,6 +12,9 @@ setInterval(function() {
 			} else if(m = hash.match(/^#CommTopics\?cmm=(\d+)/)) {
 				var communityId = m[1];
 				page = new TopicListPage(communityId);
+			} else if(m = hash.match(/^#Community\?cmm=(\d+)/)) {
+				var communityId = m[1];
+				page = new TopicListPage(communityId, true);
 			} else {
 				page = null;
 			}

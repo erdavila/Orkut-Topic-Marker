@@ -1,7 +1,14 @@
-﻿STATUS_COLUMN_POSITION = 3;
-
-function TopicListPage(communityId) {
+﻿function TopicListPage(communityId, communityMainPage) {
 	this.communityId = communityId;
+	if(communityMainPage) {
+		this.totalColumnIndex = 2;
+		this.statusColumnPosition = 2;
+		this.topicTitleResizeWidth = "55%";
+	} else {
+		this.totalColumnIndex = 3;
+		this.statusColumnPosition = 3;
+		this.topicTitleResizeWidth = "40%";
+	}
 	
 	var orkutFrame = document.getElementById('orkutFrame');
 	this.doc = orkutFrame.contentDocument;
@@ -14,8 +21,9 @@ function TopicListPage(communityId) {
 	var th = this.doc.createElement('th');
 	th.textContent = 'status';
 	th.style.textAlign = 'center';
-	headerRow.insertBefore(th, headerRow.getElementsByTagName('th')[STATUS_COLUMN_POSITION]);
-	
+	var headers = headerRow.getElementsByTagName('th');
+	headerRow.insertBefore(th, headers[this.statusColumnPosition]);
+	headers[1].width = this.topicTitleResizeWidth;
 	
 	var me = this;
 	
@@ -29,7 +37,7 @@ function TopicListPage(communityId) {
 		var m = topicUrl.match(/tid=(\d+)/);
 		var topicId = m[1];
 		
-		var totalCell = cells[3];
+		var totalCell = cells[this.totalColumnIndex];
 		var totalMsgs = parseInt(totalCell.textContent);
 		
 		this.processRow(row, topicId, totalMsgs);
@@ -81,7 +89,7 @@ TopicListPage.prototype.processRow = function(row, topicId, totalMsgs) {
 				if(status.text) {
 					newCell.appendChild(me.doc.createTextNode(status.text));
 				}
-			row.insertBefore(newCell, row.getElementsByTagName('td')[STATUS_COLUMN_POSITION]);
+			row.insertBefore(newCell, row.getElementsByTagName('td')[me.statusColumnPosition]);
 		}
 	);
 };
