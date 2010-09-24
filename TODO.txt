@@ -1,0 +1,19 @@
+Options:
+	Return to topics list when marking a topic as ignored.
+	
+	Export/Import stored data.
+	
+	Store data on incognito mode (default: no).
+
+
+Add username to the key:
+	localStorage[username + ':' + topic.topicId]
+
+
+topic.lastReadMsg == 0  &&  !topic.ignored  ->  delete localStorage[topic.topicId]
+
+
+Copy "mostrando X-Y de Z" to lower statusBar.
+
+
+Internacionalize.
