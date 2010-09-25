@@ -6,17 +6,11 @@ User options:
 	Store data on incognito mode (default: no).
 
 
-Icon!
-
-
 Add username to the key:
-	localStorage[username + ':' + topic.topicId]
+	localStorage[username + ':' + topic.id]
 
 
-topic.lastReadMsg == 0  &&  !topic.ignored  ->  delete localStorage[topic.topicId]
+topic.lastReadMsg == 0  &&  !topic.ignored  ->  delete localStorage[topic.id]
 
 
 Copy "mostrando X-Y de Z" to lower statusBar.
-
-
-Internacionalize.
