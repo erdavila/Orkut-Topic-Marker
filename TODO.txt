@@ -1,9 +1,12 @@
-Options:
+User options:
 	Return to topics list when marking a topic as ignored.
 	
 	Export/Import stored data.
 	
 	Store data on incognito mode (default: no).
+
+
+Icon!
 
 
 Add username to the key:

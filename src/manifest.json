@@ -1,7 +1,7 @@
 {
 	"name" : "Orkut Topic Marker",
-	"version" : "0.0.0.1",
-	"description" : "Marks where you stopped reading Orkut topic messages",
+	"version" : "0.1",
+	"description" : "Marks where you stopped reading Orkut topics",
 	"options_page" : "options.html",
 	"background_page" : "background.html",
 	"content_scripts" : [
