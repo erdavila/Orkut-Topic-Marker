@@ -1,0 +1,74 @@
+﻿{
+	"extension_name" : {
+		"message" : "Orkut Topic Marker",
+		"description" : "Extension name"
+	},
+	"extension_description" : {
+		"message" : "Mark where you stopped reading Orkut topics.",
+		"description" : "A short description for the extension"
+	},
+	
+	
+	"label_Topic" : {
+		"message" : "Topic"
+	},
+	"label_This_page" : {
+		"message" : "This page"
+	},
+	
+	
+	"topic_tooltip_allRead" : {
+		"message" : "This topic was entirely read"
+	},
+	"topic_tooltip_noneRead" : {
+		"message" : "This topic was never read"
+	},
+	"topic_tooltip_unreadMsgs" : {
+		"message" : "$unreadMsgs$ unread messages on this topic",
+		"placeholders" : {
+			"unreadMsgs" : {
+				"content" : "$1"
+			}
+		}
+	},
+	
+	
+	"topic_tooltip_mark_allRead" : {
+		"message" : "Mark the whole topic as read"
+	},
+	"topic_tooltip_mark_noneRead" : {
+		"message" : "Mark the whole topic as UNread"
+	},
+	"topic_tooltip_mark_ignored" : {
+		"message" : "Ignore this topic"
+	},
+	"topic_tooltip_mark_notIgnored" : {
+		"message" : "Unignore this topic"
+	},
+	
+	
+	"page_tooltip_allRead" : {
+		"message" : "All messages on this page were read"
+	},
+	"page_tooltip_noneRead" : {
+		"message" : "No message on this page was read"
+	},
+	"page_tooltip_unreadMsgs" : {
+		"message" : "$unreadMsgs$ unread messages on this page",
+		"placeholders" : {
+			"unreadMsgs" : {
+				"content" : "$1"
+			}
+		}
+	},
+	
+	
+	"page_tooltip_mark_allRead" : {
+		"message" : "Mark this topic as read until this page"
+	},
+	"page_tooltip_mark_noneRead" : {
+		"message" : "Mark this topic as UNread from this page"
+	},
+	
+	"END":{"message":""}
+}

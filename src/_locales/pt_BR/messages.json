@@ -1,0 +1,72 @@
+﻿{
+	"extension_name" : {
+		"message" : "Marcador de Tópicos do Orkut"
+	},
+	"extension_description" : {
+		"message" : "Marque onde voce parou de ler os tópicos do Orkut."
+	},
+	
+	
+	"label_Topic" : {
+		"message" : "Tópico"
+	},
+	"label_This_page" : {
+		"message" : "Esta página"
+	},
+	
+	
+	"topic_tooltip_allRead" : {
+		"message" : "O tópico foi todo lido"
+	},
+	"topic_tooltip_noneRead" : {
+		"message" : "O tópico nunca foi lido"
+	},
+	"topic_tooltip_unreadMsgs" : {
+		"message" : "$unreadMsgs$ mensagens não-lidas no tópico",
+		"placeholders" : {
+			"unreadMsgs" : {
+				"content" : "$1"
+			}
+		}
+	},
+	
+	
+	"topic_tooltip_mark_allRead" : {
+		"message" : "Marcar todo o tópico como lido"
+	},
+	"topic_tooltip_mark_noneRead" : {
+		"message" : "Marcar todo o tópico como NÃO-lido"
+	},
+	"topic_tooltip_mark_ignored" : {
+		"message" : "Ignorar o tópico"
+	},
+	"topic_tooltip_mark_notIgnored" : {
+		"message" : "Deixar de ignorar o tópico"
+	},
+	
+	
+	"page_tooltip_allRead" : {
+		"message" : "Todas as mensagens desta página foram lidas"
+	},
+	"page_tooltip_noneRead" : {
+		"message" : "Nenhuma mensagem desta página foi lida"
+	},
+	"page_tooltip_unreadMsgs" : {
+		"message" : "$unreadMsgs$ mensagens não-lidas nesta página",
+		"placeholders" : {
+			"unreadMsgs" : {
+				"content" : "$1"
+			}
+		}
+	},
+	
+	
+	"page_tooltip_mark_allRead" : {
+		"message" : "Marcar o tópico como lido até esta página"
+	},
+	"page_tooltip_mark_noneRead" : {
+		"message" : "Marcar o tópico como NÃO-lido a partir desta página"
+	},
+	
+	"END":{"message":""}
+}

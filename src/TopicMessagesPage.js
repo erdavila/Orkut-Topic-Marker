@@ -76,7 +76,7 @@ TopicMessagesPage.prototype.update = function() {
 			} else {
 				var topicUnreadMsgs = me.totalMsgs - response.lastReadMsg;
 				
-				topicStatus.allRead  = (topicUnreadMsgs == 0)           ? 'sign' : 'mark';
+				topicStatus.allRead  = (topicUnreadMsgs == 0)      ? 'sign' : 'mark';
 				topicStatus.noneRead = (response.lastReadMsg == 0) ? 'sign' : 'mark';
 				if(topicUnreadMsgs != 0  &&  response.lastReadMsg != 0) {
 					topicStatus.unreadMsgs = topicUnreadMsgs;
@@ -107,19 +107,19 @@ TopicMessagesPage.prototype.update = function() {
 				}
 				
 				
-				actionBar.appendChild(me.doc.createTextNode('Tópico: '));
+				actionBar.appendChild(me.doc.createTextNode(chrome.i18n.getMessage("label_Topic") + ': '));
 				
 				
 				switch(topicStatus.allRead) {
 					case 'sign':
 						actionBar.appendChild(me.doc.createTextNode(' '));
-						actionBar.appendChild(me.createIcon('check', 'O tópico foi todo lido'));
+						actionBar.appendChild(me.createIcon('check', chrome.i18n.getMessage("topic_tooltip_allRead")));
 						break;
 					
 					case 'mark':
 						actionBar.appendChild(me.doc.createTextNode(' '));
 						actionBar.appendChild(
-							me.createIcon('check', 'Marcar todo o tópico como lido', ['button', 'off'],
+							me.createIcon('check', chrome.i18n.getMessage("topic_tooltip_mark_allRead"), ['button', 'off'],
 								function() {
 									var request = {
 										'type'        : 'set',
@@ -139,12 +139,12 @@ TopicMessagesPage.prototype.update = function() {
 				switch(topicStatus.noneRead) {
 					case 'sign':
 						actionBar.appendChild(me.doc.createTextNode(' '));
-						actionBar.appendChild(me.createIcon('exclamation', 'O tópico nunca foi lido'));
+						actionBar.appendChild(me.createIcon('exclamation', chrome.i18n.getMessage("topic_tooltip_noneRead")));
 						break;
 					
 					case 'mark':
 						actionBar.appendChild(me.doc.createTextNode(' '));
-						actionBar.appendChild(me.createIcon('exclamation', 'Marcar todo o tópico como NÃO-lido', ['button', 'off'],
+						actionBar.appendChild(me.createIcon('exclamation', chrome.i18n.getMessage("topic_tooltip_mark_noneRead"), ['button', 'off'],
 								function() {
 									var request = {
 										'type'        : 'set',
@@ -164,7 +164,7 @@ TopicMessagesPage.prototype.update = function() {
 				if(topicStatus.unreadMsgs) {
 					actionBar.appendChild(me.doc.createTextNode(' '));
 					var span = me.doc.createElement('span');
-						span.title = topicStatus.unreadMsgs + ' mensagens não-lidas no tópico';
+						span.title = chrome.i18n.getMessage("topic_tooltip_unreadMsgs", [topicStatus.unreadMsgs]);
 						span.appendChild(me.createIcon('star'));
 						span.appendChild(me.doc.createTextNode(topicStatus.unreadMsgs));
 					actionBar.appendChild(span);
@@ -172,27 +172,9 @@ TopicMessagesPage.prototype.update = function() {
 				
 				
 				switch(topicStatus.ignore) {
-					case 'unmark':
-						actionBar.appendChild(me.doc.createTextNode(' '));
-						actionBar.appendChild(me.createIcon('ignored', 'Deixar de ignorar o tópico', ['button'],
-								function() {
-									var request = {
-										'type'        : 'set',
-										'topic'       : me.topicId,
-										'lastReadMsg' : response.lastReadMsg,
-										'ignored'     : false,
-									};
-									chrome.extension.sendRequest(request, function() {
-										me.update();
-									});
-								}
-							)
-						);
-						break;
-					
 					case 'mark':
 						actionBar.appendChild(me.doc.createTextNode(' '));
-						actionBar.appendChild(me.createIcon('ignored', 'Ignorar o tópico', ['button', 'off'],
+						actionBar.appendChild(me.createIcon('ignored', chrome.i18n.getMessage("topic_tooltip_mark_ignored"), ['button', 'off'],
 								function() {
 									var request = {
 										'type'        : 'set',
@@ -207,22 +189,40 @@ TopicMessagesPage.prototype.update = function() {
 							)
 						);
 						break;
+					
+					case 'unmark':
+						actionBar.appendChild(me.doc.createTextNode(' '));
+						actionBar.appendChild(me.createIcon('ignored', chrome.i18n.getMessage("topic_tooltip_mark_notIgnored"), ['button'],
+								function() {
+									var request = {
+										'type'        : 'set',
+										'topic'       : me.topicId,
+										'lastReadMsg' : response.lastReadMsg,
+										'ignored'     : false,
+									};
+									chrome.extension.sendRequest(request, function() {
+										me.update();
+									});
+								}
+							)
+						);
+						break;
 				}
 				
 				
 				if(pageStatus) {
-					actionBar.appendChild(me.doc.createTextNode(' | Esta página: '));
+					actionBar.appendChild(me.doc.createTextNode(' | ' + chrome.i18n.getMessage("label_This_page") + ': '));
 					
 					switch(pageStatus.allRead) {
 						case 'sign':
 							actionBar.appendChild(me.doc.createTextNode(' '));
-							actionBar.appendChild(me.createIcon('check', 'Todas as mensagens desta página foram lidas'));
+							actionBar.appendChild(me.createIcon('check', chrome.i18n.getMessage("page_tooltip_allRead")));
 							break;
 						
 						case 'mark':
 							actionBar.appendChild(me.doc.createTextNode(' '));
 							actionBar.appendChild(
-								me.createIcon('check', 'Marcar o tópico como lido até esta página', ['button', 'off'],
+								me.createIcon('check', chrome.i18n.getMessage("page_tooltip_mark_allRead"), ['button', 'off'],
 									function() {
 										var request = {
 											'type'        : 'set',
@@ -242,12 +242,12 @@ TopicMessagesPage.prototype.update = function() {
 					switch(pageStatus.noneRead) {
 						case 'sign':
 							actionBar.appendChild(me.doc.createTextNode(' '));
-							actionBar.appendChild(me.createIcon('exclamation', 'Nenhuma mensagem desta página foi lida'));
+							actionBar.appendChild(me.createIcon('exclamation', chrome.i18n.getMessage("page_tooltip_noneRead")));
 							break;
 						
 						case 'mark':
 							actionBar.appendChild(me.doc.createTextNode(' '));
-							actionBar.appendChild(me.createIcon('exclamation', 'Marcar o tópico como NÃO-lido a partir desta página', ['button', 'off'],
+							actionBar.appendChild(me.createIcon('exclamation', chrome.i18n.getMessage("page_tooltip_mark_noneRead"), ['button', 'off'],
 									function() {
 										var request = {
 											'type'        : 'set',
@@ -267,14 +267,12 @@ TopicMessagesPage.prototype.update = function() {
 					if(pageStatus.unreadMsgs) {
 						actionBar.appendChild(me.doc.createTextNode(' '));
 						var span = me.doc.createElement('span');
-							span.title = pageStatus.unreadMsgs + ' mensagens não-lidas nesta página';
+							span.title = chrome.i18n.getMessage("page_tooltip_unreadMsgs", [pageStatus.unreadMsgs]);
 							span.appendChild(me.createIcon('star'));
 							span.appendChild(me.doc.createTextNode(pageStatus.unreadMsgs));
 						actionBar.appendChild(span);
 					}
 				}
-				
-				
 			}
 		}
 	);
