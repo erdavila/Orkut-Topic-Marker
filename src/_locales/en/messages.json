@@ -70,5 +70,28 @@
 		"message" : "Mark this topic as UNread from this page"
 	},
 	
+	
+	"topicList_tooltip_allRead" : {
+		"message" : "No new messages"
+	},
+	"topicList_tooltip_noneRead" : {
+		"message" : "Never read"
+	},
+	"topicList_tooltip_newMsgs" : {
+		"message" : "$unreadMsgs$ new messages",
+		"placeholders" : {
+			"unreadMsgs" : {
+				"content" : "$1"
+			}
+		}
+	},
+	"topicList_tooltip_ignored" : {
+		"message" : "Ignored"
+	},
+	"topicList_tooltip_special" : {
+		"message" : "Topic entirely read. Problably some messages were deleted!"
+	},
+	
+	
 	"END":{"message":""}
 }

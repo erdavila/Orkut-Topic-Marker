@@ -58,23 +58,23 @@ TopicListPage.prototype.processRow = function(row, topicId, totalMsgs) {
 			var status = {};
 			if(response.ignored) {
 				status.icon = "ignored";
-				status.tip = "Ignorado";
+				status.tip = chrome.i18n.getMessage("topicList_tooltip_ignored");
 			} else {
 				if(response.lastReadMsg == 0) {
 					status.icon = "exclamation";
-					status.tip = "Nunca lido";
+					status.tip = chrome.i18n.getMessage("topicList_tooltip_noneRead");
 				} else {
 					if(response.lastReadMsg == totalMsgs) {
 						status.icon = 'check';
-						status.tip = 'Nenhuma mensagem nova';
+						status.tip = chrome.i18n.getMessage("topicList_tooltip_allRead");
 					} else if(totalMsgs > response.lastReadMsg) {
 						var unreadMsgs = totalMsgs - response.lastReadMsg;
 						status.icon = 'star';
-						status.tip = unreadMsgs + " mensagens novas";
+						status.tip = chrome.i18n.getMessage("topicList_tooltip_newMsgs", [unreadMsgs]);
 						status.text = unreadMsgs;
 					} else {
 						status.icon = 'star'
-						status.tip = 'Tópico inteiramente lido. Provavelmente mensagens foram apagadas!';
+						status.tip = chrome.i18n.getMessage("topicList_tooltip_special");
 					}
 				}
 			}

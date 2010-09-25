@@ -68,5 +68,28 @@
 		"message" : "Marcar o tópico como NÃO-lido a partir desta página"
 	},
 	
+	
+	"topicList_tooltip_allRead" : {
+		"message" : "Nenhuma mensagem nova"
+	},
+	"topicList_tooltip_noneRead" : {
+		"message" : "Nunca lido"
+	},
+	"topicList_tooltip_newMsgs" : {
+		"message" : "$unreadMsgs$ mensagens novas",
+		"placeholders" : {
+			"unreadMsgs" : {
+				"content" : "$1"
+			}
+		}
+	},
+	"topicList_tooltip_ignored" : {
+		"message" : "Ignorado"
+	},
+	"topicList_tooltip_special" : {
+		"message" : "Tópico inteiramente lido. Provavelmente mensagens foram apagadas!"
+	},
+	
+	
 	"END":{"message":""}
 }
