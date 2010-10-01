@@ -60,15 +60,17 @@ TopicListPage.prototype.processRow = function(row, topicId, totalMsgs) {
 				status.icon = "ignored";
 				status.tip = chrome.i18n.getMessage("topicList_tooltip_ignored");
 			} else {
+				var unreadMsgs = totalMsgs - response.lastReadMsg;
+				
 				if(response.lastReadMsg == 0) {
 					status.icon = "exclamation";
 					status.tip = chrome.i18n.getMessage("topicList_tooltip_noneRead");
+					status.text = unreadMsgs;
 				} else {
 					if(response.lastReadMsg == totalMsgs) {
 						status.icon = 'check';
 						status.tip = chrome.i18n.getMessage("topicList_tooltip_allRead");
 					} else if(totalMsgs > response.lastReadMsg) {
-						var unreadMsgs = totalMsgs - response.lastReadMsg;
 						status.icon = 'star';
 						status.tip = chrome.i18n.getMessage("topicList_tooltip_newMsgs", [unreadMsgs]);
 						status.text = unreadMsgs;
