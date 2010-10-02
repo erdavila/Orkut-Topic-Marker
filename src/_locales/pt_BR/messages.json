@@ -91,6 +91,10 @@
 	},
 	
 	
+	"options_label_leave_on_topic_allRead" : {
+		"message" : "Voltar à lista de tópicos ao marcar um tópico como todo lido"
+	},
+	
 	"options_label_leave_on_ignore" : {
 		"message" : "Voltar à lista de tópicos ao marcar um tópico como ignorado"
 	},

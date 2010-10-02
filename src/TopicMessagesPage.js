@@ -145,7 +145,13 @@ TopicMessagesPage.prototype.update = function() {
 										'lastReadMsg' : me.totalMsgs,
 									};
 									chrome.extension.sendRequest(request, function() {
-										me.update();
+										Options.get(function(options) {
+											if(options.leaveOnTopicAllRead) {
+												me.goToTopicsList();
+											} else {
+												me.update();
+											}
+										});
 									});
 								}
 							)
@@ -203,7 +209,7 @@ TopicMessagesPage.prototype.update = function() {
 									chrome.extension.sendRequest(request, function() {
 										Options.get(function(options) {
 											if(options.leaveOnIgnore) {
-												document.location.hash = "#CommTopics?cmm=" + me.communityId;
+												me.goToTopicsList();
 											} else {
 												me.update();
 											}
@@ -254,7 +260,18 @@ TopicMessagesPage.prototype.update = function() {
 											'lastReadMsg' : me.lastDisplayedMsg,
 										};
 										chrome.extension.sendRequest(request, function() {
-											me.update();
+											Options.get(function(options) {
+												if(me.lastDisplayedMsg == me.totalMsgs) {
+													// This was the last page of the topic
+													if(options.leaveOnTopicAllRead) {
+														me.goToTopicsList();
+													} else {
+														me.update();
+													}
+												} else {
+													me.update();
+												}
+											});
 										});
 									}
 								)
@@ -309,4 +326,8 @@ TopicMessagesPage.prototype.createIcon = function(type, tip, classes, handler) {
 	if(classes) icon.className = classes.join(' ');
 	if(handler) icon.addEventListener('click', handler, true);
 	return icon;	
+};
+
+TopicMessagesPage.prototype.goToTopicsList = function() {
+	document.location.hash = "#CommTopics?cmm=" + this.communityId;
 };

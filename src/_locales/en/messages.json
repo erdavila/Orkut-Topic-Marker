@@ -93,6 +93,10 @@
 	},
 	
 	
+	"options_label_leave_on_topic_allRead" : {
+		"message" : "Return to the topic lista when marking as all-read"
+	},
+	
 	"options_label_leave_on_ignore" : {
 		"message" : "Return to the topics list when marking as ignored"
 	},

@@ -6,21 +6,19 @@ var Options = {
 			};
 			chrome.extension.sendRequest(request, handler);
 		} else {
-			var userOptions;
+			var options;
 			try {
-				userOptions = JSON.parse(localStorage["USER_OPTIONS"]);
+				options = JSON.parse(localStorage["USER_OPTIONS"]);
 			} catch(ex) {
-				userOptions = null;
+				options = null;
 			}
 			
-			if(!userOptions) {
-				// Default options
-				userOptions = {
-					'leaveOnIgnore' : true,
-				};
-			}
+			// Set defaults
+			if(typeof(options)                     != 'object')    options = {};
+			if(typeof(options.leaveOnTopicAllRead) == 'undefined') options.leaveOnTopicAllRead = true;
+			if(typeof(options.leaveOnIgnore)       == 'undefined') options.leaveOnIgnore = true;
 			
-			handler(userOptions);
+			handler(options);
 		}
 	},
 	
