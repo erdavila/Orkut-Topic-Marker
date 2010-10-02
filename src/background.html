@@ -54,8 +54,12 @@
 						
 					case 'set':
 						var mark = Mark.fromObject(request);
-						mark.timestamp = Date.now();
-						localStorage[request.topic] = mark.toString();
+						if(mark.lastReadMsg == 0  &&  !mark.ignored) {
+							delete localStorage[request.topic];
+						} else {
+							mark.timestamp = Date.now();
+							localStorage[request.topic] = mark.toString();
+						}
 						sendResponse({}); // snub them.
 						break;
 				}

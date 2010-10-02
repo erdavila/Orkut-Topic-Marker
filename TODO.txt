@@ -21,9 +21,7 @@ General
 -------
 	Export/Import stored data.
 	
-	Store data on incognito mode (default: no).
+	Store data in incognito mode (default: no).
 
 	Add username to the key:
 		localStorage[username + ':' + topic.id]
-
-	topic.lastReadMsg == 0  &&  !topic.ignored  ->  delete localStorage[topic.id]
