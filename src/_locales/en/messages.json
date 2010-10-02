@@ -93,5 +93,22 @@
 	},
 	
 	
+	"options_label_Export_Import" : {
+		"message" : "Export / Import data"
+	},
+	
+	"options_text_export_import_instructions" : {
+		"message" : "To <b>export</b> the data, copy the text besides, paste to a file and save it.<br/>To <b>import</b> the data, paste in the field besides and hit the \"Save\" button."
+	},
+	
+	"options_button_Import" : {
+		"message" : "Save"
+	},
+	
+	"options_alert_import_done" : {
+		"message" : "The data were successfuly imported"
+	},
+	
+	
 	"END":{"message":""}
 }

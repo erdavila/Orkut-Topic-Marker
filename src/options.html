@@ -1,17 +1,46 @@
 <html>
-	<body>
-		<textarea id='storage' style="width:100%;height:50%"></textarea>
-		<button value="Save" onclick="save()">Salvar</button>
+	<head>
 		<script>
-			var str = '';
-			for(key in localStorage) {
-				str += key + ' ' + localStorage[key] + '\n';
+			var exportImportTable;
+			var exportImportField;
+			
+			function loaded() {
+				exportImportTable = document.getElementById("export_import_table");
+				exportImportField = document.getElementById("export_import_data");
+				
+				document.title = chrome.i18n.getMessage("extension_name");
+				
+				document.getElementById("export_import").textContent            = chrome.i18n.getMessage("options_label_Export_Import");
+				document.getElementById("export_import_instructions").innerHTML = chrome.i18n.getMessage("options_text_export_import_instructions");
+				document.getElementById("import_button").textContent            = chrome.i18n.getMessage("options_button_Import");
 			}
 			
-			document.getElementById('storage').value = str;
 			
-			function save() {
-				var str = document.getElementById('storage').value;
+			function toggleExportImport() {
+				if(exportImportTable.style.display == 'none') {
+					// Show
+					var str = '';
+					for(key in localStorage) {
+						if(key != "USER_OPTIONS") {
+							str += key + ' ' + localStorage[key] + '\n';
+						}
+					}
+					exportImportField.value = str;
+					
+					exportImportTable.style.display = '';
+				} else {
+					// Hide
+					exportImportTable.style.display = 'none';
+				}
+			}
+			
+			
+			function importData() {
+				var userOptions = localStorage['USER_OPTIONS'];
+				localStorage.clear();
+				localStorage['USER_OPTIONS'] = userOptions;
+				
+				var str = exportImportField.value;
 				var values = str.split('\n');
 				for(var i = 0; i < values.length; i++) {
 					var value = values[i];
@@ -20,7 +49,22 @@
 					var val = parts[1];
 					localStorage[key] = val;
 				}
+				
+				alert(chrome.i18n.getMessage("options_alert_import_done"));
 			}
 		</script>
+	</head>
+	<body onload="loaded();">
+		<hr/>
+		<a id="export_import" href="javascript:void(0);" onclick="toggleExportImport();"></a>
+		<table id="export_import_table" style="display:none;">
+			<tr>
+				<td id="export_import_instructions"></td>
+				<td width="60%">
+					<textarea id="export_import_data" style="width:100%;height:200px"></textarea>
+					<button id="import_button" onclick="importData()">XXX</button>
+				</td>
+			</tr>
+		</table>
 	</body>
 </html>

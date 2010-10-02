@@ -91,5 +91,22 @@
 	},
 	
 	
+	"options_label_Export_Import" : {
+		"message" : "Exportar / Importar dados"
+	},
+	
+	"options_text_export_import_instructions" : {
+		"message" : "Para <b>exportar</b> os dados, copie o texto ao lado, cole em um arquivo e salve-o.<br/>Para <b>importar</b> dados, cole no campo ao lado e clique no botão \"Salvar\"."
+	},
+	
+	"options_button_Import" : {
+		"message" : "Salvar"
+	},
+	
+	"options_alert_import_done" : {
+		"message" : "Os dados foram importados corretamente"
+	},
+	
+	
 	"END":{"message":""}
 }

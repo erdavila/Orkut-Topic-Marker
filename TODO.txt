@@ -17,8 +17,6 @@ TopicMessagesPage
 
 General
 -------
-	Export/Import stored data.
-	
 	Store data in incognito mode (default: no).
 
 	Add username to the key:
