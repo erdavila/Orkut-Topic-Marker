@@ -13,6 +13,11 @@
 	var orkutFrame = document.getElementById('orkutFrame');
 	this.doc = orkutFrame.contentDocument;
 	
+	if(this.doc.getElementsByClassName("rf").length < 2) {
+		// Não terminou de carregar a página
+		throw new Error("Page not yet fully loaded");
+	}
+	
 	var table = this.doc.getElementsByClassName('displaytable')[0];
 	var rows = table.getElementsByTagName('tr');
 	
