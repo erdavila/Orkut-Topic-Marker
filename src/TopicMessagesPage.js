@@ -42,13 +42,18 @@
 	var txtSeparatorTop = this.doc.createTextNode(' | ');
 	insertAfter(txtSeparatorTop, elementTotalTop);
 	
-	// Extrai números das mensagens
+	// Extract data
 	var m = elementRangeTop.textContent.match(/(\d+)-(\d+)/);
 	this.firstDisplayedMsg = parseInt(m[1]);
 	this.lastDisplayedMsg  = parseInt(m[2]);
 	
 	m = elementTotalTop.textContent.match(/(\d+)/);
 	this.totalMsgs = parseInt(m[1]);
+	
+	var navLinks = navPageTop.getElementsByTagName('a');
+	this.linkToNextPage = navLinks[navLinks.length - 2].href;
+	
+	
 	
 	// Cria barra de ações no topo da lista
 	var actionBarTop = this.doc.createElement('span');
@@ -269,7 +274,11 @@ TopicMessagesPage.prototype.update = function() {
 														me.update();
 													}
 												} else {
-													me.update();
+													if(options.nextPageOnPageAllRead) {
+														me.goToNextPage();
+													} else {
+														me.update();
+													}
 												}
 											});
 										});
@@ -331,3 +340,7 @@ TopicMessagesPage.prototype.createIcon = function(type, tip, classes, handler) {
 TopicMessagesPage.prototype.goToTopicsList = function() {
 	document.location.hash = "#CommTopics?cmm=" + this.communityId;
 };
+
+TopicMessagesPage.prototype.goToNextPage = function() {
+	document.location = this.linkToNextPage;
+}

@@ -4,22 +4,25 @@
 		<script src="Options.js"></script>
 		<script>
 			var leaveOnTopicAllReadCheckbox;
+			var nextPageOnPageAllReadCheckbox;
 			var leaveOnIgnoreCheckbox;
 			var exportImportTable;
 			var exportImportField;
 			
 			
 			function loaded() {
-				leaveOnTopicAllReadCheckbox = document.getElementById("leave_on_topic_allRead");
-				leaveOnIgnoreCheckbox       = document.getElementById("leave_on_ignore");
+				leaveOnTopicAllReadCheckbox   = document.getElementById("leave_on_topic_allRead");
+				nextPageOnPageAllReadCheckbox = document.getElementById("nextPage_on_page_allRead");
+				leaveOnIgnoreCheckbox         = document.getElementById("leave_on_ignore");
 				
 				exportImportTable = document.getElementById("export_import_table");
 				exportImportField = document.getElementById("export_import_data");
 				
 				document.title = chrome.i18n.getMessage("extension_name");
 				
-				document.getElementById("leave_on_topic_allRead_label").textContent = chrome.i18n.getMessage("options_label_leave_on_topic_allRead");
-				document.getElementById("leave_on_ignore_label").textContent        = chrome.i18n.getMessage("options_label_leave_on_ignore");
+				document.getElementById("leave_on_topic_allRead_label").textContent   = chrome.i18n.getMessage("options_label_leave_on_topic_allRead");
+				document.getElementById("nextPage_on_page_allRead_label").textContent = chrome.i18n.getMessage("options_label_nextPage_on_page_allRead");
+				document.getElementById("leave_on_ignore_label").textContent          = chrome.i18n.getMessage("options_label_leave_on_ignore");
 				
 				document.getElementById("export_import").textContent                = chrome.i18n.getMessage("options_label_Export_Import");
 				document.getElementById("export_import_instructions").innerHTML     = chrome.i18n.getMessage("options_text_export_import_instructions");
@@ -27,8 +30,9 @@
 				
 				
 				Options.get(function(options) {
-					leaveOnTopicAllReadCheckbox.checked = options.leaveOnTopicAllRead;
-					leaveOnIgnoreCheckbox.checked       = options.leaveOnIgnore;
+					leaveOnTopicAllReadCheckbox.checked   = options.leaveOnTopicAllRead;
+					nextPageOnPageAllReadCheckbox.checked = options.nextPageOnPageAllRead;
+					leaveOnIgnoreCheckbox.checked         = options.leaveOnIgnore;
 				});
 			}
 			
@@ -36,6 +40,14 @@
 			function toggleLeaveOnTopicAllRead() {
 				Options.get(function(options) {
 					options.leaveOnTopicAllRead = leaveOnTopicAllReadCheckbox.checked;
+					Options.set(options);
+				});
+			}
+			
+			
+			function toggleNextPageOnPageAllRead() {
+				Options.get(function(options) {
+					options.nextPageOnPageAllRead = nextPageOnPageAllReadCheckbox.checked;
 					Options.set(options);
 				});
 			}
@@ -90,6 +102,10 @@
 	<body onload="loaded();">
 		<input type="checkbox" id="leave_on_topic_allRead" onclick="toggleLeaveOnTopicAllRead();"/>
 		<label for="leave_on_topic_allRead" id="leave_on_topic_allRead_label"></label>
+		<br/>
+		
+		<input type="checkbox" id="nextPage_on_page_allRead" onclick="toggleNextPageOnPageAllRead();"/>
+		<label for="nextPage_on_page_allRead" id="nextPage_on_page_allRead_label"></label>
 		<br/>
 		
 		<input type="checkbox" id="leave_on_ignore" onclick="toggleLeaveOnIgnore();"/>

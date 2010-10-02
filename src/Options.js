@@ -14,9 +14,10 @@ var Options = {
 			}
 			
 			// Set defaults
-			if(typeof(options)                     != 'object')    options = {};
-			if(typeof(options.leaveOnTopicAllRead) == 'undefined') options.leaveOnTopicAllRead = true;
-			if(typeof(options.leaveOnIgnore)       == 'undefined') options.leaveOnIgnore = true;
+			if(typeof(options)                       != 'object')    options = {};
+			if(typeof(options.leaveOnTopicAllRead)   == 'undefined') options.leaveOnTopicAllRead = true;
+			if(typeof(options.nextPageOnPageAllRead) == 'undefined') options.nextPageOnPageAllRead = true;
+			if(typeof(options.leaveOnIgnore)         == 'undefined') options.leaveOnIgnore = true;
 			
 			handler(options);
 		}

@@ -94,7 +94,11 @@
 	
 	
 	"options_label_leave_on_topic_allRead" : {
-		"message" : "Return to the topic lista when marking as all-read"
+		"message" : "Return to the topic list when marking as all-read"
+	},
+	
+	"options_label_nextPage_on_page_allRead" : {
+		"message" : "Go to next page when marking current as read"
 	},
 	
 	"options_label_leave_on_ignore" : {

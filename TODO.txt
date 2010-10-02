@@ -5,9 +5,6 @@ Topic List Page
 
 TopicMessagesPage
 -----------------
-	User options:
-		Go to next page when marking current page as read (if current page is not the last one).
-
 	Display(?) something like:
 		"X unread messages in the next pages"
 		"X unread messages in the previous pages"

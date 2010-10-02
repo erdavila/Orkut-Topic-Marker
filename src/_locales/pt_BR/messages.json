@@ -95,6 +95,10 @@
 		"message" : "Voltar à lista de tópicos ao marcar um tópico como todo lido"
 	},
 	
+	"options_label_nextPage_on_page_allRead" : {
+		"message" : "Ir para a próxima página ao marcar a atual como lida"
+	},
+	
 	"options_label_leave_on_ignore" : {
 		"message" : "Voltar à lista de tópicos ao marcar um tópico como ignorado"
 	},
