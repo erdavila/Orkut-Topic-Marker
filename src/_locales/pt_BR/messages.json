@@ -91,6 +91,10 @@
 	},
 	
 	
+	"options_label_leave_on_ignore" : {
+		"message" : "Voltar à lista de tópicos ao marcar um tópico como ignorado"
+	},
+	
 	"options_label_Export_Import" : {
 		"message" : "Exportar / Importar dados"
 	},

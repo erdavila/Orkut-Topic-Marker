@@ -1,18 +1,39 @@
 <html>
 	<head>
+		<script src="set_background_context.js"></script>
+		<script src="Options.js"></script>
 		<script>
+			var leaveOnIgnoreCheckbox;
 			var exportImportTable;
 			var exportImportField;
 			
+			
 			function loaded() {
+				leaveOnIgnoreCheckbox = document.getElementById("leave_on_ignore");
+				
 				exportImportTable = document.getElementById("export_import_table");
 				exportImportField = document.getElementById("export_import_data");
 				
 				document.title = chrome.i18n.getMessage("extension_name");
 				
+				document.getElementById("leave_on_ignore_label").textContent    = chrome.i18n.getMessage("options_label_leave_on_ignore");
+				
 				document.getElementById("export_import").textContent            = chrome.i18n.getMessage("options_label_Export_Import");
 				document.getElementById("export_import_instructions").innerHTML = chrome.i18n.getMessage("options_text_export_import_instructions");
 				document.getElementById("import_button").textContent            = chrome.i18n.getMessage("options_button_Import");
+				
+				
+				Options.get(function(options) {
+					leaveOnIgnoreCheckbox.checked = options.leaveOnIgnore;
+				});
+			}
+			
+			
+			function toggleLeaveOnIgnore() {
+				Options.get(function(options) {
+					options.leaveOnIgnore = leaveOnIgnoreCheckbox.checked;
+					Options.set(options);
+				});
 			}
 			
 			
@@ -55,8 +76,13 @@
 		</script>
 	</head>
 	<body onload="loaded();">
+		<input type="checkbox" id="leave_on_ignore" onclick="toggleLeaveOnIgnore();"/>
+		<label for="leave_on_ignore" id="leave_on_ignore_label"></label>
+		
 		<hr/>
-		<a id="export_import" href="javascript:void(0);" onclick="toggleExportImport();"></a>
+		<div style="text-align: right;">
+			<a id="export_import" href="javascript:void(0);" onclick="toggleExportImport();"></a>
+		</div>
 		<table id="export_import_table" style="display:none;">
 			<tr>
 				<td id="export_import_instructions"></td>

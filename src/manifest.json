@@ -13,8 +13,17 @@
 	"background_page" : "background.html",
 	"content_scripts" : [
 		{
-			"matches" : [ "http://*.orkut.com/*", "http://*.orkut.com.br/*" ],
-			"js"      : [ "TopicListPage.js", "TopicMessagesPage.js", "main.js" ],
+			"matches" : [
+				"http://*.orkut.com/*",
+				"http://*.orkut.com.br/*"
+			],
+			"js"      : [
+				"set_content_script_context.js",
+				"Options.js",
+				"TopicListPage.js",
+				"TopicMessagesPage.js",
+				"main.js"
+			],
 			"run_at"  : "document_idle"
 		}
 	],

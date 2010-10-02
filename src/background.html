@@ -1,4 +1,6 @@
 <html>
+	<script src="set_background_context.js"></script>
+	<script src="Options.js"></script>
 	<script>
 		function Mark(lastReadMsg, timestamp, ignored) {
 			this.lastReadMsg = parseInt(lastReadMsg);
@@ -61,6 +63,14 @@
 							localStorage[request.topic] = mark.toString();
 						}
 						sendResponse({}); // snub them.
+						break;
+					
+					case 'get_options':
+						var options = Options.get(sendResponse);
+						break;
+					
+					case 'set_options':
+						/* NOT IMPLEMENTED */
 						break;
 				}
 			});

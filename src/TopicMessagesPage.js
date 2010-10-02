@@ -201,7 +201,13 @@ TopicMessagesPage.prototype.update = function() {
 										'ignored'     : true,
 									};
 									chrome.extension.sendRequest(request, function() {
-										me.update();
+										Options.get(function(options) {
+											if(options.leaveOnIgnore) {
+												document.location.hash = "#CommTopics?cmm=" + me.communityId;
+											} else {
+												me.update();
+											}
+										});
 									});
 								}
 							)

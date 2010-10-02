@@ -6,7 +6,6 @@ Topic List Page
 TopicMessagesPage
 -----------------
 	User options:
-		Return to topics list when marking a topic as ignored.
 		Go to next page when marking current page as read (if current page is not the last one).
 		Return to topics list when marking current page as read (if current page is the last one).
 
@@ -19,5 +18,5 @@ General
 -------
 	Store data in incognito mode (default: no).
 
-	Add username to the key:
+	Add Orkut username to the key:
 		localStorage[username + ':' + topic.id]
