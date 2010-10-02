@@ -1,6 +1,6 @@
 {
 	"name" : "__MSG_extension_name__",
-	"version" : "0.2.0.5",
+	"version" : "0.2.1",
 	"description" : "__MSG_extension_description__",
 	"icons" : {
 		"16" : "icon16.png",
@@ -27,6 +27,6 @@
 			"run_at"  : "document_idle"
 		}
 	],
+	"options_page" : "options.html",
 	"key" : "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDQWI1HHbUAfKSEQIXYklmJe+taCCx2N2Q0IIQ27nzPETJ2rZx+WyA6ZZKUV9vhTJoFFREIiSHgfYLwrYNzaUSP/189KgpUjev1K4BXJdDx77KiK2VmqjE6BSlAf/AmAb8ByepOo3IyijP6eOt3Vr8K3LdD+5fjFi7WMRcuHc5AKQIDAQAB"
-	, "options_page" : "options.html"
 }
