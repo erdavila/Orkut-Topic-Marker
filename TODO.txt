@@ -1,13 +1,6 @@
 Topic List Page
 ---------------
-	Fix concurrency bug in topic list page (multiple "status" columns).
-		Exception at TopicListPage.js:41
-
-	Topics with zero messages(!): display as allRead ("check" icon)
-	
 	Open last page[option]: /Main#CommMsgs?cmm={community.id}&tid={topic.id}&na=2&nst={topic.lastReadMsg - 9}
-	
-	Show total messagens on noneRead topics ("exclamation").
 
 
 TopicMessagesPage

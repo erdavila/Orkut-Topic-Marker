@@ -67,22 +67,20 @@ TopicListPage.prototype.processRow = function(row, topicId, totalMsgs) {
 			} else {
 				var unreadMsgs = totalMsgs - response.lastReadMsg;
 				
-				if(response.lastReadMsg == 0) {
+				if(response.lastReadMsg == totalMsgs) {
+					status.icon = 'check';
+					status.tip = chrome.i18n.getMessage("topicList_tooltip_allRead");
+				} else if(response.lastReadMsg == 0) {
 					status.icon = "exclamation";
 					status.tip = chrome.i18n.getMessage("topicList_tooltip_noneRead");
 					status.text = unreadMsgs;
+				} else if(totalMsgs > response.lastReadMsg) {
+					status.icon = 'star';
+					status.tip = chrome.i18n.getMessage("topicList_tooltip_newMsgs", [unreadMsgs]);
+					status.text = unreadMsgs;
 				} else {
-					if(response.lastReadMsg == totalMsgs) {
-						status.icon = 'check';
-						status.tip = chrome.i18n.getMessage("topicList_tooltip_allRead");
-					} else if(totalMsgs > response.lastReadMsg) {
-						status.icon = 'star';
-						status.tip = chrome.i18n.getMessage("topicList_tooltip_newMsgs", [unreadMsgs]);
-						status.text = unreadMsgs;
-					} else {
-						status.icon = 'star'
-						status.tip = chrome.i18n.getMessage("topicList_tooltip_special");
-					}
+					status.icon = 'star'
+					status.tip = chrome.i18n.getMessage("topicList_tooltip_special");
 				}
 			}
 			
