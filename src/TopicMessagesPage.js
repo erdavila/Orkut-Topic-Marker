@@ -27,34 +27,52 @@
 	var elements = this.doc.getElementsByClassName('rf');
 	
 	/*
-					elements[0]                                                 is "<span>primeira | &lt; anterior | próxima &gt; | última</span>"
-					elements[0].nextSibling                                     is " mostrando "
-	elementRange == elements[0].nextSibling.nextSibling                         is "<b>{firstDisplayedMsg}-{lastDisplayedMsg}</b>"
-					elements[0].nextSibling.nextSibling.nextSibling             is " de "
-	elementTotal == elements[0].nextSibling.nextSibling.nextSibling.nextSibling is "<b>{totalMsgs}</b>"
+	navPageTop         is "<span>primeira | &lt; anterior | próxima &gt; | última</span>"
+	labelDisplayingTop is " mostrando "
+	elementRangeTop    is "<b>{firstDisplayedMsg}-{lastDisplayedMsg}</b>"
+	labelOfTop         is " de "
+	elementTotalTop    is "<b>{totalMsgs}</b>"
 	*/
+	var navPageTop         = elements[0];
+	var labelDisplayingTop = navPageTop.nextSibling
+	var elementRangeTop    = labelDisplayingTop.nextSibling;
+	var labelOfTop         = elementRangeTop.nextSibling
+	var elementTotalTop    = labelOfTop.nextSibling;
 	
-	var elementRange = elements[0].nextSibling.nextSibling;
-	var m = elementRange.textContent.match(/(\d+)-(\d+)/);
+	var txtSeparatorTop = this.doc.createTextNode(' | ');
+	insertAfter(txtSeparatorTop, elementTotalTop);
+	
+	// Extrai números das mensagens
+	var m = elementRangeTop.textContent.match(/(\d+)-(\d+)/);
 	this.firstDisplayedMsg = parseInt(m[1]);
 	this.lastDisplayedMsg  = parseInt(m[2]);
 	
-	var elementTotal = elements[0].nextSibling.nextSibling.nextSibling.nextSibling;
-	m = elementTotal.textContent.match(/(\d+)/);
+	m = elementTotalTop.textContent.match(/(\d+)/);
 	this.totalMsgs = parseInt(m[1]);
 	
-	this.actionBars = [];
-	
 	// Cria barra de ações no topo da lista
-	this.actionBars[0] = this.doc.createElement('span');
-	this.actionBars[0].className = 'otmActionBar';
-	var txtSeparator = this.doc.createTextNode(' | ');
-	insertAfter(txtSeparator, elementTotal);
-	insertAfter(this.actionBars[0], txtSeparator);
+	var actionBarTop = this.doc.createElement('span');
+	actionBarTop.className = 'otmActionBar';
+	insertAfter(actionBarTop, txtSeparatorTop);
 	
-	// Cria barra de ações no rodapé da lista
-	this.actionBars[1] = this.actionBars[0].cloneNode(true);
-	insertAfter(this.actionBars[1], elements[1]);
+	// Copia itens para o rodapé
+	var navPageBottom         = elements[1];
+	var labelDisplayingBottom = labelDisplayingTop.cloneNode(true);
+	var elementRangeBottom    = elementRangeTop.cloneNode(true);
+	var labelOfBottom         = labelOfTop.cloneNode(true);
+	var elementTotalBottom    = elementTotalTop.cloneNode(true);
+	var txtSeparatorBottom    = txtSeparatorTop.cloneNode(true);
+	var actionBarBottom       = actionBarTop.cloneNode(true);
+	
+	insertAfter(labelDisplayingBottom, navPageBottom);
+	insertAfter(elementRangeBottom   , labelDisplayingBottom);
+	insertAfter(labelOfBottom        , elementRangeBottom);
+	insertAfter(elementTotalBottom   , labelOfBottom);
+	insertAfter(txtSeparatorBottom   , elementTotalBottom);
+	insertAfter(actionBarBottom      , txtSeparatorBottom);
+	
+	
+	this.actionBars = [ actionBarTop, actionBarBottom ];
 };
 
 
