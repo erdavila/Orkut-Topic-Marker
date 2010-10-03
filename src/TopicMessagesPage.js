@@ -51,7 +51,11 @@
 	this.totalMsgs = parseInt(m[1]);
 	
 	var navLinks = navPageTop.getElementsByTagName('a');
-	this.linkToNextPage = navLinks[navLinks.length - 2].href;
+	try {
+		this.linkToNextPage = navLinks[navLinks.length - 2];
+	} catch(ex) {
+		;
+	}
 	
 	
 	
@@ -342,5 +346,10 @@ TopicMessagesPage.prototype.goToTopicsList = function() {
 };
 
 TopicMessagesPage.prototype.goToNextPage = function() {
-	document.location = this.linkToNextPage;
-}
+	var evt = document.createEvent("MouseEvents");
+	evt.initMouseEvent("click", true, true, window,
+                       0, 0, 0, 0, 0,
+	                   false, false, false, false,
+	                   0, null);
+	this.linkToNextPage.dispatchEvent(evt);
+};
