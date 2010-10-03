@@ -154,11 +154,10 @@ TopicMessagesPage.prototype.update = function() {
 										'lastReadMsg' : me.totalMsgs,
 									};
 									chrome.extension.sendRequest(request, function() {
+										me.update();
 										Options.get(function(options) {
 											if(options.leaveOnTopicAllRead) {
 												me.goToTopicsList();
-											} else {
-												me.update();
 											}
 										});
 									});
@@ -216,11 +215,10 @@ TopicMessagesPage.prototype.update = function() {
 										'ignored'     : true,
 									};
 									chrome.extension.sendRequest(request, function() {
+										me.update();
 										Options.get(function(options) {
 											if(options.leaveOnIgnore) {
 												me.goToTopicsList();
-											} else {
-												me.update();
 											}
 										});
 									});
@@ -269,19 +267,16 @@ TopicMessagesPage.prototype.update = function() {
 											'lastReadMsg' : me.lastDisplayedMsg,
 										};
 										chrome.extension.sendRequest(request, function() {
+											me.update();
 											Options.get(function(options) {
 												if(me.lastDisplayedMsg == me.totalMsgs) {
 													// This was the last page of the topic
 													if(options.leaveOnTopicAllRead) {
 														me.goToTopicsList();
-													} else {
-														me.update();
 													}
 												} else {
 													if(options.nextPageOnPageAllRead) {
 														me.goToNextPage();
-													} else {
-														me.update();
 													}
 												}
 											});
