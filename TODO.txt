@@ -1,6 +1,8 @@
 Topic List Page
 ---------------
-	Open last page[option]: /Main#CommMsgs?cmm={community.id}&tid={topic.id}&na=2&nst={topic.lastReadMsg - 9}
+	Open last page: /Main#CommMsgs?cmm={community.id}&tid={topic.id}&na=2&nst={topic.lastReadMsg - 9}
+		Only if topic.lastReadMsg > topic.totalMsgs / 2
+		Make an option (?)
 
 
 TopicMessagesPage
@@ -8,6 +10,8 @@ TopicMessagesPage
 	Display(?) something like:
 		"X unread messages in the next pages"
 		"X unread messages in the previous pages"
+	
+	Bug when opening a topic with zero messages.
 
 
 General

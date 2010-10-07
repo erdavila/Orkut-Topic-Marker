@@ -67,7 +67,7 @@ TopicListPage.prototype.processRow = function(row, topicId, totalMsgs) {
 			} else {
 				var unreadMsgs = totalMsgs - response.lastReadMsg;
 				
-				if(response.lastReadMsg == totalMsgs) {
+				if(response.lastReadMsg == totalMsgs  ||  totalMsgs == 0) {
 					status.icon = 'check';
 					status.tip = chrome.i18n.getMessage("topicList_tooltip_allRead");
 				} else if(response.lastReadMsg == 0) {
