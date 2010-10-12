@@ -1,10 +1,12 @@
 ﻿function TopicListPage(communityId, communityMainPage) {
 	this.communityId = communityId;
 	if(communityMainPage) {
+		this.topicLinkColumnIndex = 1;
 		this.totalColumnIndex = 2;
 		this.statusColumnPosition = 2;
 		this.topicTitleResizeWidth = "55%";
 	} else {
+		this.topicLinkColumnIndex = 1;
 		this.totalColumnIndex = 3;
 		this.statusColumnPosition = 3;
 		this.topicTitleResizeWidth = "40%";
@@ -33,22 +35,22 @@
 	// Processa cada linha
 	for(var r = 1; r < rows.length; r++) {
 		var row = rows[r];
-		var cells = row.getElementsByTagName('td');
-		
-		var linkCell = cells[1]
-		var topicUrl = linkCell.getElementsByTagName('a')[0].href;
-		var m = topicUrl.match(/tid=(\d+)/);
-		var topicId = m[1];
-		
-		var totalCell = cells[this.totalColumnIndex];
-		var totalMsgs = parseInt(totalCell.textContent);
-		
-		this.processRow(row, topicId, totalMsgs);
+		this.processRow(row);
 	}
 }
 
 
-TopicListPage.prototype.processRow = function(row, topicId, totalMsgs) {
+TopicListPage.prototype.processRow = function(row) {
+	var cells = row.getElementsByTagName('td');
+	
+	var linkCell = cells[this.topicLinkColumnIndex];
+	var topicUrl = linkCell.getElementsByTagName('a')[0].href;
+	var m = topicUrl.match(/tid=(\d+)/);
+	var topicId = m[1];
+	
+	var totalCell = cells[this.totalColumnIndex];
+	var totalMsgs = parseInt(totalCell.textContent);
+
 	var me = this;
 	
 	var request = {
