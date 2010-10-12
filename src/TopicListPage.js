@@ -30,8 +30,6 @@
 	headerRow.insertBefore(th, headers[this.statusColumnPosition]);
 	headers[1].width = this.topicTitleResizeWidth;
 	
-	var me = this;
-	
 	// Processa cada linha
 	for(var r = 1; r < rows.length; r++) {
 		var row = rows[r];
