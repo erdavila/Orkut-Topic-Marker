@@ -49,8 +49,9 @@ TopicListPage.prototype.processRow = function(row) {
 	var topicId = m[1];
 	
 	var totalCell = cells[this.totalColumnIndex];
-	var totalMsgs = parseInt(totalCell.textContent);
-
+	var totalMsgs = parseInt(totalCell.textContent.replace(".", ""));
+	
+	
 	var me = this;
 	
 	var request = {
