@@ -6,6 +6,7 @@
 			var leaveOnTopicAllReadCheckbox;
 			var nextPageOnPageAllReadCheckbox;
 			var leaveOnIgnoreCheckbox;
+			var openLastPageCheckbox;
 			var exportImportTable;
 			var exportImportField;
 			
@@ -14,6 +15,7 @@
 				leaveOnTopicAllReadCheckbox   = document.getElementById("leave_on_topic_allRead");
 				nextPageOnPageAllReadCheckbox = document.getElementById("nextPage_on_page_allRead");
 				leaveOnIgnoreCheckbox         = document.getElementById("leave_on_ignore");
+				openLastPageCheckbox          = document.getElementById("open_last_page");
 				
 				exportImportTable = document.getElementById("export_import_table");
 				exportImportField = document.getElementById("export_import_data");
@@ -23,6 +25,7 @@
 				document.getElementById("leave_on_topic_allRead_label").textContent   = chrome.i18n.getMessage("options_label_leave_on_topic_allRead");
 				document.getElementById("nextPage_on_page_allRead_label").textContent = chrome.i18n.getMessage("options_label_nextPage_on_page_allRead");
 				document.getElementById("leave_on_ignore_label").textContent          = chrome.i18n.getMessage("options_label_leave_on_ignore");
+				document.getElementById("open_last_page_label").textContent           = chrome.i18n.getMessage("options_label_open_last_page");
 				
 				document.getElementById("export_import").textContent                = chrome.i18n.getMessage("options_label_Export_Import");
 				document.getElementById("export_import_instructions").innerHTML     = chrome.i18n.getMessage("options_text_export_import_instructions");
@@ -33,6 +36,7 @@
 					leaveOnTopicAllReadCheckbox.checked   = options.leaveOnTopicAllRead;
 					nextPageOnPageAllReadCheckbox.checked = options.nextPageOnPageAllRead;
 					leaveOnIgnoreCheckbox.checked         = options.leaveOnIgnore;
+					openLastPageCheckbox.checked          = options.openLastPage;
 				});
 			}
 			
@@ -56,6 +60,14 @@
 			function toggleLeaveOnIgnore() {
 				Options.get(function(options) {
 					options.leaveOnIgnore = leaveOnIgnoreCheckbox.checked;
+					Options.set(options);
+				});
+			}
+			
+			
+			function toggleOpenLastPage() {
+				Options.get(function(options) {
+					options.openLastPage = openLastPageCheckbox.checked;
 					Options.set(options);
 				});
 			}
@@ -110,6 +122,10 @@
 		
 		<input type="checkbox" id="leave_on_ignore" onclick="toggleLeaveOnIgnore();"/>
 		<label for="leave_on_ignore" id="leave_on_ignore_label"></label>
+		<br/>
+		
+		<input type="checkbox" id="open_last_page" onclick="toggleOpenLastPage();"/>
+		<label for="open_last_page" id="open_last_page_label"></label>
 		<br/>
 		
 		<hr/>

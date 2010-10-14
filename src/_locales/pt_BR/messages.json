@@ -103,6 +103,10 @@
 		"message" : "Voltar à lista de tópicos ao marcar um tópico como ignorado"
 	},
 	
+	"options_label_open_last_page" : {
+		"message" : "Abrir a última página de mensagens (quando for mais conveniente)"
+	},
+	
 	"options_label_Export_Import" : {
 		"message" : "Exportar / Importar dados"
 	},

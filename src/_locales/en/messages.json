@@ -105,6 +105,10 @@
 		"message" : "Return to the topics list when marking as ignored"
 	},
 	
+	"options_label_open_last_page" : {
+		"message" : "Open last page of messages (when it is more convenient)"
+	},
+	
 	"options_label_Export_Import" : {
 		"message" : "Export / Import data"
 	},

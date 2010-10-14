@@ -44,7 +44,8 @@ TopicListPage.prototype.processRow = function(row) {
 	var cells = row.getElementsByTagName('td');
 	
 	var linkCell = cells[this.topicLinkColumnIndex];
-	var topicUrl = linkCell.getElementsByTagName('a')[0].href;
+	var linkElement = linkCell.getElementsByTagName('a')[0];
+	var topicUrl = linkElement.href;
 	var m = topicUrl.match(/tid=(\d+)/);
 	var topicId = m[1];
 	
@@ -82,6 +83,15 @@ TopicListPage.prototype.processRow = function(row) {
 				} else {
 					status.icon = 'star'
 					status.tip = chrome.i18n.getMessage("topicList_tooltip_special");
+				}
+				
+				
+				if(response.lastReadMsg > totalMsgs / 2) {
+					Options.get(function(options) {
+						if(options.openLastPage) {
+							linkElement.href += '&na=2&nst=' + (totalMsgs - 9);
+						}
+					});
 				}
 			}
 			
