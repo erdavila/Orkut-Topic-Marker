@@ -1,16 +1,15 @@
-{
-	"name" : "__MSG_extension_name__",
+﻿{
+	"name" : "Marcador de Tópicos do Orkut",
 	"version" : "0.2.2",
-	"description" : "__MSG_extension_description__",
+	"description" : "Marque onde voce parou de ler os tópicos do Orkut.",
 	"icons" : {
-		"16" : "icon16.png",
-		"32" : "icon32.png",
-		"48" : "icon48.png",
-		"64" : "icon64.png",
-		"128" : "icon128.png"
+		"16" : "icons/16.png",
+		"32" : "icons/32.png",
+		"48" : "icons/48.png",
+		"64" : "icons/64.png",
+		"128" : "icons/128.png"
 	},
-	"default_locale" : "pt_BR",
-	"background_page" : "background.html",
+	"background_page" : "background/main.html",
 	"content_scripts" : [
 		{
 			"matches" : [
@@ -18,15 +17,19 @@
 				"http://*.orkut.com.br/*"
 			],
 			"js"      : [
-				"set_content_script_context.js",
-				"Options.js",
-				"TopicListPage.js",
+				"content_script/TopicData.js",
+				"content_script/Options.js",
+				"content_script/TopicListPageProcessor.js",
+				/*
 				"TopicMessagesPage.js",
-				"main.js"
+				*/
+				"content_script/main.js"
 			],
 			"run_at"  : "document_idle"
 		}
 	],
+	/*
 	"options_page" : "options.html",
+	*/
 	"key" : "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDQWI1HHbUAfKSEQIXYklmJe+taCCx2N2Q0IIQ27nzPETJ2rZx+WyA6ZZKUV9vhTJoFFREIiSHgfYLwrYNzaUSP/189KgpUjev1K4BXJdDx77KiK2VmqjE6BSlAf/AmAb8ByepOo3IyijP6eOt3Vr8K3LdD+5fjFi7WMRcuHc5AKQIDAQAB"
 }

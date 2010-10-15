@@ -1,0 +1,35 @@
+<html>
+	<script src="TopicData.js"></script>
+	<script src="Options.js"></script>
+	<script>
+		chrome.extension.onRequest.addListener(
+			function(request, sender, sendResponse) {
+				switch(request.type) {
+					case 'get':
+						var value = localStorage[request.topicId];
+						var response = TopicData.fromString(value);
+						sendResponse(response);
+						break;
+						
+					case 'set':
+						var topicData = TopicData.fromObject(request);
+						if(topicData.lastReadMsg == 0  &&  !topicData.ignored) {
+							delete localStorage[request.topicId];
+						} else {
+							topicData.timestamp = Date.now();
+							localStorage[request.topicId] = topicData.toString();
+						}
+						sendResponse({});
+						break;
+					
+					case 'get_options':
+						var options = Options.get(sendResponse);
+						break;
+					
+					case 'set_options':
+						/* NÃO IMPLEMENTADO! */
+						break;
+				}
+			});
+	</script>
+</html>
