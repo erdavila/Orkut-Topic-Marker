@@ -10,3 +10,10 @@ TopicData.get = function(topicId, handler) {
 	};
 	chrome.extension.sendRequest(request, handler);
 };
+
+
+TopicData.set = function(topicData, handler) {
+	var request = topicData;
+	request.type = 'set';
+	chrome.extension.sendRequest(request, handler);
+};

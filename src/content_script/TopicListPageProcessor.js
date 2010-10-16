@@ -13,6 +13,9 @@ TopicListPageProcessor.prototype.pageIsReady = function() {
 			// Não terminou de carregar a página
 			return false;
 		}
+		
+		var table = this.doc.getElementsByClassName('displaytable')[0];
+		this.rows = table.getElementsByTagName('tr');
 	} catch(ex) {
 		// Se houver qualquer outro erro, considera que não terminou de carregar a página
 		return false;
@@ -35,11 +38,8 @@ TopicListPageProcessor.prototype.process = function() {
 		this.topicTitleResizeWidth = "40%";
 	}
 	
-	var table = this.doc.getElementsByClassName('displaytable')[0];
-	var rows = table.getElementsByTagName('tr');
-	
 	// Adiciona cabeçalho da nova coluna
-	var headerRow = rows[0];
+	var headerRow = this.rows[0];
 	var th = this.doc.createElement('th');
 	th.textContent = 'status';
 	th.style.textAlign = 'center';
@@ -56,8 +56,8 @@ TopicListPageProcessor.prototype.process = function() {
 		self.openLastPage = options.openLastPage;
 		
 		// Depois, continua com o processamento de cada linha
-		for(var r = 1; r < rows.length; r++) {
-			var row = rows[r];
+		for(var r = 1; r < self.rows.length; r++) {
+			var row = self.rows[r];
 			self.processRow(row);
 		}
 	});
@@ -117,7 +117,7 @@ TopicListPageProcessor.prototype.processRow = function(row) {
 			newCell.title = status.tip;
 			newCell.style.textAlign = 'center';
 			var img = self.doc.createElement('img');
-				img.src = "chrome-extension://" + chrome.i18n.getMessage("@@extension_id") + "/" + status.icon + ".png"; //ICONS[status.icon];
+				img.src = "chrome-extension://" + chrome.i18n.getMessage("@@extension_id") + "/" + status.icon + ".png";
 			newCell.appendChild(img);
 			
 			if(status.text) {

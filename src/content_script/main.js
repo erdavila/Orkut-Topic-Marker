@@ -30,16 +30,25 @@ function identifyPage(hash) {
 		identifiedPage.communityId = m[1];
 		identifiedPage.processor = TopicMessagesPageProcessor;
 	} else {
-		identifiedPage.processor = RegularPageProcessor;
+		identifiedPage.processor = OtherPageProcessor;
 	}
 	
 	return identifiedPage;
 }
 
 
+function OtherPageProcessor() { ; }
+OtherPageProcessor.prototype.pageIsReady = function() { return true; }
+OtherPageProcessor.prototype.process = function() { ; }
 
-/*
+
+
 function insertAfter(what, where) {
 	where.parentNode.insertBefore(what, where.nextSibling);
 }
-*/
+
+function removeChildren(parent) {
+	while(parent.hasChildNodes()) {
+		parent.removeChild(parent.firstChild);
+	}
+}
