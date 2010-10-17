@@ -45,11 +45,11 @@ TopicMessagesPageProcessor.prototype.addStyles = function() {
 
 TopicMessagesPageProcessor.prototype.extractData = function() {
 	/*
-	navLinkGroupTop    is "<span class='rf'>primeira | &lt; anterior | próxima &gt; | última</span>"
-	labelDisplayingTop is " mostrando "
-	elementRangeTop    is "<b>{firstDisplayedMsg}-{lastDisplayedMsg}</b>"
-	labelOfTop         is " de "
-	elementTotalTop    is "<b>{totalMsgs}</b>"
+	navLinkGroupTop    é "<span class='rf'>primeira | &lt; anterior | próxima &gt; | última</span>"
+	labelDisplayingTop é " mostrando "
+	elementRangeTop    é "<b>{firstDisplayedMsg}-{lastDisplayedMsg}</b>"
+	labelOfTop         é " de "
+	elementTotalTop    é "<b>{totalMsgs}</b>"
 	*/
 	var navLinkGroupTop    = this.navLinkGroups[0];
 	var labelDisplayingTop = navLinkGroupTop.nextSibling
@@ -174,7 +174,13 @@ TopicMessagesPageProcessor.prototype.createTopicActionsGroups = function() {
 	for(var i = 0; i < 2; i++) {
 		var navLinkGroup = this.navLinkGroups[i];
 		
-		// Remove itens que mostram o intervalo e o total de mensagens ("mostrando 1-10 de 86")
+		/*
+		Remove itens que mostram o intervalo e o total de mensagens
+		n == 0: " mostrando "
+		n == 1: "<b>{firstDisplayedMsg}-{lastDisplayedMsg}</b>"
+		n == 2: " de "
+		n == 3: "<b>{totalMsgs}</b>"
+		*/
 		for(var n = 0; n < 4; n++) {
 			var itemToRemove = navLinkGroup.nextSibling;
 			itemToRemove.parentNode.removeChild(itemToRemove);
@@ -408,8 +414,24 @@ TopicMessagesPageProcessor.prototype.createIcon = function(type, tip, classes, h
 };
 
 
+TopicMessagesPageProcessor.prototype.getTopicsListLink = function() {
+	var links = this.doc.getElementsByTagName("a");
+	for(var i = 0; i < links.length; i++) {
+		var link = links[i];
+		if(link.href.match(/#CommTopics\?/)) {
+			return link;
+		}
+	}
+};
+
+
 TopicMessagesPageProcessor.prototype.goToTopicsList = function() {
-	document.location.hash = "#CommTopics?cmm=" + this.communityId;
+	var evt = this.doc.createEvent("MouseEvents");
+	evt.initMouseEvent("click", true, true, window,
+                       0, 0, 0, 0, 0,
+	                   false, false, false, false,
+	                   0, null);
+	this.getTopicsListLink().dispatchEvent(evt);
 };
 
 
