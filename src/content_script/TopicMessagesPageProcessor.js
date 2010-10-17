@@ -68,7 +68,7 @@ TopicMessagesPageProcessor.prototype.extractData = function() {
 	this.lastDisplayedMsg  = parseInt(m[2]);
 
 	// Total de mensagens
-	var m = elementTotalTop.textContent.match(/(\d+)/);
+	var m = elementTotalTop.textContent.replace(".", "").match(/(\d+)/);
 	this.totalMsgs = parseInt(m[1]);
 	
 	// Identifica links para páginas
