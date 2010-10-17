@@ -4,22 +4,13 @@ Topic List Page
 
 TopicMessagesPage
 -----------------
-	Display(?) something like:
-		"X unread messages in the next pages"
-		"X unread messages in the previous pages"
-	
 	Bug when opening a topic with zero messages.
-	
-	Think about:
-		Displaying the number of messages AFTER the current page.
-		Displaying the number of UNREAD messages AFTER the current page.
-		Displaying the number of messages BEFORE the current page.
-		Displaying the number of UNREAD messages BEFORE the current page.
-		Redesign the whole status/navigation bar.
 
 
 General
 -------
+	Testar no Orkut antigo!
+	
 	Store data in incognito mode (default: no).
 
 	Add Orkut username to the key:

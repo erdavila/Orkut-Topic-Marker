@@ -9,6 +9,11 @@ TopicMessagesPageProcessor.prototype.pageIsReady = function() {
 		var orkutFrame = document.getElementById('orkutFrame');
 		this.doc = orkutFrame.contentDocument;
 		
+		if(this.doc.getElementsByClassName("otmActionBar").length > 0) {
+			// Ainda está na página anterior
+			return false;
+		}
+		
 		this.navLinkGroups = this.doc.getElementsByClassName("rf");
 		if(this.navLinkGroups.length < 2) {
 			return false;
