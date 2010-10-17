@@ -204,6 +204,7 @@ TopicMessagesPageProcessor.prototype.createTopicActionsGroups = function() {
 
 TopicMessagesPageProcessor.prototype.createSeparator = function() {
 	var separator = this.doc.createElement("span");
+	separator.className = "grayedout";
 	separator.innerHTML = "&nbsp; | &nbsp;";
 	return separator;
 };
