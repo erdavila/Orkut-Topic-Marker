@@ -171,20 +171,20 @@ TopicMessagesPageProcessor.prototype.replaceNavLinks = function() {
 TopicMessagesPageProcessor.prototype.createTopicActionsGroups = function() {
 	this.topicActionsGroups = [];
 	
-	for(var i = 0; i < 2; i++) {
-		var navLinkGroup = this.navLinkGroups[i];
-		
+	// Remove itens que mostram o intervalo e o total de mensagens (somente no topo)
+	for(var n = 0; n < 4; n++) {
 		/*
-		Remove itens que mostram o intervalo e o total de mensagens
 		n == 0: " mostrando "
 		n == 1: "<b>{firstDisplayedMsg}-{lastDisplayedMsg}</b>"
 		n == 2: " de "
 		n == 3: "<b>{totalMsgs}</b>"
 		*/
-		for(var n = 0; n < 4; n++) {
-			var itemToRemove = navLinkGroup.nextSibling;
-			itemToRemove.parentNode.removeChild(itemToRemove);
-		}
+		var itemToRemove = this.navLinkGroups[0].nextSibling;
+		itemToRemove.parentNode.removeChild(itemToRemove);
+	}
+	
+	for(var i = 0; i < 2; i++) {
+		var navLinkGroup = this.navLinkGroups[i];
 		
 		// Exibe total de mensagens do tópico
 		var totalOfMessages = this.doc.createElement("b");
