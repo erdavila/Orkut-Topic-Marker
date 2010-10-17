@@ -9,7 +9,7 @@ TopicMessagesPage
 
 General
 -------
-	Testar no Orkut antigo!
+	Incluir instruções e tela na página de opções.
 	
 	Store data in incognito mode (default: no).
 
