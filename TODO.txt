@@ -9,8 +9,6 @@ TopicMessagesPage
 
 General
 -------
-	Incluir instruções e tela na página de opções.
-	
 	Store data in incognito mode (default: no).
 
 	Add Orkut username to the key:
