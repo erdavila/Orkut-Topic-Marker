@@ -412,7 +412,7 @@ TopicMessagesPageProcessor.prototype.process = function() {
 
 TopicMessagesPageProcessor.prototype.createIcon = function(type, tip, classes, handler) {
 	var icon = this.doc.createElement('img');
-	icon.src = "chrome-extension://" + chrome.i18n.getMessage("@@extension_id") + "/" + type + ".png";
+	icon.src = "chrome-extension://" + chrome.i18n.getMessage("@@extension_id") + "/images/" + type + ".png";
 	if(tip)     icon.title = tip;
 	if(classes) icon.className = classes.join(' ');
 	if(handler) icon.addEventListener('click', handler, true);

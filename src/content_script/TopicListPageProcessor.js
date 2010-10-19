@@ -117,7 +117,7 @@ TopicListPageProcessor.prototype.processRow = function(row) {
 			newCell.title = status.tip;
 			newCell.style.textAlign = 'center';
 			var img = self.doc.createElement('img');
-				img.src = "chrome-extension://" + chrome.i18n.getMessage("@@extension_id") + "/" + status.icon + ".png";
+				img.src = "chrome-extension://" + chrome.i18n.getMessage("@@extension_id") + "/images/" + status.icon + ".png";
 			newCell.appendChild(img);
 			
 			if(status.text) {
