@@ -1,7 +1,21 @@
 <html>
 	<head>
 		<title>Marcador de Tópicos do Orkut</title>
-		<script src="set_background_context.js"></script>
+		<style>
+			body, table {
+				font-family: Arial;
+				font-size: small;
+			}
+			
+			IMG.off {
+				opacity: 0.15;
+			}
+			
+			DIV.content {
+				margin-left: 2%;
+				margin-right: 2%;
+			}
+		</style>
 		<script src="Options.js"></script>
 		<script>
 			var leaveOnTopicAllReadCheckbox;
@@ -10,6 +24,7 @@
 			var openLastPageCheckbox;
 			var exportImportTable;
 			var exportImportField;
+			var instructions;
 			
 			
 			function loaded() {
@@ -20,6 +35,8 @@
 				
 				exportImportTable = document.getElementById("export_import_table");
 				exportImportField = document.getElementById("export_import_data");
+				
+				instructions = document.getElementById("instructions");
 				
 				
 				Options.get(function(options) {
@@ -99,40 +116,98 @@
 				
 				alert("Os dados foram importados corretamente");
 			}
+			
+			
+			function toggleInstructions() {
+				if(instructions.style.display == 'none') {
+					// Show
+					instructions.style.display = '';
+				} else {
+					// Hide
+					instructions.style.display = 'none';
+				}
+			}
 		</script>
 	</head>
 	<body onload="loaded();">
-		<input type="checkbox" id="leave_on_topic_allRead" onclick="toggleLeaveOnTopicAllRead();"/>
-		<label for="leave_on_topic_allRead">Voltar à lista de tópicos ao marcar um tópico como todo lido</label>
-		<br/>
+		<h1>Marcador de Tópicos do Orkut</h1>
 		
-		<input type="checkbox" id="nextPage_on_page_allRead" onclick="toggleNextPageOnPageAllRead();"/>
-		<label for="nextPage_on_page_allRead">Ir para a próxima página ao marcar a atual como lida</label>
-		<br/>
-		
-		<input type="checkbox" id="leave_on_ignore" onclick="toggleLeaveOnIgnore();"/>
-		<label for="leave_on_ignore">Voltar à lista de tópicos ao marcar um tópico como ignorado</label>
-		<br/>
-		
-		<input type="checkbox" id="open_last_page" onclick="toggleOpenLastPage();"/>
-		<label for="open_last_page">Abrir a última página de mensagens (quando for mais conveniente)</label>
-		<br/>
+		<h2>Opções</h2>
+		<div class="content">
+			<input type="checkbox" id="leave_on_topic_allRead" onclick="toggleLeaveOnTopicAllRead();"/>
+			<label for="leave_on_topic_allRead">Voltar à lista de tópicos ao marcar um tópico como todo lido</label>
+			<br/>
+			
+			<input type="checkbox" id="nextPage_on_page_allRead" onclick="toggleNextPageOnPageAllRead();"/>
+			<label for="nextPage_on_page_allRead">Ir para a próxima página ao marcar a atual como lida</label>
+			<br/>
+			
+			<input type="checkbox" id="leave_on_ignore" onclick="toggleLeaveOnIgnore();"/>
+			<label for="leave_on_ignore">Voltar à lista de tópicos ao marcar um tópico como ignorado</label>
+			<br/>
+			
+			<input type="checkbox" id="open_last_page" onclick="toggleOpenLastPage();"/>
+			<label for="open_last_page">Abrir a última página de mensagens (quando for mais conveniente)</label>
+			<br/>
+			
+			<br/>
+			<a href="javascript:void(0);" onclick="toggleExportImport();">Exportar / Importar dados</a>
+			<table id="export_import_table" style="display:none;">
+				<tr>
+					<td>
+						Para <b>exportar</b> os dados, copie o texto ao lado, cole em um arquivo e salve-o.<br/>
+						Para <b>importar</b> dados, cole no campo ao lado e clique no botão "Salvar"
+					</td>
+					<td width="60%">
+						<textarea id="export_import_data" style="width:100%;height:200px"></textarea>
+						<button onclick="importData()">Salvar</button>
+					</td>
+				</tr>
+			</table>
+		</div>
 		
 		<hr/>
-		<div style="text-align: right;">
-			<a href="javascript:void(0);" onclick="toggleExportImport();">Exportar / Importar dados</a>
+		<h2><a href="javascript:void(0);" onclick="toggleInstructions()">Instruções</a></h2>
+		<div class="content" id="instructions" style="display: none;">
+			Ícones ajudam a identificar a situação de leitura dos tópicos e suas mensagens.
+			O significado dos ícones estão explicados abaixo.
+			Quanto estiver navegando no Orkut, pode-se ver uma descrição dos ícones ao passar o mouse sobre eles.
+			
+			<h3>Lista de tópicos</h3>
+			Na lista de tópicos da comunidade haverá uma coluna a mais - <b>status</b> - que informará:
+			<ul>
+				<li><img src="../check.png"> Não há mensagens novas no tópico.</li>
+				<li><img src="../exclamation.png"> O tópico é novo / nenhuma mensagem foi lida.</li>
+				<li><img src="../star.png"> Há mensagens novas no tópico desde a última vez que foi lido.
+					O número ao lado do ícone indica quantas mensagens há para serem lidas.</li>
+				<li><img src="../ignored.png"> O tópico está sendo ignorado.</li>
+			</ul>
+			
+			<h3>Mensagens de um Tópico</h3>
+			Nas páginas de mensagens de um tópico haverá duas áreas novas acima da lista de mensagens.
+			As duas áreas se repetem abaixo da lista de mensagens.
+			<br/>
+			Do lado esquerdo, há um indicador do número total de mensagens do tópico e poderá haver os seguintes ícones referentes ao <b>tópico</b>:
+			<ul>
+				<li><img src="../check.png"> O tópico foi todo lido / não há mensagens novas.</li>
+				<li><img src="../check.png" class="off"> Clique para marcar o tópico todo como lido.</li>
+				<li><img src="../exclamation.png"> O tópico é novo / nenhuma mensagem foi lida.</li>
+				<li><img src="../exclamation.png" class="off"> Clique para marcar o tópico todo como NÃO-lido.</li>
+				<li><img src="../star.png"> Há mensagens novas no tópico.
+					O número ao lado do ícone indica quantas mensagens existem para serem lidas.</li>
+				<li><img src="../ignored.png"> O tópico está sendo ignorado.</li>
+				<li><img src="../ignored.png" class="off"> Clique para ignorar o tópico.</li>
+			</ul>
+			Na área do lado direito estão os links tradicionais para navegação entre páginas.
+			Entre eles, há um indicador do intervalo de mensagens exibidas na página atual e poderá haver os seguintes ícones referentes às <b>mensagens na página atual</b>:
+			<ul>
+				<li><img src="../check.png"> Todas as mensagens da página atual (e anteriores) foram lidas.</li>
+				<li><img src="../check.png" class="off"> Clique para marcar o tópico como lido até a página atual.</li>
+				<li><img src="../exclamation.png"> Nenhuma mensagem da página atual (e seguintes) foi lida.</li>
+				<li><img src="../exclamation.png" class="off"> Clique para marcar o tópico como NÃO-lido a partir da página atual.</li>
+				<li><img src="../star.png"> Indica que a página atual é a primeira com mensagens novas.
+					O número ao lado do ícone indica quantas mensagens há para serem lidas na página atual.</li>
+			</ul>
 		</div>
-		<table id="export_import_table" style="display:none;">
-			<tr>
-				<td>
-					Para <b>exportar</b> os dados, copie o texto ao lado, cole em um arquivo e salve-o.<br/>
-					Para <b>importar</b> dados, cole no campo ao lado e clique no botão "Salvar"
-				</td>
-				<td width="60%">
-					<textarea id="export_import_data" style="width:100%;height:200px"></textarea>
-					<button onclick="importData()">Salvar</button>
-				</td>
-			</tr>
-		</table>
 	</body>
 </html>
