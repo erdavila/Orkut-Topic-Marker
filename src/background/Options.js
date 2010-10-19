@@ -8,7 +8,7 @@ var Options = {
 		}
 		
 		// Define valores padrão
-		if(typeof(options)                       != 'object')    options = {};
+		if(options == null  ||   typeof(options) != 'object')    options = {};
 		if(typeof(options.leaveOnTopicAllRead)   == 'undefined') options.leaveOnTopicAllRead = true;
 		if(typeof(options.nextPageOnPageAllRead) == 'undefined') options.nextPageOnPageAllRead = true;
 		if(typeof(options.leaveOnIgnore)         == 'undefined') options.leaveOnIgnore = true;
