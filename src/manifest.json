@@ -1,6 +1,6 @@
 ﻿{
 	"name" : "Marcador de Tópicos do Orkut",
-	"version" : "1.0.0",
+	"version" : "1.0.0.1",
 	"description" : "Marque onde voce parou de ler os tópicos do Orkut.",
 	"icons" : {
 		"16" : "icons/16.png",
