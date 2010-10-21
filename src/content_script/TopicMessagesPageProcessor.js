@@ -63,12 +63,12 @@ TopicMessagesPageProcessor.prototype.extractData = function() {
 	var elementTotalTop    = labelOfTop.nextSibling;
 	
 	// Intervalo de mensagens
-	var m = elementRangeTop.textContent.match(/(\d+)-(\d+)/);
+	var m = elementRangeTop.textContent.replace(/\./g, "").match(/(\d+)-(\d+)/);
 	this.firstDisplayedMsg = parseInt(m[1]);
 	this.lastDisplayedMsg  = parseInt(m[2]);
 
 	// Total de mensagens
-	var m = elementTotalTop.textContent.replace(".", "").match(/(\d+)/);
+	var m = elementTotalTop.textContent.replace(/\./g, "").match(/(\d+)/);
 	this.totalMsgs = parseInt(m[1]);
 	
 	// Identifica links para páginas

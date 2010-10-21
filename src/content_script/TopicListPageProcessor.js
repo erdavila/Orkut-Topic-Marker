@@ -80,7 +80,7 @@ TopicListPageProcessor.prototype.processRow = function(row) {
 	
 	// Obtém o total de mensagens
 	var totalCell = cells[this.totalColumnIndex];
-	var totalMsgs = parseInt(totalCell.textContent.replace(".", ""));
+	var totalMsgs = parseInt(totalCell.textContent.replace(/\./g, ""));
 	
 	
 	TopicData.get(topicId, function(topicData) {
