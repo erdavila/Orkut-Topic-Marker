@@ -1,3 +1,12 @@
+Opções
+---------------
+	Separar "Opções" e "Instruções" em abas.
+	
+	Criar uma aba "Dicas"
+		- Explicar como encontrar a primeira página contendo mensagens novas.
+		- Explicar limitações do Orkut.
+
+
 Topic List Page
 ---------------
 
@@ -7,7 +16,7 @@ TopicMessagesPage
 	Bug when opening a topic with zero messages.
 
 
-General
+Geral
 -------
 	Store data in incognito mode (default: no).
 
