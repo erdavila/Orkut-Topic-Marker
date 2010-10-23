@@ -1,7 +1,5 @@
 Opções
 ---------------
-	Separar "Opções" e "Instruções" em abas.
-	
 	Criar uma aba "Dicas"
 		- Explicar como encontrar a primeira página contendo mensagens novas.
 		- Explicar limitações do Orkut.
