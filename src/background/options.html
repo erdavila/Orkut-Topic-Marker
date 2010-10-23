@@ -2,99 +2,168 @@
 	<head>
 		<title>Marcador de Tópicos do Orkut</title>
 		<style>
-			body, table {
+			body {
 				font-family: Arial;
 				font-size: small;
+				padding: 0;
+				margin: 0;
 			}
 			
-			IMG.off {
+			#navbar {
+				position: fixed;
+				width: 250px;
+				height: 100%;
+				margin: 10px;
+			}
+			
+			#navbar h1 {
+				text-align: center;
+			}
+			
+			.navbar-item {
+				cursor: pointer;
+				text-align: right;
+				list-style: none;
+				padding: 10px;
+			}
+			
+			.navbar-item.selected {
+				font-weight: bold;
+				background-color: lightgrey;
+			}
+			
+			#content {
+				position: absolute;
+				left: 270px;
+				right: 0px;
+				top: 0px;
+			}
+			
+			.content-panel {
+				display:none;
+			}
+			
+			#export-import-panel {
+				width:100%;
+			}
+			
+			#export-import-panel div {
+				float: right;
+				width: 60%;
+				padding-right: 10px;
+				padding-left: 10px;
+			}
+			
+			#export-import-data {
+				width: 100%;
+				height: 200px;
+			}
+			
+			img.screenshot {
+				border: 1px solid black;
+				text-align: center;
+				width: 90%;
+				margin-left: 5%;
+			}
+			
+			img.off {
 				opacity: 0.15;
-			}
-			
-			DIV.content {
-				margin-left: 2%;
-				margin-right: 2%;
 			}
 		</style>
 		<script src="Options.js"></script>
 		<script>
-			var leaveOnTopicAllReadCheckbox;
-			var nextPageOnPageAllReadCheckbox;
-			var leaveOnIgnoreCheckbox;
-			var openLastPageCheckbox;
-			var exportImportTable;
+			var navBarItems;
+			var contentPanels;
+			var contentTitle;
+			
+			var activeNavBarItem;
+			var activeContentPanel;
+			var exportImportPanel;
 			var exportImportField;
-			var instructions;
+			
+			
+			function navBarItemsClick(evt) {
+				if(activeNavBarItem) activeNavBarItem.className = "navbar-item";
+				if(activeContentPanel) activeContentPanel.style.display = "none";
+				
+				activeNavBarItem = evt.target;
+				activeNavBarItem.className += " selected";
+				
+				var activeContentPanelId = "cont-" + activeNavBarItem.id.substring(activeNavBarItem.id.indexOf("-") + 1);
+				activeContentPanel = document.getElementById(activeContentPanelId);
+				activeContentPanel.style.display = "inherit";
+				
+				contentTitle.textContent = activeNavBarItem.textContent;
+			}
+			
+			
+			function automaticCheckboxOptionClick(evt) {
+				var checkbox = evt.target;
+				var option = checkbox.id.substring(checkbox.id.indexOf("-") + 1);
+				
+				Options.get(function(options) {
+					options[option] = checkbox.checked;
+					Options.set(options);
+				});
+			}
 			
 			
 			function loaded() {
-				leaveOnTopicAllReadCheckbox   = document.getElementById("leave_on_topic_allRead");
-				nextPageOnPageAllReadCheckbox = document.getElementById("nextPage_on_page_allRead");
-				leaveOnIgnoreCheckbox         = document.getElementById("leave_on_ignore");
-				openLastPageCheckbox          = document.getElementById("open_last_page");
+				// Configura navegação por abas
+				navBarItems = document.getElementsByClassName("navbar-item");
+				for(var i = 0; i < navBarItems.length; i++) {
+					navBarItems[i].addEventListener("click", navBarItemsClick, true);
+				}
 				
-				exportImportTable = document.getElementById("export_import_table");
-				exportImportField = document.getElementById("export_import_data");
+				contentPanels = document.getElementsByClassName("content-panel");
+				contentTitle = document.getElementById("content-title");
 				
-				instructions = document.getElementById("instructions");
+				// Seleciona primeira aba
+				var evt = document.createEvent("MouseEvents");
+				evt.initMouseEvent("click", true, true, window,
+				                   0, 0, 0, 0, 0,
+				                   false, false, false, false,
+				                   0, null);
+				navBarItems[0].dispatchEvent(evt);
+				
+				// Configura opções automáticas em checkboxes
+				var checkboxes = document.getElementsByClassName("automatic-checkbox-option");
+				Options.get(function(options) {
+					for(var i = 0; i < checkboxes.length; i++) {
+						var checkbox = checkboxes[i];
+						checkbox.addEventListener("click", automaticCheckboxOptionClick, true);
+												
+						// Inicializa o checkbox
+						var option = checkbox.id.substring(checkbox.id.indexOf("-") + 1);
+						checkbox.checked = options[option]
+					}
+				});
 				
 				
-				Options.get(function(options) {
-					leaveOnTopicAllReadCheckbox.checked   = options.leaveOnTopicAllRead;
-					nextPageOnPageAllReadCheckbox.checked = options.nextPageOnPageAllRead;
-					leaveOnIgnoreCheckbox.checked         = options.leaveOnIgnore;
-					openLastPageCheckbox.checked          = options.openLastPage;
-				});
-			}
-			
-			
-			function toggleLeaveOnTopicAllRead() {
-				Options.get(function(options) {
-					options.leaveOnTopicAllRead = leaveOnTopicAllReadCheckbox.checked;
-					Options.set(options);
-				});
-			}
-			
-			
-			function toggleNextPageOnPageAllRead() {
-				Options.get(function(options) {
-					options.nextPageOnPageAllRead = nextPageOnPageAllReadCheckbox.checked;
-					Options.set(options);
-				});
-			}
-			
-			
-			function toggleLeaveOnIgnore() {
-				Options.get(function(options) {
-					options.leaveOnIgnore = leaveOnIgnoreCheckbox.checked;
-					Options.set(options);
-				});
-			}
-			
-			
-			function toggleOpenLastPage() {
-				Options.get(function(options) {
-					options.openLastPage = openLastPageCheckbox.checked;
-					Options.set(options);
-				});
+				exportImportPanel = document.getElementById("export-import-panel");
+				exportImportData = document.getElementById("export-import-data");
 			}
 			
 			
 			function toggleExportImport() {
-				if(exportImportTable.style.display == 'none') {
+				if(exportImportPanel.style.display == 'none') {
 					// Show
 					var str = '';
 					for(key in localStorage) {
 						if(key != "USER_OPTIONS") {
-							str += key + ' ' + localStorage[key] + '\n';
+							if(str) {
+								str += "\n";
+							}
+							
+							str += key + ' ' + localStorage[key];
 						}
 					}
-					exportImportField.value = str;
+					exportImportData.value = str;
 					
-					exportImportTable.style.display = '';
+					exportImportPanel.style.display = 'inherit';
 				} else {
 					// Hide
-					exportImportTable.style.display = 'none';
+					exportImportPanel.style.display = 'none';
 				}
 			}
 			
@@ -104,7 +173,7 @@
 				localStorage.clear();
 				localStorage['USER_OPTIONS'] = userOptions;
 				
-				var str = exportImportField.value;
+				var str = exportImportData.value;
 				var values = str.split('\n');
 				for(var i = 0; i < values.length; i++) {
 					var value = values[i];
@@ -116,98 +185,108 @@
 				
 				alert("Os dados foram importados corretamente");
 			}
-			
-			
-			function toggleInstructions() {
-				if(instructions.style.display == 'none') {
-					// Show
-					instructions.style.display = '';
-				} else {
-					// Hide
-					instructions.style.display = 'none';
-				}
-			}
 		</script>
 	</head>
 	<body onload="loaded();">
-		<h1>Marcador de Tópicos do Orkut</h1>
-		
-		<h2>Opções</h2>
-		<div class="content">
-			<input type="checkbox" id="leave_on_topic_allRead" onclick="toggleLeaveOnTopicAllRead();"/>
-			<label for="leave_on_topic_allRead">Voltar à lista de tópicos ao marcar um tópico como todo lido</label>
-			<br/>
-			
-			<input type="checkbox" id="nextPage_on_page_allRead" onclick="toggleNextPageOnPageAllRead();"/>
-			<label for="nextPage_on_page_allRead">Ir para a próxima página ao marcar a atual como lida</label>
-			<br/>
-			
-			<input type="checkbox" id="leave_on_ignore" onclick="toggleLeaveOnIgnore();"/>
-			<label for="leave_on_ignore">Voltar à lista de tópicos ao marcar um tópico como ignorado</label>
-			<br/>
-			
-			<input type="checkbox" id="open_last_page" onclick="toggleOpenLastPage();"/>
-			<label for="open_last_page">Abrir a última página de mensagens (quando for mais conveniente)</label>
-			<br/>
-			
-			<br/>
-			<a href="javascript:void(0);" onclick="toggleExportImport();">Exportar / Importar dados</a>
-			<table id="export_import_table" style="display:none;">
-				<tr>
-					<td>
-						Para <b>exportar</b> os dados, copie o texto ao lado, cole em um arquivo e salve-o.<br/>
-						Para <b>importar</b> dados, cole no campo ao lado e clique no botão "Salvar"
-					</td>
-					<td width="60%">
-						<textarea id="export_import_data" style="width:100%;height:200px"></textarea>
-						<button onclick="importData()">Salvar</button>
-					</td>
-				</tr>
-			</table>
+		<div id="navbar">
+			<h1>Marcador de Tópicos do Orkut</h1>
+			<ul>
+				<li id="nav-options"      class="navbar-item">Opções</li>
+				<li id="nav-instructions" class="navbar-item">Instruções</li>
+				<!--
+				<li id="nav-tips"         class="navbar-item">Dicas</li>
+				-->
+			</ul>
+			<hr/>
 		</div>
-		
-		<hr/>
-		<h2><a href="javascript:void(0);" onclick="toggleInstructions()">Instruções</a></h2>
-		<div class="content" id="instructions" style="display: none;">
-			Ícones ajudam a identificar a situação de leitura dos tópicos e suas mensagens.
-			O significado dos ícones estão explicados abaixo.
-			Quanto estiver navegando no Orkut, pode-se ver uma descrição dos ícones ao passar o mouse sobre eles.
+		<div id="content">
+			<h1 id="content-title"></h1>
+			<hr/>
+			<div id="cont-options" class="content-panel">
+				<input type="checkbox" class="automatic-checkbox-option" id="chk-nextPageOnPageAllRead"/>
+				<label for="chk-nextPageOnPageAllRead">Ir para a próxima página ao marcar a atual como lida</label>
+				<br/>
+				
+				<input type="checkbox" class="automatic-checkbox-option" id="chk-leaveOnTopicAllRead"/>
+				<label for="chk-leaveOnTopicAllRead">Voltar à lista de tópicos ao marcar um tópico como todo lido</label>
+				<br/>
 			
-			<h3>Lista de tópicos</h3>
-			Na lista de tópicos da comunidade haverá uma coluna a mais - <b>status</b> - que informará:
-			<ul>
-				<li><img src="../images/check.png"> Não há mensagens novas no tópico.</li>
-				<li><img src="../images/exclamation.png"> O tópico é novo / nenhuma mensagem foi lida.</li>
-				<li><img src="../images/star.png"> Há mensagens novas no tópico desde a última vez que foi lido.
-					O número ao lado do ícone indica quantas mensagens há para serem lidas.</li>
-				<li><img src="../images/ignored.png"> O tópico está sendo ignorado.</li>
-			</ul>
+				<input type="checkbox" class="automatic-checkbox-option" id="chk-leaveOnIgnore"/>
+				<label for="chk-leaveOnIgnore">Voltar à lista de tópicos ao marcar um tópico como ignorado</label>
+				<br/>
+				
+				<input type="checkbox" class="automatic-checkbox-option" id="chk-openLastPage"/>
+				<label for="chk-openLastPage">Abrir a última página de mensagens (quando for mais conveniente)</label>
+				<br/>
+				
+				<hr/>
+				
+				<a href="javascript:void(0);" onclick="toggleExportImport();">Exportar / Importar dados</a>
+				<div id="export-import-panel" style="display: none;">
+					<div>
+						<textarea id="export-import-data"></textarea>
+						<button onclick="importData()">Salvar</button>
+					</div>
+					<ul>
+						<li>Para <b>exportar</b> os dados, copie o texto ao lado, cole em um arquivo e salve-o.</li>
+						<li>Para <b>importar</b> dados, cole no campo ao lado e clique no botão "Salvar".</li>
+					<ul>
+				</div>
+			</div>
 			
-			<h3>Mensagens de um Tópico</h3>
-			Nas páginas de mensagens de um tópico haverá duas áreas novas acima da lista de mensagens.
-			As duas áreas se repetem abaixo da lista de mensagens.
-			<br/>
-			Do lado esquerdo, há um indicador do número total de mensagens do tópico e poderá haver os seguintes ícones referentes ao <b>tópico</b>:
-			<ul>
-				<li><img src="../images/check.png"> O tópico foi todo lido / não há mensagens novas.</li>
-				<li><img src="../images/check.png" class="off"> Clique para marcar o tópico todo como lido.</li>
-				<li><img src="../images/exclamation.png"> O tópico é novo / nenhuma mensagem foi lida.</li>
-				<li><img src="../images/exclamation.png" class="off"> Clique para marcar o tópico todo como NÃO-lido.</li>
-				<li><img src="../images/star.png"> Há mensagens novas no tópico.
-					O número ao lado do ícone indica quantas mensagens existem para serem lidas.</li>
-				<li><img src="../images/ignored.png"> O tópico está sendo ignorado.</li>
-				<li><img src="../images/ignored.png" class="off"> Clique para ignorar o tópico.</li>
-			</ul>
-			Na área do lado direito estão os links tradicionais para navegação entre páginas.
-			Entre eles, há um indicador do intervalo de mensagens exibidas na página atual e poderá haver os seguintes ícones referentes às <b>mensagens na página atual</b>:
-			<ul>
-				<li><img src="../images/check.png"> Todas as mensagens da página atual (e anteriores) foram lidas.</li>
-				<li><img src="../images/check.png" class="off"> Clique para marcar o tópico como lido até a página atual.</li>
-				<li><img src="../images/exclamation.png"> Nenhuma mensagem da página atual (e seguintes) foi lida.</li>
-				<li><img src="../images/exclamation.png" class="off"> Clique para marcar o tópico como NÃO-lido a partir da página atual.</li>
-				<li><img src="../images/star.png"> Indica que a página atual é a primeira com mensagens novas.
-					O número ao lado do ícone indica quantas mensagens há para serem lidas na página atual.</li>
-			</ul>
+			<div id="cont-instructions" class="content-panel">
+				Ícones ajudam a identificar a situação de leitura dos tópicos e suas mensagens.
+				O significado dos ícones estão explicados abaixo.
+				Quanto estiver navegando no Orkut, pode-se ver uma descrição dos ícones ao passar o mouse sobre eles.
+				
+				<br/>
+				<hr/>
+				<h3>Lista de tópicos</h3>
+				<img class="screenshot" src="../images/screenshots/TopicList.png"><br/>
+				<br/>
+				Na lista de tópicos da comunidade haverá uma coluna a mais - <b>status</b> - que informará:
+				<ul>
+					<li><img src="../images/check.png"> Não há mensagens novas no tópico.</li>
+					<li><img src="../images/exclamation.png"> O tópico é novo / nenhuma mensagem foi lida.</li>
+					<li><img src="../images/star.png"> Há mensagens novas no tópico desde a última vez que foi lido.
+						O número ao lado do ícone indica quantas mensagens há para serem lidas.</li>
+					<li><img src="../images/ignored.png"> O tópico está sendo ignorado.</li>
+				</ul>
+				
+				<br/>
+				<hr/>
+				<h3>Mensagens de um Tópico</h3>
+				<img class="screenshot" src="../images/screenshots/TopicMessages.png"><br/>
+				<br/>
+				Nas páginas de mensagens de um tópico haverá duas áreas novas acima da lista de mensagens.
+				As duas áreas se repetem abaixo da lista de mensagens.
+				<br/>
+				Do lado esquerdo, há um indicador do número total de mensagens do tópico e poderá haver os seguintes ícones referentes ao <b>tópico</b>:
+				<ul>
+					<li><img src="../images/check.png"> O tópico foi todo lido / não há mensagens novas.</li>
+					<li><img src="../images/check.png" class="off"> Clique para marcar o tópico todo como lido.</li>
+					<li><img src="../images/exclamation.png"> O tópico é novo / nenhuma mensagem foi lida.</li>
+					<li><img src="../images/exclamation.png" class="off"> Clique para marcar o tópico todo como NÃO-lido.</li>
+					<li><img src="../images/star.png"> Há mensagens novas no tópico.
+						O número ao lado do ícone indica quantas mensagens existem para serem lidas.</li>
+					<li><img src="../images/ignored.png"> O tópico está sendo ignorado.</li>
+					<li><img src="../images/ignored.png" class="off"> Clique para ignorar o tópico.</li>
+				</ul>
+				Na área do lado direito estão os links tradicionais para navegação entre páginas.
+				Entre eles, há um indicador do intervalo de mensagens exibidas na página atual e poderá haver os seguintes ícones referentes às <b>mensagens na página atual</b>:
+				<ul>
+					<li><img src="../images/check.png"> Todas as mensagens da página atual (e anteriores) foram lidas.</li>
+					<li><img src="../images/check.png" class="off"> Clique para marcar o tópico como lido até a página atual.</li>
+					<li><img src="../images/exclamation.png"> Nenhuma mensagem da página atual (e seguintes) foi lida.</li>
+					<li><img src="../images/exclamation.png" class="off"> Clique para marcar o tópico como NÃO-lido a partir da página atual.</li>
+					<li><img src="../images/star.png"> Indica que a página atual é a primeira com mensagens novas.
+						O número ao lado do ícone indica quantas mensagens há para serem lidas na página atual.</li>
+				</ul>
+			</div>
+			
+			<div id="cont-tips" class="content-panel">
+				
+			</div>
 		</div>
 	</body>
 </html>
