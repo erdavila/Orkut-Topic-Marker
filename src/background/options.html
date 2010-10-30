@@ -91,7 +91,7 @@
 				
 				var activeContentPanelId = "cont-" + activeNavBarItem.id.substring(activeNavBarItem.id.indexOf("-") + 1);
 				activeContentPanel = document.getElementById(activeContentPanelId);
-				activeContentPanel.style.display = "inherit";
+				activeContentPanel.style.display = "block";
 				
 				contentTitle.textContent = activeNavBarItem.textContent;
 			}
@@ -159,8 +159,8 @@
 						}
 					}
 					exportImportData.value = str;
-					
-					exportImportPanel.style.display = 'inherit';
+					exportImportPanel.style.display = 'block';
+					exportImportData.focus();
 				} else {
 					// Hide
 					exportImportPanel.style.display = 'none';
