@@ -1,5 +1,7 @@
 Opções
 ---------------
+	Incluir instruções para ícones de status em mensagens.
+	
 	Criar uma aba "Dicas"
 		- Explicar como encontrar a primeira página contendo mensagens novas.
 		- Explicar limitações do Orkut.
@@ -11,11 +13,27 @@ Topic List Page
 
 TopicMessagesPage
 -----------------
+	Simplificar!
+		- Mensagem:
+			- [check] - "Esta mensagem NÃO foi lida. Clique para marcar o tópico como lido até esta mensagem"
+			- [star]  - "Esta mensagem foi lida. Clique para marcar o tópico como NÃO-lido a partir desta mensagem"
+		- Página:
+			- [check] - "Todas as mensagens desta página foram lidas"
+			- [star]N - "N mensagens NÃO-lidas nesta página"
+		- Tópico:
+			- [check]       - "O tópico foi todo lido"
+			- [exclamation] - "O tópico nunca foi lido"
+			- [star]N       - "N mensagens NÃO-lidas no tópico"
+			- [ignored]     - "Clique para deixar de ignorar o tópico"
+			- [ignored.off] - "Clique para ignorar o tópico"
+	
 	Bug when opening a topic with zero messages.
 
 
 Geral
 -------
+	Pesquisar: sincronização em Google Spreadsheets (http://code.google.com/intl/en/apis/spreadsheets/).
+	
 	Store data in incognito mode (default: no).
 
 	Add Orkut username to the key:

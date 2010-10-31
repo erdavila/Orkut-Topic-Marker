@@ -43,6 +43,11 @@ TopicMessagesPageProcessor.prototype.addStyles = function() {
 	                       + '.otmActionBar IMG.off {\n'
 	                       +     '\topacity: 0.15;\n'
 	                       + '}\n'
+	                       + '.listitem .otmActionBar {\n'
+	                       +     '\tposition: absolute;\n'
+	                       +     '\ttop: 0px;\n'
+	                       +     '\tleft: 50%;\n'
+	                       + '}\n'
 		                   ;
 	this.doc.getElementsByTagName('head')[0].appendChild(stylesheet);
 };
@@ -203,6 +208,24 @@ TopicMessagesPageProcessor.prototype.createTopicActionsGroups = function() {
 		topicActionsGroup.className = 'otmActionBar';
 		insertAfter(topicActionsGroup, txtMensagens);
 		this.topicActionsGroups.push(topicActionsGroup);
+	}
+};
+
+
+TopicMessagesPageProcessor.prototype.createMessagesActionsGroups = function() {
+	this.messagesActionsGroups = [];
+	
+	var messages = this.doc.getElementsByClassName("listitem");
+	for(var i = 0; i < messages.length; i++) {
+		var message = messages[i];
+		var links = message.getElementsByTagName("a");
+		if(links.length > 0) {
+			var messageActionsGroup = this.doc.createElement("span");
+			messageActionsGroup.className = 'otmActionBar';
+			insertAfter(messageActionsGroup, links[0]);
+			message.style.position = "relative";
+			this.messagesActionsGroups.push(messageActionsGroup);
+		}
 	}
 };
 
@@ -383,6 +406,83 @@ TopicMessagesPageProcessor.prototype.updateTopicActionsGroups = function() {
 };
 
 
+TopicMessagesPageProcessor.prototype.updateMessageActionsGroup = function(messageActionsGroup, estimatedMessageNumber) {
+	var self = this;
+	
+	removeChildren(messageActionsGroup);
+	
+	if(estimatedMessageNumber <= this.topicData.lastReadMsg) {
+		// Mensagem lida
+		messageActionsGroup.appendChild(self.createIcon('check', "Esta mensagem já foi lida"));
+		messageActionsGroup.appendChild(
+			self.createIcon('exclamation', "Marcar o tópico como NÃO-lido a partir desta mensagem", ['button', 'off'],
+				function() {
+					self.topicData.lastReadMsg = estimatedMessageNumber - 1;
+					TopicData.set(self.topicData, function() {
+						self.updateActionsGroups();
+					});
+				}
+			)
+		);
+	} else {
+		// Mensagem não-lida
+		var tip = "Marcar o tópico como lido até esta mensagem";
+		var additionalAction;
+		if(estimatedMessageNumber == self.totalMsgs) {
+			// A página atual é a última do tópico
+			if(self.options.leaveOnTopicAllRead) {
+				tip += " e voltar à lista de tópicos";
+				additionalAction = function() { self.goToTopicsList(); };
+			}
+		} else if(estimatedMessageNumber == self.lastDisplayedMsg) {
+			// A mensagem é a última da página
+			if(self.options.nextPageOnPageAllRead) {
+				tip += " e ir para a próxima página";
+				additionalAction = function() { self.goToNextPage(); };
+			}
+		}
+		
+		messageActionsGroup.appendChild(
+			self.createIcon('check', tip, ['button', 'off'],
+				function() {
+					self.topicData.lastReadMsg = estimatedMessageNumber;
+					TopicData.set(self.topicData, function() {
+						self.updateActionsGroups();
+						if(additionalAction) {
+							additionalAction();
+						}
+					});
+				}
+			)
+		);
+		
+		messageActionsGroup.appendChild(self.createIcon('exclamation', "Esta mensagem não foi lida"));
+	}
+	
+	var messageNumber = this.doc.createElement("span");
+	messageNumber.textContent = estimatedMessageNumber;
+	messageNumber.style.color = 'whiteSmoke';
+	messageActionsGroup.appendChild(messageNumber);
+	//messageActionsGroup.appendChild(this.doc.createTextNode(estimatedMessageNumber));
+}
+
+
+TopicMessagesPageProcessor.prototype.updateMessagesActionsGroups = function() {
+	var currentPageUnreadMessages = this.lastDisplayedMsg - this.topicData.lastReadMsg;
+	var firstUnreadMsgIndex = this.messagesActionsGroups.length - currentPageUnreadMessages;
+	
+	for(var i = 0; i < this.messagesActionsGroups.length; i++) {
+		/*
+		O número da mensagem é estimado porque poderá haver mensagens
+		apagadas, o que impedirá ter certeza no número da mensagem.
+		*/
+		var estimatedMessageNumber = this.lastDisplayedMsg - this.messagesActionsGroups.length + i + 1;
+		var messageActionsGroup = this.messagesActionsGroups[i];
+		this.updateMessageActionsGroup(messageActionsGroup, estimatedMessageNumber);
+	}
+};
+
+
 TopicMessagesPageProcessor.prototype.updateActionsGroups = function() {
 	var self = this;
 	
@@ -391,6 +491,7 @@ TopicMessagesPageProcessor.prototype.updateActionsGroups = function() {
 		self.topicData = topicData;
 		self.updatePageActionsGroups();
 		self.updateTopicActionsGroups();
+		self.updateMessagesActionsGroups();
 	});
 };
 
@@ -404,6 +505,7 @@ TopicMessagesPageProcessor.prototype.process = function() {
 		self.extractData();
 		self.replaceNavLinks();
 		self.createTopicActionsGroups();
+		self.createMessagesActionsGroups();
 		
 		self.updateActionsGroups();
 	});
