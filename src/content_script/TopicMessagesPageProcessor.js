@@ -222,7 +222,10 @@ TopicMessagesPageProcessor.prototype.createMessagesActionsGroups = function() {
 		if(links.length > 0) {
 			var messageActionsGroup = this.doc.createElement("span");
 			messageActionsGroup.className = 'otmActionBar';
-			insertAfter(messageActionsGroup, links[0]);
+			
+			//insertAfter(messageActionsGroup, links[0]);
+			message.appendChild(messageActionsGroup);
+			
 			message.style.position = "relative";
 			this.messagesActionsGroups.push(messageActionsGroup);
 		}
@@ -245,67 +248,20 @@ TopicMessagesPageProcessor.prototype.updatePageActionsGroups = function() {
 		var pageActionsGroup = this.pageActionsGroups[i];
 		removeChildren(pageActionsGroup);
 		
-		
-		if(self.topicData.lastReadMsg >= self.lastDisplayedMsg) {
-			// Todas as mensagens da página foram lidas
-			pageActionsGroup.appendChild(self.createIcon('check', "Todas as mensagens desta página foram lidas"));
-		} else {
-			var tip = "Marcar o tópico como lido até esta página";
-			var additionalAction;
-			if(self.lastDisplayedMsg == self.totalMsgs) {
-				// A página atual é a última do tópico
-				if(self.options.leaveOnTopicAllRead) {
-					tip += " e voltar à lista de tópicos";
-					additionalAction = function() { self.goToTopicsList(); };
-				}
-			} else {
-				if(self.options.nextPageOnPageAllRead) {
-					tip += " e ir para a próxima página";
-					additionalAction = function() { self.goToNextPage(); };
-				}
-			}
-			
-			pageActionsGroup.appendChild(
-				self.createIcon('check', tip, ['button', 'off'],
-					function() {
-						self.topicData.lastReadMsg = self.lastDisplayedMsg;
-						TopicData.set(self.topicData, function() {
-							self.updateActionsGroups();
-							if(additionalAction) {
-								additionalAction();
-							}
-						});
-					}
-				)
-			);
-		}
-		
-		
-		if(self.topicData.lastReadMsg < self.firstDisplayedMsg) {
-			// Nenhuma mensagem nesta página foi lida
-			pageActionsGroup.appendChild(self.createIcon('exclamation', "Nenhuma mensagem desta página foi lida"));
-		} else {
-			pageActionsGroup.appendChild(
-				self.createIcon('exclamation', "Marcar o tópico como NÃO-lido a partir desta página", ['button', 'off'],
-					function() {
-						self.topicData.lastReadMsg = self.firstDisplayedMsg - 1;
-						TopicData.set(self.topicData, function() {
-							self.updateActionsGroups();
-						});
-					}
-				)
-			);
-		}
-		
-		
-		// Mostra estrela somente na primeira página com mensagens não-lidas
 		if(self.topicData.lastReadMsg >= self.firstDisplayedMsg - 1  &&  self.topicData.lastReadMsg < self.lastDisplayedMsg) {
+			// Primeira página com mensagens não-lidas
 			var pageUnreadMsgs = self.lastDisplayedMsg - self.topicData.lastReadMsg;
 			var span = self.doc.createElement('span');
 				span.title = pageUnreadMsgs + " mensagens não-lidas nesta página";
 				span.appendChild(self.createIcon('star'));
 				span.appendChild(self.doc.createTextNode(pageUnreadMsgs));
 			pageActionsGroup.appendChild(span);
+		} else if(self.topicData.lastReadMsg >= self.lastDisplayedMsg) {
+			// Todas as mensagens da página foram lidas
+			pageActionsGroup.appendChild(self.createIcon('check', "Todas as mensagens desta página foram lidas"));
+		} else {
+			// Nenhuma mensagem nesta página foi lida
+			pageActionsGroup.appendChild(self.createIcon('exclamation', "Nenhuma mensagem desta página foi lida"));
 		}
 	}
 };
@@ -333,50 +289,19 @@ TopicMessagesPageProcessor.prototype.updateTopicActionsGroups = function() {
 		} else {
 			var topicUnreadMsgs = self.totalMsgs - self.topicData.lastReadMsg;
 			
-			if(topicUnreadMsgs == 0) {
+			if(topicUnreadMsgs == 0  ||  self.totalMsgs == 0) {
 				// Tópico todo lido
 				topicActionsGroup.appendChild(self.createIcon('check', "O tópico foi todo lido"));
-			} else {
-				var tip = "Marcar todo o tópico como lido";
-				if(self.options.leaveOnTopicAllRead) {
-					tip += " e voltar à lista de tópicos";
-				}
-				topicActionsGroup.appendChild(
-					self.createIcon('check', tip, ['button', 'off'],
-						function() {
-							self.topicData.lastReadMsg = self.totalMsgs;
-							TopicData.set(self.topicData, function() {
-								self.updateActionsGroups();
-								if(self.options.leaveOnTopicAllRead) {
-									self.goToTopicsList();
-								}
-							});
-						}
-					)
-				);
-			}
-			
-			
-			if(self.topicData.lastReadMsg == 0) {
+			} else if(self.topicData.lastReadMsg == 0) {
 				// Tópico nunca lido
 				topicActionsGroup.appendChild(self.createIcon('exclamation', "O tópico nunca foi lido"));
 			} else {
-				topicActionsGroup.appendChild(
-					self.createIcon('exclamation', "Marcar todo o tópico como NÃO-lido", ['button', 'off'],
-						function() {
-							self.topicData.lastReadMsg = 0;
-							TopicData.set(self.topicData, function() {
-								self.updateActionsGroups();
-							});
-						}
-					)
-				);
-			}
-			
-			
-			if(topicUnreadMsgs != 0  &&  self.topicData.lastReadMsg != 0) {
 				var span = self.doc.createElement('span');
-					span.title = topicUnreadMsgs + " mensagens não-lidas no tópico";
+					if(topicUnreadMsgs > 0) {
+						span.title = topicUnreadMsgs + " mensagens não-lidas no tópico";
+					} else {
+						span.title = "Mensagens previamente lidas foram apagadas!";
+					}
 					span.appendChild(self.createIcon('star'));
 					span.appendChild(self.doc.createTextNode(topicUnreadMsgs));
 				topicActionsGroup.appendChild(span);
@@ -413,9 +338,8 @@ TopicMessagesPageProcessor.prototype.updateMessageActionsGroup = function(messag
 	
 	if(estimatedMessageNumber <= this.topicData.lastReadMsg) {
 		// Mensagem lida
-		messageActionsGroup.appendChild(self.createIcon('check', "Esta mensagem já foi lida"));
 		messageActionsGroup.appendChild(
-			self.createIcon('exclamation', "Marcar o tópico como NÃO-lido a partir desta mensagem", ['button', 'off'],
+			self.createIcon('check', "Esta mensagem já foi lida. Clique para marcar o tópico como NÃO-lido a partir desta mensagem", ['button'],
 				function() {
 					self.topicData.lastReadMsg = estimatedMessageNumber - 1;
 					TopicData.set(self.topicData, function() {
@@ -426,7 +350,7 @@ TopicMessagesPageProcessor.prototype.updateMessageActionsGroup = function(messag
 		);
 	} else {
 		// Mensagem não-lida
-		var tip = "Marcar o tópico como lido até esta mensagem";
+		var tip = "Esta mensagem não foi lida. Clique para marcar o tópico como lido até esta mensagem";
 		var additionalAction;
 		if(estimatedMessageNumber == self.totalMsgs) {
 			// A página atual é a última do tópico
@@ -443,7 +367,7 @@ TopicMessagesPageProcessor.prototype.updateMessageActionsGroup = function(messag
 		}
 		
 		messageActionsGroup.appendChild(
-			self.createIcon('check', tip, ['button', 'off'],
+			self.createIcon('star', tip, ['button'],
 				function() {
 					self.topicData.lastReadMsg = estimatedMessageNumber;
 					TopicData.set(self.topicData, function() {
@@ -455,8 +379,6 @@ TopicMessagesPageProcessor.prototype.updateMessageActionsGroup = function(messag
 				}
 			)
 		);
-		
-		messageActionsGroup.appendChild(self.createIcon('exclamation', "Esta mensagem não foi lida"));
 	}
 	
 	var messageNumber = this.doc.createElement("span");

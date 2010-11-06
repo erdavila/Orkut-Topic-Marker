@@ -91,20 +91,21 @@ TopicListPageProcessor.prototype.processRow = function(row) {
 		} else {
 			var unreadMsgs = totalMsgs - topicData.lastReadMsg;
 			
-			if(topicData.lastReadMsg == totalMsgs  ||  totalMsgs == 0) {
+			if(unreadMsgs == 0  ||  totalMsgs == 0) {
 				status.icon = 'check';
 				status.tip = "Nenhuma mensagem nova"
 			} else if(topicData.lastReadMsg == 0) {
 				status.icon = "exclamation";
 				status.tip = "Nunca lido"
 				status.text = unreadMsgs;
-			} else if(totalMsgs > topicData.lastReadMsg) {
-				status.icon = 'star';
-				status.tip = unreadMsgs + " mensagens novas";
-				status.text = unreadMsgs;
 			} else {
-				status.icon = 'star'
-				status.tip = "Tópico inteiramente lido. Provavelmente mensagens foram apagadas!";
+				status.icon = 'star';
+				if(unreadMsgs > 0) {
+					status.tip = unreadMsgs + " mensagens novas";
+				} else {
+					status.tip = "Mensagens previamente lidas foram apagadas!";
+				}
+				status.text = unreadMsgs;
 			}
 			
 			
