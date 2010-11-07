@@ -2,24 +2,29 @@ Opções
 ---------------
 	Explicar números negativos nas estrelas.
 	
-	Incluir instruções para ícones de status em mensagens.
-	
 	Criar uma aba "Dicas"
 		- Explicar como encontrar a primeira página contendo mensagens novas.
 		- Explicar limitações do Orkut.
 
 
-Topic List Page
+TopicListPage
 ---------------
 
 
 TopicMessagesPage
 -----------------
+	Não esconder ícones de tópico em tópicos ignorados.
+	
 	Bug when opening a topic with zero messages.
 
 
 Geral
 -------
+	Usar evento "hashchange".
+	
+	Abrir página de instruções ao instalar ou atualizar.
+		/background/options.html#instructions
+	
 	Pesquisar: sincronização em Google Spreadsheets (http://code.google.com/intl/en/apis/spreadsheets/).
 	
 	Store data in incognito mode (default: no).
