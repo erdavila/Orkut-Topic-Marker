@@ -18,10 +18,13 @@
 			}
 			
 			.navbar-item {
+				display: block;
 				cursor: pointer;
 				text-align: right;
 				list-style: none;
 				padding: 10px;
+				text-decoration: none;
+				color: black;
 			}
 			
 			.navbar-item.selected {
@@ -69,29 +72,12 @@
 		</style>
 		<script src="Options.js"></script>
 		<script>
-			var navBarItems;
-			var contentPanels;
 			var contentTitle;
 			
 			var activeNavBarItem;
 			var activeContentPanel;
 			var exportImportPanel;
-			var exportImportField;
-			
-			
-			function navBarItemsClick(evt) {
-				if(activeNavBarItem) activeNavBarItem.className = "navbar-item";
-				if(activeContentPanel) activeContentPanel.style.display = "none";
-				
-				activeNavBarItem = evt.target;
-				activeNavBarItem.className += " selected";
-				
-				var activeContentPanelId = "cont-" + activeNavBarItem.id.substring(activeNavBarItem.id.indexOf("-") + 1);
-				activeContentPanel = document.getElementById(activeContentPanelId);
-				activeContentPanel.style.display = "block";
-				
-				contentTitle.textContent = activeNavBarItem.textContent;
-			}
+			var exportImportData;
 			
 			
 			function automaticCheckboxOptionClick(evt) {
@@ -106,22 +92,9 @@
 			
 			
 			function loaded() {
-				// Configura navegação por abas
-				navBarItems = document.getElementsByClassName("navbar-item");
-				for(var i = 0; i < navBarItems.length; i++) {
-					navBarItems[i].addEventListener("click", navBarItemsClick, true);
-				}
+				window.addEventListener("hashchange", hashChange, false);
 				
-				contentPanels = document.getElementsByClassName("content-panel");
 				contentTitle = document.getElementById("content-title");
-				
-				// Seleciona primeira aba
-				var evt = document.createEvent("MouseEvents");
-				evt.initMouseEvent("click", true, true, window,
-				                   0, 0, 0, 0, 0,
-				                   false, false, false, false,
-				                   0, null);
-				navBarItems[0].dispatchEvent(evt);
 				
 				// Configura opções automáticas em checkboxes
 				var checkboxes = document.getElementsByClassName("automatic-checkbox-option");
@@ -139,6 +112,33 @@
 				
 				exportImportPanel = document.getElementById("export-import-panel");
 				exportImportData = document.getElementById("export-import-data");
+				
+				// Força exibição de conteúdo
+				hashChange();
+			}
+			
+			
+			function hashChange() {
+				var hash = window.location.hash;
+				if(! hash) {
+					// Seleciona o primeiro item
+					hash = document.getElementsByClassName("navbar-item")[0].hash;
+				}
+				
+				// Ignora o caractere "#"
+				var content = hash.substring(1);
+				
+				if(activeNavBarItem) activeNavBarItem.className = "navbar-item";
+				if(activeContentPanel) activeContentPanel.style.display = "none";
+				
+				activeNavBarItem = document.getElementById("nav-" + content);
+				activeNavBarItem.className = "navbar-item selected";
+				
+				var activeContentPanelId = "cont-" + content;
+				activeContentPanel = document.getElementById(activeContentPanelId);
+				activeContentPanel.style.display = "block";
+				
+				contentTitle.textContent = activeNavBarItem.textContent;
 			}
 			
 			
@@ -188,13 +188,12 @@
 		<div id="navbar">
 			<img src="../icons/128.png"/>
 			<h1>Marcador de Tópicos do Orkut</h1>
-			<ul>
-				<li id="nav-options"      class="navbar-item">Opções</li>
-				<li id="nav-instructions" class="navbar-item">Instruções</li>
-				<!--
-				<li id="nav-tips"         class="navbar-item">Dicas</li>
-				-->
-			</ul>
+			
+			<a id="nav-options"      class="navbar-item" href="#options">Opções</a>
+			<a id="nav-instructions" class="navbar-item" href="#instructions">Instruções</a>
+			<!--
+			<a id="nav-tips"         class="navbar-item" href="tips">Dicas</a>
+			-->
 			<hr/>
 		</div>
 		<div id="content">
