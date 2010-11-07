@@ -1,14 +1,13 @@
 Opções
----------------
-	Explicar números negativos nas estrelas.
-	
+------
 	Criar uma aba "Dicas" (ou adicionar às instruções?)
+		- Explicar números negativos nas estrelas.
 		- Explicar como encontrar a primeira página contendo mensagens novas.
 		- Explicar limitações do Orkut.
 
 
 TopicListPage
----------------
+-------------
 
 
 TopicMessagesPage
@@ -17,7 +16,7 @@ TopicMessagesPage
 
 
 Geral
--------
+-----
 	Usar evento "hashchange".
 	
 	Abrir página de instruções ao instalar ou atualizar.
