@@ -31,5 +31,34 @@
 						break;
 				}
 			});
+		
+		
+		Options.get(function(options) {
+			getManifest(function(manifest) {
+				if(!options.lastUsedVersion  ||  options.lastUsedVersion != manifest.version) {
+					openInstructions();
+					options.lastUsedVersion = manifest.version;
+					Options.set(options);
+				}
+			});
+		});
+		
+		
+		function getManifest(handler) {
+			var req = new XMLHttpRequest();
+			req.onreadystatechange = function() {
+				if(req.readyState == 4) {
+					 var manifest = JSON.parse(req.responseText);
+					 handler(manifest);
+				}
+			};
+			req.open("GET", "/manifest.json", true);
+			req.send();
+		}
+		
+		
+		function openInstructions() {
+			chrome.tabs.create({ 'url' : '/background/options.html#instructions' });
+		}
 	</script>
 </html>

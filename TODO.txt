@@ -17,11 +17,6 @@ TopicMessagesPage
 
 Geral
 -----
-	Usar evento "hashchange".
-	
-	Abrir página de instruções ao instalar ou atualizar.
-		/background/options.html#instructions
-	
 	Pesquisar: sincronização em Google Spreadsheets (http://code.google.com/intl/en/apis/spreadsheets/).
 	
 	Store data in incognito mode (default: no).
