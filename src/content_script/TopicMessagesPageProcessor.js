@@ -29,18 +29,24 @@ TopicMessagesPageProcessor.prototype.pageIsReady = function() {
 
 TopicMessagesPageProcessor.prototype.addStyles = function() {
 	var stylesheet = this.doc.createElement('style');
-	stylesheet.textContent = '.otmActionBar IMG {\n'
-	                       +     '\tborder: 1px solid transparent;\n'
+	stylesheet.textContent = '.otmActionBar .icon IMG {\n'
 	                       +     '\tpadding: 2px;\n'
 	                       +     '\tvertical-align: -6px;\n'
 	                       + '}\n'
-	                       + '.otmActionBar IMG.button {\n'
+	                       + '.otmActionBar .icon {\n'
+	                       +     '\tdisplay: inline-block;\n'
+	                       +     '\tborder: 1px solid transparent;\n'
+	                       + '}\n'
+	                       + '.otmActionBar .icon.button {\n'
 	                       +     '\tcursor: pointer;\n'
 	                       + '}\n'
-	                       + '.otmActionBar IMG.button:hover {\n'
-	                       +     '\tborder-color: black !important;\n'
+	                       + '.otmActionBar .icon.button:hover {\n'
+	                       +     '\tborder-left-color: lightgray !important;\n'
+	                       +     '\tborder-top-color: lightgray !important;\n'
+	                       +     '\tborder-right-color: gray !important;\n'
+	                       +     '\tborder-bottom-color: gray !important;\n'
 	                       + '}\n'
-	                       + '.otmActionBar IMG.off {\n'
+	                       + '.otmActionBar .icon.off IMG {\n'
 	                       +     '\topacity: 0.15;\n'
 	                       + '}\n'
 	                       + '.listitem .otmActionBar {\n'
@@ -434,11 +440,14 @@ TopicMessagesPageProcessor.prototype.process = function() {
 
 
 TopicMessagesPageProcessor.prototype.createIcon = function(type, tip, classes, handler) {
-	var icon = this.doc.createElement('img');
-	icon.src = chrome.extension.getURL("images/" + type + ".png");
-	if(tip)     icon.title = tip;
-	if(classes) icon.className = classes.join(' ');
-	if(handler) icon.addEventListener('click', handler, true);
+	var icon = this.doc.createElement('span');
+		icon.className = 'icon';
+		if(classes) icon.className += ' ' + classes.join(' ');
+		var img = this.doc.createElement('img');
+			img.src = chrome.extension.getURL("images/" + type + ".png");
+			if(tip)     img.title = tip;
+			if(handler) img.addEventListener('click', handler, true);
+		icon.appendChild(img);
 	return icon;	
 };
 
