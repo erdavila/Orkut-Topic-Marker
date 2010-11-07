@@ -13,8 +13,6 @@ TopicListPage
 
 TopicMessagesPage
 -----------------
-	Não esconder ícones de tópico em tópicos ignorados.
-	
 	Bug when opening a topic with zero messages.
 
 

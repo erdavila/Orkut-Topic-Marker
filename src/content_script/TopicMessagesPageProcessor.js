@@ -241,6 +241,69 @@ TopicMessagesPageProcessor.prototype.createSeparator = function() {
 };
 
 
+TopicMessagesPageProcessor.prototype.updateTopicActionsGroups = function() {
+	var self = this;
+	
+	for(var i = 0; i < 2; i++) {
+		var topicActionsGroup = this.topicActionsGroups[i];
+		removeChildren(topicActionsGroup);
+		
+		var topicUnreadMsgs = self.totalMsgs - self.topicData.lastReadMsg;
+		
+		if(topicUnreadMsgs == 0  ||  self.totalMsgs == 0) {
+			// Tópico todo lido
+			topicActionsGroup.appendChild(self.createIcon('check', "O tópico foi todo lido"));
+		} else if(self.topicData.lastReadMsg == 0) {
+			// Tópico nunca lido
+			topicActionsGroup.appendChild(self.createIcon('exclamation', "O tópico nunca foi lido"));
+		} else {
+			var span = self.doc.createElement('span');
+				if(topicUnreadMsgs > 0) {
+					span.title = topicUnreadMsgs + " mensagens não-lidas no tópico";
+				} else {
+					span.title = "Mensagens previamente lidas foram apagadas!";
+				}
+				span.appendChild(self.createIcon('star'));
+				span.appendChild(self.doc.createTextNode(topicUnreadMsgs));
+			topicActionsGroup.appendChild(span);
+		}
+		
+		if(self.topicData.ignored) {
+			topicActionsGroup.appendChild(
+				self.createIcon('ignored', "Deixar de ignorar o tópico", ['button'],
+					function() {
+						// Ação para deixar de ignorar o tópico.
+						self.topicData.ignored = false;
+						TopicData.set(self.topicData, function() {
+							self.updateActionsGroups();
+						});
+					}
+				)
+			);
+		} else {
+			var tip = "Ignorar o tópico";
+			if(self.options.leaveOnIgnore) {
+				tip += " e voltar à lista de tópicos";
+			}
+			topicActionsGroup.appendChild(
+				self.createIcon('ignored', tip, ['button', 'off'],
+					function() {
+						// Ação para ignorar o tópico.
+						self.topicData.ignored = true;
+						TopicData.set(self.topicData, function() {
+							self.updateActionsGroups();
+							if(self.options.leaveOnIgnore) {
+								self.goToTopicsList();
+							}
+						});
+					}
+				)
+			);
+		}
+	}
+};
+
+
 TopicMessagesPageProcessor.prototype.updatePageActionsGroups = function() {
 	var self = this;
 	
@@ -262,70 +325,6 @@ TopicMessagesPageProcessor.prototype.updatePageActionsGroups = function() {
 		} else {
 			// Nenhuma mensagem nesta página foi lida
 			pageActionsGroup.appendChild(self.createIcon('exclamation', "Nenhuma mensagem desta página foi lida"));
-		}
-	}
-};
-
-
-TopicMessagesPageProcessor.prototype.updateTopicActionsGroups = function() {
-	var self = this;
-	
-	for(var i = 0; i < 2; i++) {
-		var topicActionsGroup = this.topicActionsGroups[i];
-		removeChildren(topicActionsGroup);
-		
-		if(self.topicData.ignored) {
-			topicActionsGroup.appendChild(
-				self.createIcon('ignored', "Deixar de ignorar o tópico", ['button'],
-					function() {
-						// Ação para deixar de ignorar o tópico.
-						self.topicData.ignored = false;
-						TopicData.set(self.topicData, function() {
-							self.updateActionsGroups();
-						});
-					}
-				)
-			);
-		} else {
-			var topicUnreadMsgs = self.totalMsgs - self.topicData.lastReadMsg;
-			
-			if(topicUnreadMsgs == 0  ||  self.totalMsgs == 0) {
-				// Tópico todo lido
-				topicActionsGroup.appendChild(self.createIcon('check', "O tópico foi todo lido"));
-			} else if(self.topicData.lastReadMsg == 0) {
-				// Tópico nunca lido
-				topicActionsGroup.appendChild(self.createIcon('exclamation', "O tópico nunca foi lido"));
-			} else {
-				var span = self.doc.createElement('span');
-					if(topicUnreadMsgs > 0) {
-						span.title = topicUnreadMsgs + " mensagens não-lidas no tópico";
-					} else {
-						span.title = "Mensagens previamente lidas foram apagadas!";
-					}
-					span.appendChild(self.createIcon('star'));
-					span.appendChild(self.doc.createTextNode(topicUnreadMsgs));
-				topicActionsGroup.appendChild(span);
-			}
-			
-			
-			var tip = "Ignorar o tópico";
-			if(self.options.leaveOnIgnore) {
-				tip += " e voltar à lista de tópicos";
-			}
-			topicActionsGroup.appendChild(
-				self.createIcon('ignored', tip, ['button', 'off'],
-					function() {
-						// Ação para ignorar o tópico.
-						self.topicData.ignored = true;
-						TopicData.set(self.topicData, function() {
-							self.updateActionsGroups();
-							if(self.options.leaveOnIgnore) {
-								self.goToTopicsList();
-							}
-						});
-					}
-				)
-			);
 		}
 	}
 };
