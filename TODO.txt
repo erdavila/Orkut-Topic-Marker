@@ -2,7 +2,7 @@ Opções
 ---------------
 	Explicar números negativos nas estrelas.
 	
-	Criar uma aba "Dicas"
+	Criar uma aba "Dicas" (ou adicionar às instruções?)
 		- Explicar como encontrar a primeira página contendo mensagens novas.
 		- Explicar limitações do Orkut.
 
