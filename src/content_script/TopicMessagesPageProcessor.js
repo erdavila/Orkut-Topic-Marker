@@ -344,7 +344,7 @@ TopicMessagesPageProcessor.prototype.updateMessageActionsGroup = function(messag
 	if(estimatedMessageNumber <= this.topicData.lastReadMsg) {
 		// Mensagem lida
 		messageActionsGroup.appendChild(
-			self.createIcon('check', "Esta mensagem já foi lida. Clique para marcar o tópico como NÃO-lido a partir desta mensagem", ['button'],
+			self.createIcon('check', "Esta mensagem já foi lida.\nClique para marcar o tópico como NÃO-lido a partir desta mensagem.", ['button'],
 				function() {
 					self.topicData.lastReadMsg = estimatedMessageNumber - 1;
 					TopicData.set(self.topicData, function() {
@@ -355,7 +355,7 @@ TopicMessagesPageProcessor.prototype.updateMessageActionsGroup = function(messag
 		);
 	} else {
 		// Mensagem não-lida
-		var tip = "Esta mensagem não foi lida. Clique para marcar o tópico como lido até esta mensagem";
+		var tip = "Esta mensagem não foi lida.\nClique para marcar o tópico como lido até esta mensagem.";
 		var additionalAction;
 		if(estimatedMessageNumber == self.totalMsgs) {
 			// A página atual é a última do tópico
