@@ -355,20 +355,22 @@ TopicMessagesPageProcessor.prototype.updateMessageActionsGroup = function(messag
 		);
 	} else {
 		// Mensagem não-lida
-		var tip = "Esta mensagem não foi lida.\nClique para marcar o tópico como lido até esta mensagem.";
+		var tip = "Esta mensagem não foi lida.\nClique para marcar o tópico como lido até esta mensagem";
 		var additionalAction;
 		if(estimatedMessageNumber == self.totalMsgs) {
 			// A página atual é a última do tópico
 			if(self.options.leaveOnTopicAllRead) {
-				tip += " e voltar à lista de tópicos";
+				tip += " e voltar à lista de tópicos.";
 				additionalAction = function() { self.goToTopicsList(); };
 			}
 		} else if(estimatedMessageNumber == self.lastDisplayedMsg) {
 			// A mensagem é a última da página
 			if(self.options.nextPageOnPageAllRead) {
-				tip += " e ir para a próxima página";
+				tip += " e ir para a próxima página.";
 				additionalAction = function() { self.goToNextPage(); };
 			}
+		} else {
+			tip += ".";
 		}
 		
 		messageActionsGroup.appendChild(
@@ -390,7 +392,6 @@ TopicMessagesPageProcessor.prototype.updateMessageActionsGroup = function(messag
 	messageNumber.textContent = estimatedMessageNumber;
 	messageNumber.style.color = 'whiteSmoke';
 	messageActionsGroup.appendChild(messageNumber);
-	//messageActionsGroup.appendChild(this.doc.createTextNode(estimatedMessageNumber));
 }
 
 
