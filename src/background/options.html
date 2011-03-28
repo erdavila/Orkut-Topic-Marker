@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>Marcador de TÛpicos do Orkut</title>
+		<title>Marcador de T√≥picos para o Orkut‚Ñ¢</title>
 		<style>
 			body {
 				font-family: Arial;
@@ -96,7 +96,7 @@
 				
 				contentTitle = document.getElementById("content-title");
 				
-				// Configura opÁıes autom·ticas em checkboxes
+				// Configura op√ß√µes autom√°ticas em checkboxes
 				var checkboxes = document.getElementsByClassName("automatic-checkbox-option");
 				Options.get(function(options) {
 					for(var i = 0; i < checkboxes.length; i++) {
@@ -113,7 +113,7 @@
 				exportImportPanel = document.getElementById("export-import-panel");
 				exportImportData = document.getElementById("export-import-data");
 				
-				// ForÁa exibiÁ„o de conte˙do
+				// For√ßa exibi√ß√£o de conte√∫do
 				hashChange();
 			}
 			
@@ -187,10 +187,11 @@
 	<body onload="loaded();">
 		<div id="navbar">
 			<img src="../icons/128.png"/>
-			<h1>Marcador de TÛpicos do Orkut</h1>
+			<h1>Marcador de T√≥picos</h1>
+			<h2>para o Orkut‚Ñ¢</h2>
 			
-			<a id="nav-options"      class="navbar-item" href="#options">OpÁıes</a>
-			<a id="nav-instructions" class="navbar-item" href="#instructions">InstruÁıes</a>
+			<a id="nav-options"      class="navbar-item" href="#options">Op√ß√µes</a>
+			<a id="nav-instructions" class="navbar-item" href="#instructions">Instru√ß√µes</a>
 			<!--
 			<a id="nav-tips"         class="navbar-item" href="tips">Dicas</a>
 			-->
@@ -201,19 +202,19 @@
 			<hr/>
 			<div id="cont-options" class="content-panel">
 				<input type="checkbox" class="automatic-checkbox-option" id="chk-nextPageOnPageAllRead"/>
-				<label for="chk-nextPageOnPageAllRead">Ir para a prÛxima p·gina ao marcar a atual como lida</label>
+				<label for="chk-nextPageOnPageAllRead">Ir para a pr√≥xima p√°gina ao marcar a atual como lida</label>
 				<br/>
 				
 				<input type="checkbox" class="automatic-checkbox-option" id="chk-leaveOnTopicAllRead"/>
-				<label for="chk-leaveOnTopicAllRead">Voltar ‡ lista de tÛpicos ao marcar um tÛpico como todo lido</label>
+				<label for="chk-leaveOnTopicAllRead">Voltar √† lista de t√≥picos ao marcar um t√≥pico como todo lido</label>
 				<br/>
 			
 				<input type="checkbox" class="automatic-checkbox-option" id="chk-leaveOnIgnore"/>
-				<label for="chk-leaveOnIgnore">Voltar ‡ lista de tÛpicos ao marcar um tÛpico como ignorado</label>
+				<label for="chk-leaveOnIgnore">Voltar √† lista de t√≥picos ao marcar um t√≥pico como ignorado</label>
 				<br/>
 				
 				<input type="checkbox" class="automatic-checkbox-option" id="chk-openLastPage"/>
-				<label for="chk-openLastPage">Abrir a ˙ltima p·gina de mensagens (quando for mais conveniente)</label>
+				<label for="chk-openLastPage">Abrir a √∫ltima p√°gina de mensagens (quando for mais conveniente)</label>
 				<br/>
 				
 				<hr/>
@@ -226,63 +227,63 @@
 					</div>
 					<ul>
 						<li>Para <b>exportar</b> os dados, copie o texto ao lado, cole em um arquivo e salve-o.</li>
-						<li>Para <b>importar</b> dados, cole no campo ao lado e clique no bot„o "Salvar".</li>
+						<li>Para <b>importar</b> dados, cole no campo ao lado e clique no bot√£o "Salvar".</li>
 					<ul>
 				</div>
 			</div>
 			
 			<div id="cont-instructions" class="content-panel">
-				Õcones ajudam a identificar a situaÁ„o de leitura dos tÛpicos e suas mensagens.
-				O significado dos Ìcones est„o explicados abaixo.
-				Quanto estiver navegando no Orkut, pode-se ver uma descriÁ„o dos Ìcones ao passar o mouse sobre eles.
+				√çcones ajudam a identificar a situa√ß√£o de leitura dos t√≥picos e suas mensagens.
+				O significado dos √≠cones est√£o explicados abaixo.
+				Quanto estiver navegando no Orkut‚Ñ¢, pode-se ver uma descri√ß√£o dos √≠cones ao passar o mouse sobre eles.
 				
 				<br/>
 				<hr/>
-				<h3>Lista de tÛpicos</h3>
+				<h3>Lista de t√≥picos</h3>
 				<img class="screenshot" src="../images/screenshots/TopicList.png"><br/>
 				<br/>
-				Na lista de tÛpicos da comunidade haver· uma coluna a mais - <b>status</b> - que informar·:
+				Na lista de t√≥picos da comunidade haver√° uma coluna a mais - <b>status</b> - que informar√°:
 				<ul>
-					<li><img src="../images/check.png"> N„o h· mensagens novas no tÛpico.</li>
-					<li><img src="../images/exclamation.png"> O tÛpico È novo / nenhuma mensagem foi lida.</li>
-					<li><img src="../images/star.png"> H· mensagens novas no tÛpico desde a ˙ltima vez que foi lido.
-						O n˙mero ao lado do Ìcone indica quantas mensagens h· para serem lidas.</li>
-					<li><img src="../images/ignored.png"> O tÛpico est· sendo ignorado.</li>
+					<li><img src="../images/check.png"> N√£o h√° mensagens novas no t√≥pico.</li>
+					<li><img src="../images/exclamation.png"> O t√≥pico √© novo / nenhuma mensagem foi lida.</li>
+					<li><img src="../images/star.png"> H√° mensagens novas no t√≥pico desde a √∫ltima vez que foi lido.
+						O n√∫mero ao lado do √≠cone indica quantas mensagens h√° para serem lidas.</li>
+					<li><img src="../images/ignored.png"> O t√≥pico est√° sendo ignorado.</li>
 				</ul>
 				
 				<br/>
 				<hr/>
-				<h3>Mensagens de um TÛpico</h3>
+				<h3>Mensagens de um T√≥pico</h3>
 				<img class="screenshot" src="../images/screenshots/TopicMessages.png"><br/>
 				<br/>
-				Nas p·ginas de mensagens de um tÛpico, os Ìcones estar„o acima da lista de mensagens e em cada mensagem.
-				Os Ìcones que aparecem acima da lista se repetem abaixo da lista de mensagens.
+				Nas p√°ginas de mensagens de um t√≥pico, os √≠cones estar√£o acima da lista de mensagens e em cada mensagem.
+				Os √≠cones que aparecem acima da lista se repetem abaixo da lista de mensagens.
 				<br/>
-				Acima da lista, do lado esquerdo, h· um indicador do n˙mero total de mensagens do tÛpico e poder· haver os seguintes Ìcones referentes ao <b>tÛpico</b>:
+				Acima da lista, do lado esquerdo, h√° um indicador do n√∫mero total de mensagens do t√≥pico e poder√° haver os seguintes √≠cones referentes ao <b>t√≥pico</b>:
 				<ul>
-					<li><img src="../images/check.png"> O tÛpico foi todo lido / n„o h· mensagens novas.</li>
-					<li><img src="../images/exclamation.png"> O tÛpico È novo / nenhuma mensagem foi lida.</li>
-					<li><img src="../images/star.png"> H· mensagens novas no tÛpico.
-						O n˙mero ao lado do Ìcone indica quantas mensagens existem para serem lidas.</li>
-					<li><img src="../images/ignored.png"> O tÛpico est· sendo ignorado. Clique para deixar de ignor·-lo.</li>
-					<li><img src="../images/ignored.png" class="off"> Clique para ignorar o tÛpico.</li>
+					<li><img src="../images/check.png"> O t√≥pico foi todo lido / n√£o h√° mensagens novas.</li>
+					<li><img src="../images/exclamation.png"> O t√≥pico √© novo / nenhuma mensagem foi lida.</li>
+					<li><img src="../images/star.png"> H√° mensagens novas no t√≥pico.
+						O n√∫mero ao lado do √≠cone indica quantas mensagens existem para serem lidas.</li>
+					<li><img src="../images/ignored.png"> O t√≥pico est√° sendo ignorado. Clique para deixar de ignor√°-lo.</li>
+					<li><img src="../images/ignored.png" class="off"> Clique para ignorar o t√≥pico.</li>
 				</ul>
 				<br/>
-				Na ·rea do lado direito, acima da lista de mensagens, est„o os links tradicionais para navegaÁ„o entre p·ginas.
-				Entre eles, h· um indicador do intervalo de mensagens exibidas na p·gina atual e poder· haver os seguintes Ìcones referentes ‡s <b>mensagens na p·gina atual</b>:
+				Na √°rea do lado direito, acima da lista de mensagens, est√£o os links tradicionais para navega√ß√£o entre p√°ginas.
+				Entre eles, h√° um indicador do intervalo de mensagens exibidas na p√°gina atual e poder√° haver os seguintes √≠cones referentes √†s <b>mensagens na p√°gina atual</b>:
 				<ul>
-					<li><img src="../images/check.png"> Todas as mensagens da p·gina atual (e anteriores) foram lidas.</li>
-					<li><img src="../images/exclamation.png"> Nenhuma mensagem da p·gina atual (e seguintes) foi lida.</li>
-					<li><img src="../images/star.png"> Indica que a p·gina atual È a primeira com mensagens novas.
-						O n˙mero ao lado do Ìcone indica quantas mensagens h· para serem lidas na p·gina atual.</li>
+					<li><img src="../images/check.png"> Todas as mensagens da p√°gina atual (e anteriores) foram lidas.</li>
+					<li><img src="../images/exclamation.png"> Nenhuma mensagem da p√°gina atual (e seguintes) foi lida.</li>
+					<li><img src="../images/star.png"> Indica que a p√°gina atual √© a primeira com mensagens novas.
+						O n√∫mero ao lado do √≠cone indica quantas mensagens h√° para serem lidas na p√°gina atual.</li>
 				</ul>
 				<br/>
-				Na parte superior de cada mensagem, no centro, haver· um Ìcone de aÁ„o referente ‡ <b>mensagem</b>:
+				Na parte superior de cada mensagem, no centro, haver√° um √≠cone de a√ß√£o referente √† <b>mensagem</b>:
 				<ul>
-					<li><img src="../images/check.png"> A mensagem j· foi lida. Clique para marcar o tÛpico como <b>n„o</b>-lido a partir dela
-						(a mensagem e todas as seguintes ser„o marcadas como n„o-lidas).</li>
-					<li><img src="../images/star.png"> Indica que a mensagem ainda n„o foi lida. Clique para marcar que o tÛpico foi lido atÈ esta mensagem
-						(a mensagem e todas as anteriores ser„o marcadas como lidas).</li>
+					<li><img src="../images/check.png"> A mensagem j√° foi lida. Clique para marcar o t√≥pico como <b>n√£o</b>-lido a partir dela
+						(a mensagem e todas as seguintes ser√£o marcadas como n√£o-lidas).</li>
+					<li><img src="../images/star.png"> Indica que a mensagem ainda n√£o foi lida. Clique para marcar que o t√≥pico foi lido at√© esta mensagem
+						(a mensagem e todas as anteriores ser√£o marcadas como lidas).</li>
 				</ul>
 			</div>
 			
