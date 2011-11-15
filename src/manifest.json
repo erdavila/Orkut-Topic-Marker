@@ -1,6 +1,6 @@
 ﻿{
 	"name" : "Marcador de Tópicos para o Orkut™",
-	"version" : "1.2.1",
+	"version" : "1.2.2",
 	"description" : "Marque as mensagens lidas. Identifique facilmente mensagens e tópicos novos.",
 	"icons" : {
 		"16" : "icons/16.png",
@@ -16,14 +16,14 @@
 				"http://*.orkut.com/*",
 				"http://*.orkut.com.br/*"
 			],
-			"js"      : [
+			"js" : [
 				"content_script/TopicData.js",
 				"content_script/Options.js",
 				"content_script/TopicListPageProcessor.js",
 				"content_script/TopicMessagesPageProcessor.js",
 				"content_script/main.js"
 			],
-			"run_at"  : "document_idle"
+			"run_at" : "document_idle"
 		}
 	],
 	"options_page" : "background/options.html",

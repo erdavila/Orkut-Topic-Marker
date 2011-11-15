@@ -1,4 +1,5 @@
-#!/bin/env python
+#!/usr/bin/env python
+from __future__ import print_function
 import json
 import os.path
 import shutil
@@ -40,7 +41,7 @@ if os.path.isfile(ZIP_FILE):
 	os.remove(ZIP_FILE)
 
 
-print "Criando", ZIP_FILE
+print("Criando", ZIP_FILE)
 cur_dir = os.path.abspath(".")
 os.chdir(tmp_dir)
 subprocess.check_call(["zip", "-r", ZIP_FILE, "otm"])
