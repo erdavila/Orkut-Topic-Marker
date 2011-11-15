@@ -27,7 +27,7 @@
 						break;
 					
 					case 'set_options':
-						/* N�O IMPLEMENTADO! */
+						/* NÃO IMPLEMENTADO! */
 						break;
 				}
 			});
@@ -36,6 +36,7 @@
 		Options.get(function(options) {
 			getManifest(function(manifest) {
 				if(!options.lastUsedVersion  ||  options.lastUsedVersion != manifest.version) {
+					// Mostra instruções quando uma nova versão é instalada
 					openInstructions();
 					options.lastUsedVersion = manifest.version;
 					Options.set(options);

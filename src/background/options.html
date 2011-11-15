@@ -1,5 +1,6 @@
 <html>
 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 		<title>Marcador de Tópicos para o Orkut™</title>
 		<style>
 			body {
@@ -69,7 +70,14 @@
 			img.off {
 				opacity: 0.15;
 			}
+			
+			.warning {
+				border: 4px solid red;
+				background-color: lightyellow;
+				padding: 2px; 
+			}
 		</style>
+		
 		<script src="Options.js"></script>
 		<script>
 			var contentTitle;
@@ -192,9 +200,7 @@
 			
 			<a id="nav-options"      class="navbar-item" href="#options">Opções</a>
 			<a id="nav-instructions" class="navbar-item" href="#instructions">Instruções</a>
-			<!--
-			<a id="nav-tips"         class="navbar-item" href="tips">Dicas</a>
-			-->
+			<a id="nav-limitations"  class="navbar-item" href="#limitations">Limitações</a>
 			<hr/>
 		</div>
 		<div id="content">
@@ -228,7 +234,7 @@
 					<ul>
 						<li>Para <b>exportar</b> os dados, copie o texto ao lado, cole em um arquivo e salve-o.</li>
 						<li>Para <b>importar</b> dados, cole no campo ao lado e clique no botão "Salvar".</li>
-					<ul>
+					</ul>
 				</div>
 			</div>
 			
@@ -236,6 +242,17 @@
 				Ícones ajudam a identificar a situação de leitura dos tópicos e suas mensagens.
 				O significado dos ícones estão explicados abaixo.
 				Quanto estiver navegando no Orkut™, pode-se ver uma descrição dos ícones ao passar o mouse sobre eles.
+				
+				<br/><br/>
+				<div class="warning">
+					<b>ATENÇÃO</b>: Devido a alterações feitas no Orkut™, esta extensão só é compatível com a
+					versão antiga do Orkut™. Para usá-la, clique em "versão antiga" na parte superior
+					direita da página do Orkut™ e em seguinda no botão "voltar para o orkut antigo".
+					<br/>
+					Uma nova versão desta extensão está sendo preparada para funcionar com as alterções recentes feitas no Orkut™.
+					<br/>
+					Veja mais informações sobre <a href="#limitations">limitações</a>.
+				</div>
 				
 				<br/>
 				<hr/>
@@ -287,8 +304,19 @@
 				</ul>
 			</div>
 			
-			<div id="cont-tips" class="content-panel">
-				
+			<div id="cont-limitations" class="content-panel">
+				Esta extensão adiciona novas funcionalidades ao Orkut™ usando informações contidas nas próprias páginas
+				do Orkut™ e, assim, está sujeita a situações como as listadas abaixo: 
+				<ul>
+					<li>O Google™ pode fazer alterações nas páginas do Orkut™ a qualquer momento sem aviso prévio, o
+						que pode fazer com que a extensão deixe de funcionar parcialmente ou totalmente.</li>
+					<li>A extensão faz o melhor esforço para usar as informações contidas nas páginas no Orkut™. Em
+						algumas situações as informações não são suficientes, o que pode causar situações "estranhas"
+						como exibir um número negativo de mensagens novas ou não destacar com uma estrela um tópico
+						que tenha mensagens novas. (Estes dois casos podem acontecer em situações em que mensagens
+						são removidas do tópico.)
+						</li>
+				</ul>
 			</div>
 		</div>
 	</body>

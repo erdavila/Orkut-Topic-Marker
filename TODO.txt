@@ -1,9 +1,5 @@
-Opções
+OpÃ§Ãµes
 ------
-	Criar uma aba "Dicas" (ou adicionar às instruções?)
-		- Explicar números negativos nas estrelas.
-		- Explicar como encontrar a primeira página contendo mensagens novas.
-		- Explicar limitações do Orkut.
 
 
 TopicListPage
@@ -17,7 +13,7 @@ TopicMessagesPage
 
 Geral
 -----
-	Pesquisar: sincronização em Google Spreadsheets (http://code.google.com/intl/en/apis/spreadsheets/).
+	Pesquisar: sincronizaÃ§Ã£o em Google Spreadsheets (http://code.google.com/intl/en/apis/spreadsheets/).
 	
 	Store data in incognito mode (default: no).
 
