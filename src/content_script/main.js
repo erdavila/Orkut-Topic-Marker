@@ -1,6 +1,7 @@
 ﻿var currentHash = '';
 
 setInterval(function() {
+	// Detects if the page has changed
 	var hash = document.location.hash;
 	if(hash != currentHash) {
 		var identifiedPage = identifyPage(hash);
@@ -14,17 +15,40 @@ setInterval(function() {
 }, 1000);
 
 
+/*
+ * Identifies the type of page current loaded:
+ *      - community main page
+ *      - topics listing
+ *      - topic messages
+ */
 function identifyPage(hash) {
 	var m;
 	var identifiedPage = {};
 	
+	identifiedPage.doc = document;
+	var oldVersion = false;
+	
+	var orkutFrame = document.getElementById('orkutFrame');
+	if(orkutFrame) {
+		var doc = orkutFrame.contentDocument;
+		if(doc.body.innerHTML != "") {
+			// Versão antiga do Orkut
+			identifiedPage.doc = doc;
+			oldVersion = true;
+		}
+	}
+	
 	if(m = hash.match(/^#Community\?cmm=(\d+)/)) {
 		identifiedPage.communityId = m[1];
 		identifiedPage.communityMainPage = true;
-		identifiedPage.processor = TopicListPageProcessor;
+		identifiedPage.processor = oldVersion
+		                         ? TopicListPageProcessorOld
+		                         : TopicListPageProcessor;
 	} else if(m = hash.match(/^#CommTopics\?cmm=(\d+)/)) {
 		identifiedPage.communityId = m[1];
-		identifiedPage.processor = TopicListPageProcessor;
+		identifiedPage.processor = oldVersion
+		                         ? TopicListPageProcessorOld
+		                         : TopicListPageProcessor;
 	} else if(m = hash.match(/^#CommMsgs\?cmm=(\d+)&tid=(\d+)/)) {
 		identifiedPage.topicId = m[2];
 		identifiedPage.communityId = m[1];
@@ -37,9 +61,10 @@ function identifyPage(hash) {
 }
 
 
+// Dummy page-processor for pages without any message or topic
 function OtherPageProcessor() { ; }
-OtherPageProcessor.prototype.pageIsReady = function() { return true; }
-OtherPageProcessor.prototype.process = function() { ; }
+OtherPageProcessor.prototype.pageIsReady = function() { return true; };
+OtherPageProcessor.prototype.process = function() { ; };
 
 
 
