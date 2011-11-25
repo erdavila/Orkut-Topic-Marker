@@ -1,15 +1,23 @@
-﻿var currentHash = '';
+﻿var currentPageState = {
+	hash: '',
+	fromTransitionData: null,
+	toTransitionData: null,
+	getTransitionData: function() { return this.fromTransitionData; },
+	setTransitionData: function(data) { this.toTransitionData = data; },
+};
 
 setInterval(function() {
 	// Detects if the page has changed
 	var hash = document.location.hash;
-	if(hash != currentHash) {
+	if(hash != currentPageState.hash) {
 		var identifiedPage = identifyPage(hash);
 		var pageProcessor = new identifiedPage.processor(identifiedPage);
 		
 		if(pageProcessor.pageIsReady()) {
 			pageProcessor.process();
-			currentHash = hash;
+			currentPageState.hash = hash;
+			currentPageState.fromTransitionData = currentPageState.toTransitionData;
+			currentPageState.toTransitionData = null;
 		}
 	}
 }, 1000);
@@ -52,7 +60,9 @@ function identifyPage(hash) {
 	} else if(m = hash.match(/^#CommMsgs\?cmm=(\d+)&tid=(\d+)/)) {
 		identifiedPage.topicId = m[2];
 		identifiedPage.communityId = m[1];
-		identifiedPage.processor = TopicMessagesPageProcessor;
+		identifiedPage.processor = oldVersion
+		                         ? TopicMessagesPageProcessorOld
+		                         : TopicMessagesPageProcessor;
 	} else {
 		identifiedPage.processor = OtherPageProcessor;
 	}
