@@ -60,7 +60,7 @@ TopicListPageProcessor.prototype.processItem = function(item) {
 	var topicId = m[1];
 	
 	// Obtém o total de mensagens
-	var totalMsgsNodes = this.doc.evaluate('.//*[contains(text(), " replies") or contains(text(), " reply")]', item, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+	var totalMsgsNodes = this.doc.evaluate('.//*[contains(text(), " respostas.") or contains(text(), " resposta.")]', item, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
 	if(totalMsgsNodes.snapshotLength != 1) {
 		throw 'Não encontrou total de mensagens!';
 	}
@@ -74,7 +74,7 @@ TopicListPageProcessor.prototype.processItem = function(item) {
 			newCell.style.float = 'right';
 			newCell.style.paddingRight = '4px';
 
-			if(status.text  &&  status.icon == 'star') {
+			if(status.text) {
 				newCell.appendChild(this.doc.createTextNode(status.text));
 			}
 			

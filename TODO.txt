@@ -1,5 +1,6 @@
 Opções
 ------
+	Mencionar limitação de idioma (OTM só funciona em pt-BR)
 
 
 TopicListPage
@@ -13,7 +14,20 @@ TopicMessagesPage
 
 Geral
 -----
-	Pesquisar: sincronização em Google Spreadsheets (http://code.google.com/intl/en/apis/spreadsheets/).
+	Refatorar todo o código!
+		Hierarquia de classes.
+		Reaproveitamento de código.
+
+	Documentar testes.
+
+	Sincronizar dados
+		chrome.experimental.settings (http://code.google.com/chrome/extensions/experimental.settings.html)
+		OU
+		Spreadsheets (http://code.google.com/intl/en/apis/spreadsheets/).
+	
+	Tentar tornar tudo menos dependente de idioma.
+	
+	Usar Closure Compiler (http://code.google.com/closure/compiler/).
 	
 	Store data in incognito mode (default: no).
 

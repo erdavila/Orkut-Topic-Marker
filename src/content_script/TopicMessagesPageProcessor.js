@@ -14,11 +14,11 @@ TopicMessagesPageProcessor.prototype.pageIsReady = function() {
 		}
 		
 		/*
-		 * O link "última" aparece acima e abaixo da lista de mensagens. Se
-		 * houver dois deste link, então a lista terminou de ser carregada.
+		 * O botão "Responder" aparece acima e abaixo da lista de mensagens. Se
+		 * houver dois destes botões, então a lista terminou de ser carregada.
 		 */
-		var last = this.doc.evaluate('//*[text()="última"]', this.doc, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-		if(last.snapshotLength != 2) {
+		var replyButtons = this.doc.evaluate('//button[text()=" Responder "]', this.doc, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+		if(replyButtons.snapshotLength != 2) {
 			return false;
 		}
 	} catch(ex) {
@@ -40,7 +40,11 @@ TopicMessagesPageProcessor.prototype.addStyles = function() {
 	
 	var stylesheet = this.doc.createElement('style');
 	stylesheet.id = OTM_STYLES;
-	stylesheet.textContent = '.otmActionBar .icon IMG {\n'
+	stylesheet.textContent = '.otmActionBar {\n'
+	                       +     '\tfont-size: 12px;\n'
+	                       +     '\tline-height: 16px;\n'
+	                       + '}\n'
+	                       + '.otmActionBar .icon IMG {\n'
 	                       +     '\tpadding: 2px;\n'
 	                       +     '\tvertical-align: -6px;\n'
 	                       + '}\n'
@@ -77,13 +81,19 @@ TopicMessagesPageProcessor.prototype.extractInfo = function() {
 	
 	var navLinkGroupTop = this.navLinkGroups[0];
 	
-	var m = navLinkGroupTop.childNodes(4).textContent.match(/(\d+) de (\d+)/);
+	var m = navLinkGroupTop.childNodes[4].textContent.match(/(\d+) de (\d+)/);
+	// TODO: remover
+	if(!m) {
+		alert('BLA!');
+		console.log(navLinkGroupTop);
+	}
 	this.currentPage = parseInt(m[1]);
 	this.totalPages  = parseInt(m[2]);
 
 	// Total de mensagens no tópico
-	var q = this.doc.evaluate('//*[starts-with(text(), "- ") and (contains(text(), " replies.") or contains(text(), " reply."))]', this.doc, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-	this.totalMsgs = parseInt(q.snapshotItem(0).textContent.substring(2));
+	var q = this.doc.evaluate('//*[starts-with(text(), "- ") and (contains(text(), " respostas.") or contains(text(), " resposta."))]', this.doc, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+	this.totalMsgsElement = q.snapshotItem(0);
+	this.totalMsgs = parseInt(this.totalMsgsElement.textContent.substring(2));
 	
 	// Mensagens na página
 	var q = this.doc.evaluate('//*[div/a[starts-with(@href, "Main#Profile?uid=")]/div/img]', this.doc, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
@@ -152,7 +162,7 @@ TopicMessagesPageProcessor.prototype.processInfo = function() {
 	}
 	
 	// TODO: remover
-	///*
+	/*
 	(function(id){
 		var div = this.doc.getElementById(id);
 		if(!div) {
@@ -169,7 +179,7 @@ TopicMessagesPageProcessor.prototype.processInfo = function() {
 		div.innerHTML = "página " + this.currentPage + " de " + this.totalPages + "<br>"
 		              + "mensagens " + this.firstDisplayedMsg + " a " + this.lastDisplayedMsg;
 	}.bind(this))("__XXX__");
-	//*/
+	*/
 };
 
 
@@ -284,9 +294,11 @@ TopicMessagesPageProcessor.prototype.replaceNavLinks = function() {
 		}
 	}
 };
+*/
 
 
-TopicMessagesPageProcessor.prototype.createTopicActionsGroups = function() {
+TopicMessagesPageProcessor.prototype.createTopicActionsGroup = function() {
+	/*
 	this.topicActionsGroups = [];
 	
 	// Remove itens que mostram o intervalo e o total de mensagens (somente no topo)
@@ -317,8 +329,13 @@ TopicMessagesPageProcessor.prototype.createTopicActionsGroups = function() {
 		insertAfter(topicActionsGroup, txtMensagens);
 		this.topicActionsGroups.push(topicActionsGroup);
 	}
+	*/
+	
+	// Cria elemento que conterá as ações de tópico
+	this.topicActionsGroup = this.doc.createElement("span");
+	this.topicActionsGroup.className = 'otmActionBar';
+	insertAfter(this.topicActionsGroup, this.totalMsgsElement);
 };
-*/
 
 
 TopicMessagesPageProcessor.prototype.createMessagesActionsGroups = function() {
@@ -345,71 +362,68 @@ TopicMessagesPageProcessor.prototype.createSeparator = function() {
 	separator.innerHTML = "&nbsp; | &nbsp;";
 	return separator;
 };
+*/
 
 
-TopicMessagesPageProcessor.prototype.updateTopicActionsGroups = function() {
-	var self = this;
+TopicMessagesPageProcessor.prototype.updateTopicActionsGroup = function() {
+	removeChildren(this.topicActionsGroup);
 	
-	for(var i = 0; i < 2; i++) {
-		var topicActionsGroup = this.topicActionsGroups[i];
-		removeChildren(topicActionsGroup);
-		
-		var topicUnreadMsgs = self.totalMsgs - self.topicData.lastReadMsg;
-		
-		if(topicUnreadMsgs == 0  ||  self.totalMsgs == 0) {
-			// Tópico todo lido
-			topicActionsGroup.appendChild(self.createIcon('check', "O tópico foi todo lido"));
-		} else if(self.topicData.lastReadMsg == 0) {
-			// Tópico nunca lido
-			topicActionsGroup.appendChild(self.createIcon('exclamation', "O tópico nunca foi lido"));
-		} else {
-			var span = self.doc.createElement('span');
-				if(topicUnreadMsgs > 0) {
-					span.title = topicUnreadMsgs + " mensagens não-lidas no tópico";
-				} else {
-					span.title = "Mensagens previamente lidas foram apagadas!";
-				}
-				span.appendChild(self.createIcon('star'));
-				span.appendChild(self.doc.createTextNode(topicUnreadMsgs));
-			topicActionsGroup.appendChild(span);
-		}
-		
-		if(self.topicData.ignored) {
-			topicActionsGroup.appendChild(
-				self.createIcon('ignored', "Deixar de ignorar o tópico", ['button'],
-					function() {
-						// Ação para deixar de ignorar o tópico.
-						self.topicData.ignored = false;
-						TopicData.set(self.topicData, function() {
-							self.updateActionsGroups();
-						});
-					}
-				)
-			);
-		} else {
-			var tip = "Ignorar o tópico";
-			if(self.options.leaveOnIgnore) {
-				tip += " e voltar à lista de tópicos";
+	var topicUnreadMsgs = this.totalMsgs - this.topicData.lastReadMsg;
+	
+	if(topicUnreadMsgs == 0  ||  this.totalMsgs == 0) {
+		// Tópico todo lido
+		this.topicActionsGroup.appendChild(this.createIcon('check', "O tópico foi todo lido"));
+	} else if(this.topicData.lastReadMsg == 0) {
+		// Tópico nunca lido
+		this.topicActionsGroup.appendChild(this.createIcon('exclamation', "O tópico nunca foi lido"));
+	} else {
+		var span = this.doc.createElement('span');
+			if(topicUnreadMsgs > 0) {
+				span.title = topicUnreadMsgs + " mensagens não-lidas no tópico";
+			} else {
+				span.title = "Mensagens previamente lidas foram apagadas!";
 			}
-			topicActionsGroup.appendChild(
-				self.createIcon('ignored', tip, ['button', 'off'],
-					function() {
-						// Ação para ignorar o tópico.
-						self.topicData.ignored = true;
-						TopicData.set(self.topicData, function() {
-							self.updateActionsGroups();
-							if(self.options.leaveOnIgnore) {
-								self.goToTopicsList();
-							}
-						});
-					}
-				)
-			);
+			span.appendChild(this.createIcon('star'));
+			span.appendChild(this.doc.createTextNode(topicUnreadMsgs));
+		this.topicActionsGroup.appendChild(span);
+	}
+	
+	if(this.topicData.ignored) {
+		this.topicActionsGroup.appendChild(
+			this.createIcon('ignored', "Deixar de ignorar o tópico", ['button'],
+				function() {
+					// Ação para deixar de ignorar o tópico.
+					this.topicData.ignored = false;
+					TopicData.set(this.topicData, function() {
+						this.updateActionsGroups();
+					}.bind(this));
+				}.bind(this)
+			)
+		);
+	} else {
+		var tip = "Ignorar o tópico";
+		if(this.options.leaveOnIgnore) {
+			tip += " e voltar à lista de tópicos";
 		}
+		this.topicActionsGroup.appendChild(
+			this.createIcon('ignored', tip, ['button', 'off'],
+				function() {
+					// Ação para ignorar o tópico.
+					this.topicData.ignored = true;
+					TopicData.set(this.topicData, function() {
+						this.updateActionsGroups();
+						if(this.options.leaveOnIgnore) {
+							this.goToTopicsList();
+						}
+					}.bind(this));
+				}.bind(this)
+			)
+		);
 	}
 };
 
 
+/*
 TopicMessagesPageProcessor.prototype.updatePageActionsGroups = function() {
 	var self = this;
 	
@@ -455,7 +469,30 @@ TopicMessagesPageProcessor.prototype.updateMessageActionsGroup = function(messag
 	} else {
 		// Mensagem não-lida
 		var tip = "Esta mensagem não foi lida.\nClique para marcar o tópico como lido até esta mensagem";
+		var newLastReadMsg = estimatedMessageNumber;
 		var additionalAction = null;
+		
+		if(estimatedMessageNumber == this.lastDisplayedMsg) {
+			// A mensagem é a última da página
+			if(this.nextPageLink) {
+				if(this.options.nextPageOnPageAllRead) {
+					tip += " e ir para a próxima página.";
+					additionalAction = function() { this.goToNextPage(); }.bind(this);
+				}
+			} else {
+				// A mensagem é a última do tópico
+				newLastReadMsg = this.totalMsgs;
+				if(this.options.leaveOnTopicAllRead) {
+					tip += " e voltar à lista de tópicos.";
+					additionalAction = function() { this.goToTopicsList(); }.bind(this);
+				}
+			}
+		} else {
+			tip += ".";
+		}
+		
+		// TODO: remover
+		/*
 		if(estimatedMessageNumber == this.totalMsgs) {
 			// A página atual é a última do tópico
 			if(this.options.leaveOnTopicAllRead) {
@@ -471,11 +508,13 @@ TopicMessagesPageProcessor.prototype.updateMessageActionsGroup = function(messag
 		} else {
 			tip += ".";
 		}
+		*/
 		
 		messageActionsGroup.appendChild(
 			this.createIcon('star', tip, ['button'],
 				function() {
-					this.topicData.lastReadMsg = estimatedMessageNumber;
+					//this.topicData.lastReadMsg = estimatedMessageNumber; // TODO: remover
+					this.topicData.lastReadMsg = newLastReadMsg;
 					TopicData.set(this.topicData, function() {
 						this.updateActionsGroups();
 						if(additionalAction) {
@@ -516,8 +555,8 @@ TopicMessagesPageProcessor.prototype.updateActionsGroups = function() {
 		this.topicData = topicData;
 		/*
 		this.updatePageActionsGroups();
-		this.updateTopicActionsGroups();
 		*/
+		this.updateTopicActionsGroup();
 		this.updateMessagesActionsGroups();
 	}.bind(this));
 };
@@ -536,7 +575,7 @@ TopicMessagesPageProcessor.prototype.process = function() {
 		this.navLinkGroups[0].setAttribute("otm", "true");
 		
 		//this.replaceNavLinks();
-		//this.createTopicActionsGroups();
+		this.createTopicActionsGroup();
 		this.createMessagesActionsGroups();
 		
 		this.updateActionsGroups();
@@ -557,7 +596,6 @@ TopicMessagesPageProcessor.prototype.createIcon = function(type, tip, classes, h
 };
 
 
-/*
 TopicMessagesPageProcessor.prototype.getTopicsListLink = function() {
 	var links = this.doc.getElementsByTagName("a");
 	for(var i = 0; i < links.length; i++) {
@@ -587,7 +625,6 @@ TopicMessagesPageProcessor.prototype.goToNextPage = function() {
 	                   0, null);
 	this.nextPageLink.dispatchEvent(evt);
 };
-*/
 
 
 /******************************************************************************/
@@ -1037,32 +1074,10 @@ TopicMessagesPageProcessorOld.prototype.process = function() {
 TopicMessagesPageProcessorOld.prototype.createIcon = TopicMessagesPageProcessor.prototype.createIcon;
 
 
-TopicMessagesPageProcessorOld.prototype.getTopicsListLink = function() {
-	var links = this.doc.getElementsByTagName("a");
-	for(var i = 0; i < links.length; i++) {
-		var link = links[i];
-		if(link.href.match(/#CommTopics\?/)) {
-			return link;
-		}
-	}
-};
+TopicMessagesPageProcessorOld.prototype.getTopicsListLink = TopicMessagesPageProcessor.prototype.getTopicsListLink;
 
 
-TopicMessagesPageProcessorOld.prototype.goToTopicsList = function() {
-	var evt = this.doc.createEvent("MouseEvents");
-	evt.initMouseEvent("click", true, true, window,
-                       0, 0, 0, 0, 0,
-	                   false, false, false, false,
-	                   0, null);
-	this.getTopicsListLink().dispatchEvent(evt);
-};
+TopicMessagesPageProcessorOld.prototype.goToTopicsList = TopicMessagesPageProcessor.prototype.goToTopicsList;
 
 
-TopicMessagesPageProcessorOld.prototype.goToNextPage = function() {
-	var evt = this.doc.createEvent("MouseEvents");
-	evt.initMouseEvent("click", true, true, window,
-                       0, 0, 0, 0, 0,
-	                   false, false, false, false,
-	                   0, null);
-	this.nextPageLink.dispatchEvent(evt);
-};
+TopicMessagesPageProcessorOld.prototype.goToNextPage = TopicMessagesPageProcessor.prototype.goToNextPage;
