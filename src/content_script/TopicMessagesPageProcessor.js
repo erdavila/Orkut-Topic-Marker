@@ -153,11 +153,11 @@ TopicMessagesPageProcessor.prototype.processInfo = function() {
 			} else if(transitionData.firstDisplayedMsg) {
 				this.setFirstDisplayedMsg(transitionData.firstDisplayedMsg);
 			} else {
-				// TODO: implementar
+				console.error("Algo está errado!", transitionData);
 			}
 		} else {
 			// Não há informações suficientes para sabermos o intervalo de mensagens sendo exibidas
-			// TODO: implementar
+			this.unknownMsgRange = true;
 		}
 	}
 	
@@ -368,6 +368,18 @@ TopicMessagesPageProcessor.prototype.createSeparator = function() {
 TopicMessagesPageProcessor.prototype.updateTopicActionsGroup = function() {
 	removeChildren(this.topicActionsGroup);
 	
+	if(this.unknownMsgRange) {
+		var span = this.doc.createElement('span');
+			span.title = "Não há informações suficientes para identificar as mensagens já lidas.\n"
+			           + "Vá para a primeira ou última página do tópico e depois navegue utilizando "
+			           + 'somente os links "primeira", "< anterior", "próxima >" e "última".';
+			span.appendChild(this.createIcon('warning'));
+		this.topicActionsGroup.appendChild(span);
+		
+		return;
+	}
+	
+	
 	var topicUnreadMsgs = this.totalMsgs - this.topicData.lastReadMsg;
 	
 	if(topicUnreadMsgs == 0  ||  this.totalMsgs == 0) {
@@ -453,6 +465,10 @@ TopicMessagesPageProcessor.prototype.updatePageActionsGroups = function() {
 
 TopicMessagesPageProcessor.prototype.updateMessageActionsGroup = function(messageActionsGroup, estimatedMessageNumber) {
 	removeChildren(messageActionsGroup);
+	
+	if(this.unknownMsgRange) {
+		return;
+	}
 	
 	if(estimatedMessageNumber <= this.topicData.lastReadMsg) {
 		// Mensagem lida
