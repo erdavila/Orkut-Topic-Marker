@@ -82,11 +82,6 @@ TopicMessagesPageProcessor.prototype.extractInfo = function() {
 	var navLinkGroupTop = this.navLinkGroups[0];
 	
 	var m = navLinkGroupTop.childNodes[4].textContent.match(/(\d+) de (\d+)/);
-	// TODO: remover
-	if(!m) {
-		alert('BLA!');
-		console.log(navLinkGroupTop);
-	}
 	this.currentPage = parseInt(m[1]);
 	this.totalPages  = parseInt(m[2]);
 
@@ -101,7 +96,6 @@ TopicMessagesPageProcessor.prototype.extractInfo = function() {
 	for(var i = 0; i < q.snapshotLength; i++) {
 		this.messages.push(q.snapshotItem(i));
 	}
-	console.log(this.messages); // TODO: REMOVER
 	
 	// Identifica links para páginas
 	var links = navLinkGroupTop.getElementsByTagName("a");
@@ -160,26 +154,6 @@ TopicMessagesPageProcessor.prototype.processInfo = function() {
 			this.unknownMsgRange = true;
 		}
 	}
-	
-	// TODO: remover
-	/*
-	(function(id){
-		var div = this.doc.getElementById(id);
-		if(!div) {
-			div = this.doc.createElement("div");
-			div.id = id;
-			div.style.position = "fixed";
-			div.style.left = "0";
-			div.style.top = "0";
-			div.style.border = "2px solid red";
-			div.style.backgroundColor = "white";
-			div.style.padding = "2px";
-			this.doc.body.appendChild(div);
-		}
-		div.innerHTML = "página " + this.currentPage + " de " + this.totalPages + "<br>"
-		              + "mensagens " + this.firstDisplayedMsg + " a " + this.lastDisplayedMsg;
-	}.bind(this))("__XXX__");
-	*/
 };
 
 
@@ -218,119 +192,7 @@ TopicMessagesPageProcessor.prototype.setupNavTransition = function() {
 };
 
 
-/*
-TopicMessagesPageProcessor.prototype.replaceNavLinks = function() {
-	this.pageActionsGroups = [];
-	
-	for(var i = 0; i < 2; i++) {
-		var navLinkGroup = this.navLinkGroups[i];
-		
-		// Limpa links
-		removeChildren(navLinkGroup);
-		
-		// Adiciona link para primeira página
-		if(this.firstPageLink) {
-			navLinkGroup.appendChild(this.firstPageLink.cloneNode(true));
-		} else {
-			var grayedout = this.doc.createElement("span");
-			grayedout.className = "grayedout";
-			grayedout.textContent = "primeira";
-			navLinkGroup.appendChild(grayedout);
-		}
-		
-		// Separador
-		navLinkGroup.appendChild(this.createSeparator());
-		
-		// Adiciona link para a página anterior
-		if(this.previousPageLink) {
-			navLinkGroup.appendChild(this.previousPageLink.cloneNode(true));
-		} else {
-			var grayedout = this.doc.createElement("span");
-			grayedout.className = "grayedout";
-			grayedout.textContent = "< anterior";
-			navLinkGroup.appendChild(grayedout);
-		}
-		
-		// Separador
-		navLinkGroup.appendChild(this.createSeparator());
-		
-		// 
-		navLinkGroup.appendChild(this.doc.createTextNode("mostrando "));
-		var messageRange = this.doc.createElement("b");
-		messageRange.textContent = this.firstDisplayedMsg + "-" + this.lastDisplayedMsg;
-		navLinkGroup.appendChild(messageRange);
-		navLinkGroup.appendChild(this.doc.createTextNode(" "));
-		
-		// Cria elemento que conterá as ações de página
-		var pageActionsGroup = this.doc.createElement("span");
-		pageActionsGroup.className = 'otmActionBar';
-		insertAfter(pageActionsGroup, navLinkGroup.childNodes[4]);
-		this.pageActionsGroups.push(pageActionsGroup);
-		
-		// Separador
-		navLinkGroup.appendChild(this.createSeparator());
-		
-		// Adiciona link para a página seguinte
-		if(this.nextPageLink) {
-			navLinkGroup.appendChild(this.nextPageLink.cloneNode(true));
-		} else {
-			var grayedout = this.doc.createElement("span");
-			grayedout.className = "grayedout";
-			grayedout.textContent = "próxima >";
-			navLinkGroup.appendChild(grayedout);
-		}
-		
-		// Separador
-		navLinkGroup.appendChild(this.createSeparator());
-		
-		// Adiciona link para a última página
-		if(this.lastPageLink) {
-			navLinkGroup.appendChild(this.lastPageLink.cloneNode(true));
-		} else {
-			var grayedout = this.doc.createElement("span");
-			grayedout.className = "grayedout";
-			grayedout.textContent = "última";
-			navLinkGroup.appendChild(grayedout);
-		}
-	}
-};
-*/
-
-
 TopicMessagesPageProcessor.prototype.createTopicActionsGroup = function() {
-	/*
-	this.topicActionsGroups = [];
-	
-	// Remove itens que mostram o intervalo e o total de mensagens (somente no topo)
-	for(var n = 0; n < 4; n++) {
-		*//*
-		n == 0: " mostrando "
-		n == 1: "<b>{firstDisplayedMsg}-{lastDisplayedMsg}</b>"
-		n == 2: " de "
-		n == 3: "<b>{totalMsgs}</b>"
-		*//*
-		var itemToRemove = this.navLinkGroups[0].nextSibling;
-		itemToRemove.parentNode.removeChild(itemToRemove);
-	}
-	
-	for(var i = 0; i < 2; i++) {
-		var navLinkGroup = this.navLinkGroups[i];
-		
-		// Exibe total de mensagens do tópico
-		var totalOfMessages = this.doc.createElement("b");
-		totalOfMessages.textContent = this.totalMsgs;
-		insertAfter(totalOfMessages, navLinkGroup);
-		var txtMensagens = this.doc.createTextNode(" mensagens ");
-		insertAfter(txtMensagens, totalOfMessages);
-		
-		// Cria elemento que conterá as ações de tópico
-		var topicActionsGroup = this.doc.createElement("span");
-		topicActionsGroup.className = 'otmActionBar';
-		insertAfter(topicActionsGroup, txtMensagens);
-		this.topicActionsGroups.push(topicActionsGroup);
-	}
-	*/
-	
 	// Cria elemento que conterá as ações de tópico
 	this.topicActionsGroup = this.doc.createElement("span");
 	this.topicActionsGroup.className = 'otmActionBar';
@@ -353,16 +215,6 @@ TopicMessagesPageProcessor.prototype.createMessagesActionsGroups = function() {
 		this.messagesActionsGroups.push(messageActionsGroup);
 	}
 };
-
-
-/*
-TopicMessagesPageProcessor.prototype.createSeparator = function() {
-	var separator = this.doc.createElement("span");
-	separator.className = "grayedout";
-	separator.innerHTML = "&nbsp; | &nbsp;";
-	return separator;
-};
-*/
 
 
 TopicMessagesPageProcessor.prototype.updateTopicActionsGroup = function() {
@@ -435,34 +287,6 @@ TopicMessagesPageProcessor.prototype.updateTopicActionsGroup = function() {
 };
 
 
-/*
-TopicMessagesPageProcessor.prototype.updatePageActionsGroups = function() {
-	var self = this;
-	
-	for(var i = 0; i < 2; i++) {
-		var pageActionsGroup = this.pageActionsGroups[i];
-		removeChildren(pageActionsGroup);
-		
-		if(self.topicData.lastReadMsg >= self.firstDisplayedMsg - 1  &&  self.topicData.lastReadMsg < self.lastDisplayedMsg) {
-			// Primeira página com mensagens não-lidas
-			var pageUnreadMsgs = self.lastDisplayedMsg - self.topicData.lastReadMsg;
-			var span = self.doc.createElement('span');
-				span.title = pageUnreadMsgs + " mensagens não-lidas nesta página";
-				span.appendChild(self.createIcon('star'));
-				span.appendChild(self.doc.createTextNode(pageUnreadMsgs));
-			pageActionsGroup.appendChild(span);
-		} else if(self.topicData.lastReadMsg >= self.lastDisplayedMsg) {
-			// Todas as mensagens da página foram lidas
-			pageActionsGroup.appendChild(self.createIcon('check', "Todas as mensagens desta página foram lidas"));
-		} else {
-			// Nenhuma mensagem nesta página foi lida
-			pageActionsGroup.appendChild(self.createIcon('exclamation', "Nenhuma mensagem desta página foi lida"));
-		}
-	}
-};
-*/
-
-
 TopicMessagesPageProcessor.prototype.updateMessageActionsGroup = function(messageActionsGroup, estimatedMessageNumber) {
 	removeChildren(messageActionsGroup);
 	
@@ -507,29 +331,9 @@ TopicMessagesPageProcessor.prototype.updateMessageActionsGroup = function(messag
 			tip += ".";
 		}
 		
-		// TODO: remover
-		/*
-		if(estimatedMessageNumber == this.totalMsgs) {
-			// A página atual é a última do tópico
-			if(this.options.leaveOnTopicAllRead) {
-				tip += " e voltar à lista de tópicos.";
-				additionalAction = function() { this.goToTopicsList(); }.bind(this);
-			}
-		} else if(estimatedMessageNumber == this.lastDisplayedMsg) {
-			// A mensagem é a última da página
-			if(this.options.nextPageOnPageAllRead) {
-				tip += " e ir para a próxima página.";
-				additionalAction = function() { this.goToNextPage(); }.bind(this);
-			}
-		} else {
-			tip += ".";
-		}
-		*/
-		
 		messageActionsGroup.appendChild(
 			this.createIcon('star', tip, ['button'],
 				function() {
-					//this.topicData.lastReadMsg = estimatedMessageNumber; // TODO: remover
 					this.topicData.lastReadMsg = newLastReadMsg;
 					TopicData.set(this.topicData, function() {
 						this.updateActionsGroups();
@@ -587,14 +391,12 @@ TopicMessagesPageProcessor.prototype.process = function() {
 		this.processInfo();
 		this.setupNavTransition();
 		
-		// TODO: colocar a linha a seguir em um local mais apropriado
-		this.navLinkGroups[0].setAttribute("otm", "true");
-		
-		//this.replaceNavLinks();
 		this.createTopicActionsGroup();
 		this.createMessagesActionsGroups();
 		
 		this.updateActionsGroups();
+		
+		this.navLinkGroups[0].setAttribute("otm", "true");
 	}.bind(this));
 };
 
