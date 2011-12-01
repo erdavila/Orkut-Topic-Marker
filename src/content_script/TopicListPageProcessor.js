@@ -38,25 +38,19 @@ TopicListPageProcessor.prototype.pageIsReady = function() {
 
 TopicListPageProcessor.prototype.process = function() {
 	// Encontra os tópicos na página
-	var items = this.doc.evaluate('//a[starts-with(@href, "#CommMsgs?cmm=")]/..', this.doc, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-	for(var i = 0; i < items.snapshotLength; i++) {
-		if(i % 2 == 0) {
-			// Link com o título do tópico
-			var item = items.snapshotItem(i);
-			this.processItem(item);
-		} else {
-			// Link com o início do texto da última postagem no tópico
-			;
-		}
+	var topicTitleLinks = this.doc.evaluate('//a[starts-with(@href, "#CommMsgs?cmm=") and not(contains(@href, "&na="))]', this.doc, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+	for(var i = 0; i < topicTitleLinks.snapshotLength; i++) {
+		var topicTitleLink = topicTitleLinks.snapshotItem(i);
+		var item = topicTitleLink.parentNode;
+		this.processItem(item, topicTitleLink);
 	}
 };
 
 
-TopicListPageProcessor.prototype.processItem = function(item) {
+TopicListPageProcessor.prototype.processItem = function(item, topicTitleLink) {
 	// Extrai o ID do tópico
-	var linkElement = item.getElementsByTagName('a')[1];
-	var topicUrl = linkElement.href;
-	var m = topicUrl.match(/tid=(\d+)/);
+	var topicUrl = topicTitleLink.href;
+	var m = topicUrl.match(/&tid=(\d+)/);
 	var topicId = m[1];
 	
 	// Obtém o total de mensagens

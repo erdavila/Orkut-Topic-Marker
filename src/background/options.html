@@ -63,8 +63,7 @@
 			img.screenshot {
 				border: 1px solid black;
 				text-align: center;
-				width: 90%;
-				margin-left: 5%;
+				margin-left: 20px;
 			}
 			
 			img.off {
@@ -239,27 +238,17 @@
 			</div>
 			
 			<div id="cont-instructions" class="content-panel">
-				Ícones ajudam a identificar a situação de leitura dos tópicos e suas mensagens.
-				O significado dos ícones estão explicados abaixo.
-				Quanto estiver navegando no Orkut™, pode-se ver uma descrição dos ícones ao passar o mouse sobre eles.
+				Navegue nas comunidades do Orkut™ com ícones que ajudam a identificar a situação de leitura dos tópicos e suas mensagens.<br/>
+				O significado dos ícones estão explicados abaixo e uma descrição pode ser vista ao passar o mouse sobre um ícone quando estiver navegando no Orkut™.<br/>
+				Esta extensão funciona nas <b>versões nova e antiga</b> do Orkut™.<br/>
+				Consulte as <a href="#limitations">limitações</a> a que esta extensão está sujeita.
 				
 				<br/><br/>
-				<div class="warning">
-					<b>ATENÇÃO</b>: Devido a alterações feitas no Orkut™, esta extensão só é compatível com a
-					versão antiga do Orkut™. Para usá-la, clique em "versão antiga" na parte superior
-					direita da página do Orkut™ e em seguinda no botão "voltar para o orkut antigo".
-					<br/>
-					Uma nova versão desta extensão está sendo preparada para funcionar com as alterções recentes feitas no Orkut™.
-					<br/>
-					Veja mais informações sobre <a href="#limitations">limitações</a>.
-				</div>
-				
-				<br/>
 				<hr/>
 				<h3>Lista de tópicos</h3>
 				<img class="screenshot" src="../images/screenshots/TopicList.png"><br/>
 				<br/>
-				Na lista de tópicos da comunidade haverá uma coluna a mais - <b>status</b> - que informará:
+				Na lista de tópicos, em cada tópico haverá um ícone que informará:
 				<ul>
 					<li><img src="../images/check.png"> Não há mensagens novas no tópico.</li>
 					<li><img src="../images/exclamation.png"> O tópico é novo / nenhuma mensagem foi lida.</li>
@@ -273,10 +262,9 @@
 				<h3>Mensagens de um Tópico</h3>
 				<img class="screenshot" src="../images/screenshots/TopicMessages.png"><br/>
 				<br/>
-				Nas páginas de mensagens de um tópico, os ícones estarão acima da lista de mensagens e em cada mensagem.
-				Os ícones que aparecem acima da lista se repetem abaixo da lista de mensagens.
+				Nas páginas de mensagens de um tópico, haverá ícones na parte superior da página &ndash; ao lado do título do tópico &ndash; e em cada mensagem.
 				<br/>
-				Acima da lista, do lado esquerdo, há um indicador do número total de mensagens do tópico e poderá haver os seguintes ícones referentes ao <b>tópico</b>:
+				Na parte superior da página, há um indicador do número total de mensagens do tópico e poderá haver os seguintes ícones referentes ao <b>tópico</b>:
 				<ul>
 					<li><img src="../images/check.png"> O tópico foi todo lido / não há mensagens novas.</li>
 					<li><img src="../images/exclamation.png"> O tópico é novo / nenhuma mensagem foi lida.</li>
@@ -286,20 +274,11 @@
 					<li><img src="../images/ignored.png" class="off"> Clique para ignorar o tópico.</li>
 				</ul>
 				<br/>
-				Na área do lado direito, acima da lista de mensagens, estão os links tradicionais para navegação entre páginas.
-				Entre eles, há um indicador do intervalo de mensagens exibidas na página atual e poderá haver os seguintes ícones referentes às <b>mensagens na página atual</b>:
+				Em cada mensagem haverá um ícone de ação referente à <b>mensagem</b>:
 				<ul>
-					<li><img src="../images/check.png"> Todas as mensagens da página atual (e anteriores) foram lidas.</li>
-					<li><img src="../images/exclamation.png"> Nenhuma mensagem da página atual (e seguintes) foi lida.</li>
-					<li><img src="../images/star.png"> Indica que a página atual é a primeira com mensagens novas.
-						O número ao lado do ícone indica quantas mensagens há para serem lidas na página atual.</li>
-				</ul>
-				<br/>
-				Na parte superior de cada mensagem, no centro, haverá um ícone de ação referente à <b>mensagem</b>:
-				<ul>
-					<li><img src="../images/check.png"> A mensagem já foi lida. Clique para marcar o tópico como <b>não</b>-lido a partir dela
+					<li><img src="../images/check.png"> A mensagem já foi lida. Clique para marcar o tópico como <b>não-lido</b> a partir dela
 						(a mensagem e todas as seguintes serão marcadas como não-lidas).</li>
-					<li><img src="../images/star.png"> Indica que a mensagem ainda não foi lida. Clique para marcar que o tópico foi lido até esta mensagem
+					<li><img src="../images/star.png"> Indica que a mensagem ainda não foi lida. Clique para marcar que o tópico <b>foi lido</b> até esta mensagem
 						(a mensagem e todas as anteriores serão marcadas como lidas).</li>
 				</ul>
 			</div>
@@ -308,15 +287,16 @@
 				Esta extensão adiciona novas funcionalidades ao Orkut™ usando informações contidas nas próprias páginas
 				do Orkut™ e, assim, está sujeita a situações como as listadas abaixo: 
 				<ul>
-					<li>O Google™ pode fazer alterações nas páginas do Orkut™ a qualquer momento sem aviso prévio, o
-						que pode fazer com que a extensão deixe de funcionar parcialmente ou totalmente.</li>
 					<li>A extensão faz o melhor esforço para usar as informações contidas nas páginas no Orkut™. Em
 						algumas situações as informações não são suficientes, o que pode causar situações "estranhas"
 						como exibir um número negativo de mensagens novas ou não destacar com uma estrela um tópico
 						que tenha mensagens novas. (Estes dois casos podem acontecer em situações em que mensagens
 						são removidas do tópico.)
 						</li>
+					<li>O Google™ pode fazer alterações nas páginas do Orkut™ a qualquer momento sem aviso prévio, o
+						que pode fazer com que a extensão deixe de funcionar parcialmente ou totalmente.</li>
 				</ul>
+				O Marcador de Tópicos para o Orkut™ funciona somente com o Orkut™ em português do Brasil.
 			</div>
 		</div>
 	</body>
