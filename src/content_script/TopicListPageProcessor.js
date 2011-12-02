@@ -59,6 +59,10 @@ TopicListPageProcessor.prototype.processItem = function(item, topicTitleLink) {
 		throw 'Não encontrou total de mensagens!';
 	}
 	var totalMsgs = parseInt(totalMsgsNodes.snapshotItem(0).innerText);
+	if(isNaN(totalMsgs)) {
+		console.log("Nenhuma mensagem?", JSON.stringify(totalMsgsNodes.snapshotItem(0).innerText));
+		totalMsgs = 0;
+	}
 	
 	
 	TopicData.get(topicId, function(topicData) {
