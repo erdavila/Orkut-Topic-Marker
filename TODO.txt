@@ -10,6 +10,8 @@ TopicListPage
 TopicMessagesPage
 -----------------
 	Bug when opening a topic with zero messages.
+	
+	Posicionar a página na primeira mensagem não-lida (opção).
 
 
 Geral

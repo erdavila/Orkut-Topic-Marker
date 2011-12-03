@@ -7,6 +7,12 @@
 
 TopicListPageProcessor.prototype.pageIsReady = function() {
 	try {
+		var q = this.doc.evaluate('//*[@otm="true"]', this.doc, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+		if(q.snapshotLength > 0) {
+			// A página anterior ainda está carregada
+			return false;
+		}
+		
 		if(this.communityMainPage) {
 			/*
 			 * O link "ver todos os tópicos" aparece abaixo da lista de tópicos. Se
@@ -39,10 +45,17 @@ TopicListPageProcessor.prototype.pageIsReady = function() {
 TopicListPageProcessor.prototype.process = function() {
 	// Encontra os tópicos na página
 	var topicTitleLinks = this.doc.evaluate('//a[starts-with(@href, "#CommMsgs?cmm=") and not(contains(@href, "&na="))]', this.doc, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+	var lastItem = null;
 	for(var i = 0; i < topicTitleLinks.snapshotLength; i++) {
 		var topicTitleLink = topicTitleLinks.snapshotItem(i);
 		var item = topicTitleLink.parentNode;
 		this.processItem(item, topicTitleLink);
+		
+		lastItem = item;
+	}
+	
+	if(lastItem != null) {
+		lastItem.parentNode.setAttribute("otm", "true");
 	}
 };
 
