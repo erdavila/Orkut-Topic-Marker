@@ -35,8 +35,9 @@
 		
 		Options.get(function(options) {
 			getManifest(function(manifest) {
-				if(!options.lastUsedVersion  ||  options.lastUsedVersion != manifest.version) {
-					if(compareVersions(options.lastUsedVersion, "2.0.0") < 0) {
+				var lastUsedVersion = options.lastUsedVersion ? options.lastUsedVersion : "0.0.0";
+				if(lastUsedVersion != manifest.version) {
+					if(compareVersions(lastUsedVersion, "2.0.0") < 0) {
 						// Mostra instruções quando uma nova versão é instalada
 						openInstructions();
 					}

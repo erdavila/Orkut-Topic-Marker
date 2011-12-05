@@ -1,6 +1,6 @@
 Opções
 ------
-	Mencionar limitação de idioma (OTM só funciona em pt-BR)
+	Instruções devem ser mostradas na primeira instalação.
 
 
 TopicListPage
