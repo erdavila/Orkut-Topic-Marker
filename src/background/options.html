@@ -77,6 +77,8 @@
 			}
 		</style>
 		
+		<script src="stats_begin.js"></script>
+		
 		<script src="Options.js"></script>
 		<script>
 			var contentTitle;
@@ -146,6 +148,8 @@
 				activeContentPanel.style.display = "block";
 				
 				contentTitle.textContent = activeNavBarItem.textContent;
+				
+				stats.pageview(document.location.pathname + hash);
 			}
 			
 			
@@ -300,4 +304,6 @@
 			</div>
 		</div>
 	</body>
+	
+	<script src="stats_end.js"></script>
 </html>
