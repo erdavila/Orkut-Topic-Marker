@@ -159,13 +159,10 @@
 				if(exportImportPanel.style.display == 'none') {
 					// Show
 					var str = '';
-					for(key in localStorage) {
-						if(key != "USER_OPTIONS") {
-							if(str) {
-								str += "\n";
-							}
-							
-							str += key + ' ' + localStorage[key];
+					for(var key in localStorage) {
+						var val = localStorage[key];
+						if(key  &&  key != "USER_OPTIONS"  &&  val) {
+							str += key + ' ' + val + "\n";
 						}
 					}
 					exportImportData.value = str;
@@ -190,7 +187,9 @@
 					var parts = value.split(' ');
 					var key = parts[0];
 					var val = parts[1];
-					localStorage[key] = val;
+					if(key  &&  val) {
+						localStorage[key] = val;
+					}
 				}
 				
 				alert("Os dados foram importados corretamente.");
