@@ -5,7 +5,7 @@ _gaq.push(['_setAccount', 'UA-XXXXXXXX-X']);
 var stats = (function() {
 	return {
 		setVersion: function(version) {
-			_gaq.push(['_setCustomVar', 1/*slot*/, 'v', version, 2/*scope:session*/]);
+			_gaq.push(['_setCustomVar', 1/*slot*/, 'ver', version, 2/*scope:session*/]);
 		},
 		
 		pageview: function(url) {
@@ -16,16 +16,32 @@ var stats = (function() {
 			}
 		},
 		
+		loaded: function() {
+			this._event('main page', 'loaded');
+		},
+		
 		install: function(newVersion, oldVersion) {
 			if(oldVersion) {
-				_gaq.push(['_trackEvent', 'install', 'update', newVersion + '<-' + oldVersion]);
+				this._event('install', 'update', newVersion + '<-' + oldVersion);
 			} else {
-				_gaq.push(['_trackEvent', 'install', 'new', newVersion]);
+				this._event('install', 'new', newVersion);
 			}
 		},
 		
 		instructionsOpened: function() {
-			_gaq.push(['_trackEvent', 'Instructions Page', 'on install']);
+			this._event('instructions page', 'on install');
+		},
+		
+		optionsSaved: function() {
+			this._event('options page', 'options saved');
+		},
+		
+		dataImported: function() {
+			this._event('options page', 'data imported');
+		},
+		
+		_event: function(category, action, value) {
+			_gaq.push(['_trackEvent', category, action, value]);
 		},
 	};
 })();

@@ -38,6 +38,7 @@
 		Options.get(function(options) {
 			getManifest(function(manifest) {
 				stats.setVersion(manifest.version);
+				stats.loaded();
 				
 				var lastUsedVersion = options.lastUsedVersion;
 				if(lastUsedVersion != manifest.version) {
@@ -51,8 +52,6 @@
 					
 					stats.install(manifest.version, lastUsedVersion);
 				}
-				
-				stats.pageview();
 			});
 		});
 		

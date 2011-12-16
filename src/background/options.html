@@ -96,6 +96,7 @@
 				Options.get(function(options) {
 					options[option] = checkbox.checked;
 					Options.set(options);
+					stats.optionsSaved();
 				});
 			}
 			
@@ -148,6 +149,7 @@
 				activeContentPanel.style.display = "block";
 				
 				contentTitle.textContent = activeNavBarItem.textContent;
+				document.title = "Marcador de Tópicos para o Orkut™ - " + activeNavBarItem.textContent;
 				
 				stats.pageview(document.location.pathname + hash);
 			}
@@ -192,6 +194,7 @@
 				}
 				
 				alert("Os dados foram importados corretamente.");
+				stats.dataImported();
 			}
 		</script>
 	</head>

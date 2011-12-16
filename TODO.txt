@@ -1,6 +1,5 @@
 Opções
 ------
-	Instruções devem ser mostradas na primeira instalação.
 
 
 TopicListPage
@@ -10,12 +9,17 @@ TopicListPage
 TopicMessagesPage
 -----------------
 	Bug when opening a topic with zero messages.
+		FIXED?
 	
-	Posicionar a página na primeira mensagem não-lida (opção).
+	Posicionar a página na primeira mensagem não-lida (opção?).
 
 
 Geral
 -----
+	Analytics
+		Registrar evento de importação de dados.
+		Transformar pageview de main.html em evento (?).
+	
 	Refatorar todo o código!
 		Hierarquia de classes.
 		Reaproveitamento de código.
