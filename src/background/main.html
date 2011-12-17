@@ -1,5 +1,5 @@
 <html>
-	<script src="stats_begin.js"></script>
+	<script src="Stats_begin.js"></script>
 	
 	<script src="TopicData.js"></script>
 	<script src="Options.js"></script>
@@ -31,14 +31,21 @@
 					case 'set_options':
 						/* NÃO IMPLEMENTADO! */
 						break;
+						
+					case 'stats':
+						for(var i = 0; i < request.commands.length; i++) {
+							var command = request.commands[i];
+							Stats.command(command);
+						}
+						break;
 				}
 			});
 		
 		
 		Options.get(function(options) {
 			getManifest(function(manifest) {
-				stats.setVersion(manifest.version);
-				stats.loaded();
+				Stats.setVersion(manifest.version);
+				Stats.loaded();
 				
 				var lastUsedVersion = options.lastUsedVersion;
 				if(lastUsedVersion != manifest.version) {
@@ -50,7 +57,7 @@
 					options.lastUsedVersion = manifest.version;
 					Options.set(options);
 					
-					stats.install(manifest.version, lastUsedVersion);
+					Stats.install(manifest.version, lastUsedVersion);
 				}
 			});
 		});
@@ -71,7 +78,7 @@
 		
 		function openInstructions() {
 			chrome.tabs.create({ 'url' : '/background/options.html#instructions' });
-			stats.instructionsOpened();
+			Stats.instructionsOpened();
 		}
 		
 		function compareVersions(v1, v2) {
@@ -100,5 +107,5 @@
 		
 	</script>
 	
-	<script src="stats_end.js"></script>
+	<script src="Stats_end.js"></script>
 </html>

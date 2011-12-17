@@ -4,6 +4,7 @@ Opções
 
 TopicListPage
 -------------
+	Bug em comunidades onde a página principal não lista tópicos (por serem muito antigos).
 
 
 TopicMessagesPage
@@ -17,8 +18,7 @@ TopicMessagesPage
 Geral
 -----
 	Analytics
-		Registrar evento de importação de dados.
-		Transformar pageview de main.html em evento (?).
+		-
 	
 	Refatorar todo o código!
 		Hierarquia de classes.

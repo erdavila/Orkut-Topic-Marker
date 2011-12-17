@@ -354,9 +354,6 @@ TopicMessagesPageProcessor.prototype.updateMessageActionsGroup = function(messag
 
 
 TopicMessagesPageProcessor.prototype.updateMessagesActionsGroups = function() {
-	var currentPageUnreadMessages = this.lastDisplayedMsg - this.topicData.lastReadMsg;
-	var firstUnreadMsgIndex = this.messagesActionsGroups.length - currentPageUnreadMessages;
-	
 	for(var i = 0; i < this.messagesActionsGroups.length; i++) {
 		/*
 		O número da mensagem é estimado porque poderá haver mensagens
@@ -398,6 +395,8 @@ TopicMessagesPageProcessor.prototype.process = function() {
 		
 		this.navLinkGroups[0].setAttribute("otm", "true");
 	}.bind(this));
+	
+	Stats.topicMessagesPageview();
 };
 
 
@@ -845,9 +844,6 @@ TopicMessagesPageProcessorOld.prototype.updateMessageActionsGroup = function(mes
 
 
 TopicMessagesPageProcessorOld.prototype.updateMessagesActionsGroups = function() {
-	var currentPageUnreadMessages = this.lastDisplayedMsg - this.topicData.lastReadMsg;
-	var firstUnreadMsgIndex = this.messagesActionsGroups.length - currentPageUnreadMessages;
-	
 	for(var i = 0; i < this.messagesActionsGroups.length; i++) {
 		/*
 		O número da mensagem é estimado porque poderá haver mensagens
@@ -886,6 +882,8 @@ TopicMessagesPageProcessorOld.prototype.process = function() {
 		
 		self.updateActionsGroups();
 	});
+	
+	Stats.topicMessagesPageview();
 };
 
 

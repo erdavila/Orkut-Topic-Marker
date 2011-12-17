@@ -77,7 +77,7 @@
 			}
 		</style>
 		
-		<script src="stats_begin.js"></script>
+		<script src="Stats_begin.js"></script>
 		
 		<script src="Options.js"></script>
 		<script>
@@ -96,7 +96,7 @@
 				Options.get(function(options) {
 					options[option] = checkbox.checked;
 					Options.set(options);
-					stats.optionsSaved();
+					Stats.optionsSaved();
 				});
 			}
 			
@@ -151,7 +151,7 @@
 				contentTitle.textContent = activeNavBarItem.textContent;
 				document.title = "Marcador de Tópicos para o Orkut™ - " + activeNavBarItem.textContent;
 				
-				stats.pageview(document.location.pathname + hash);
+				Stats.pageview(document.location.pathname + hash);
 			}
 			
 			
@@ -193,7 +193,7 @@
 				}
 				
 				alert("Os dados foram importados corretamente.");
-				stats.dataImported();
+				Stats.dataImported();
 			}
 		</script>
 	</head>
@@ -307,5 +307,5 @@
 		</div>
 	</body>
 	
-	<script src="stats_end.js"></script>
+	<script src="Stats_end.js"></script>
 </html>

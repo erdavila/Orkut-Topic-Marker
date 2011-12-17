@@ -57,6 +57,9 @@ TopicListPageProcessor.prototype.process = function() {
 	if(lastItem != null) {
 		lastItem.parentNode.setAttribute("otm", "true");
 	}
+	
+	
+	Stats.topicListPageview();
 };
 
 
@@ -194,6 +197,9 @@ TopicListPageProcessorOld.prototype.process = function() {
 			this.processRow(row);
 		}
 	}.bind(this));
+	
+	
+	Stats.topicListPageview();
 };
 
 TopicListPageProcessorOld.prototype.processRow = function(row) {

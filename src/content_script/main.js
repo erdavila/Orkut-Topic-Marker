@@ -33,7 +33,7 @@ function identifyPage(hash) {
 	var identifiedPage = {};
 	
 	identifiedPage.doc = document;
-	var oldVersion = false;
+	var oldOrkut = false;
 	
 	var orkutFrame = document.getElementById('orkutFrame');
 	if(orkutFrame) {
@@ -41,33 +41,35 @@ function identifyPage(hash) {
 		if(doc.body.innerHTML != "") {
 			// Versão antiga do Orkut
 			identifiedPage.doc = doc;
-			oldVersion = true;
+			oldOrkut = true;
 		}
 	}
+	Stats.setOldOrkut(oldOrkut);
 	
 	
 	var m;
 	
-	if(m = hash.match(/^#Community\b.*[\?&]cmm=([^&]+)/)) {
-		identifiedPage.communityId = m[1];
-		identifiedPage.communityMainPage = true;
-		identifiedPage.processor = oldVersion
+	if(m = hash.match(/^#(Community|CommTopics)\b.*[\?&]cmm=([^&]+)/)) {
+		identifiedPage.communityMainPage = (m[1] == "Community");
+		identifiedPage.communityId = m[2];
+		identifiedPage.processor = oldOrkut
 		                         ? TopicListPageProcessorOld
 		                         : TopicListPageProcessor;
-	} else if(m = hash.match(/^#CommTopics\b.*[\?&]cmm=([^&]+)/)) {
-		identifiedPage.communityId = m[1];
-		identifiedPage.processor = oldVersion
-		                         ? TopicListPageProcessorOld
-		                         : TopicListPageProcessor;
+
+		Stats.setCommunityMainPage(identifiedPage.communityMainPage);
+		Stats.setCommunityId(identifiedPage.communityId);
 	} else if(m = hash.match(/^#CommMsgs\b.*[\?&]cmm=([^&]+)/)) {
 		identifiedPage.communityId = m[1];
 		
 		m = hash.match(/[\?&]tid=([^&]+)/);
 		identifiedPage.topicId = m[1];
 		
-		identifiedPage.processor = oldVersion
+		identifiedPage.processor = oldOrkut
 		                         ? TopicMessagesPageProcessorOld
 		                         : TopicMessagesPageProcessor;
+		
+		Stats.setCommunityId(identifiedPage.communityId);
+		Stats.setTopicId(identifiedPage.topicId);
 	} else {
 		identifiedPage.processor = OtherPageProcessor;
 	}

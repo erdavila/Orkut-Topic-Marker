@@ -21,6 +21,7 @@
 				"content_script/Options.js",
 				"content_script/TopicListPageProcessor.js",
 				"content_script/TopicMessagesPageProcessor.js",
+				"content_script/Stats.js",
 				"content_script/main.js"
 			],
 			"run_at" : "document_idle"
