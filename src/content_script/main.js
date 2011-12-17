@@ -30,7 +30,6 @@ setInterval(function() {
  *      - topic messages
  */
 function identifyPage(hash) {
-	var m;
 	var identifiedPage = {};
 	
 	identifiedPage.doc = document;
@@ -46,20 +45,26 @@ function identifyPage(hash) {
 		}
 	}
 	
-	if(m = hash.match(/^#Community\?cmm=(\d+)/)) {
+	
+	var m;
+	
+	if(m = hash.match(/^#Community\b.*[\?&]cmm=([^&]+)/)) {
 		identifiedPage.communityId = m[1];
 		identifiedPage.communityMainPage = true;
 		identifiedPage.processor = oldVersion
 		                         ? TopicListPageProcessorOld
 		                         : TopicListPageProcessor;
-	} else if(m = hash.match(/^#CommTopics\?cmm=(\d+)/)) {
+	} else if(m = hash.match(/^#CommTopics\b.*[\?&]cmm=([^&]+)/)) {
 		identifiedPage.communityId = m[1];
 		identifiedPage.processor = oldVersion
 		                         ? TopicListPageProcessorOld
 		                         : TopicListPageProcessor;
-	} else if(m = hash.match(/^#CommMsgs\?cmm=(\d+)&tid=(\d+)/)) {
-		identifiedPage.topicId = m[2];
+	} else if(m = hash.match(/^#CommMsgs\b.*[\?&]cmm=([^&]+)/)) {
 		identifiedPage.communityId = m[1];
+		
+		m = hash.match(/[\?&]tid=([^&]+)/);
+		identifiedPage.topicId = m[1];
+		
 		identifiedPage.processor = oldVersion
 		                         ? TopicMessagesPageProcessorOld
 		                         : TopicMessagesPageProcessor;
