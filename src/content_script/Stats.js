@@ -17,11 +17,7 @@ var Stats = {
 		
 		
 	topicListPageview: function() {
-		var url = this.isCommunityMainPage
-		        ? '/Main#Community'
-		        : '/Main#CommTopics'
-		        ;
-		
+		var url = this.isCommunityMainPage ? '/Main#Community' : '/Main#CommTopics';
 		var request = {
 			type: 'stats',
 			commands: [
@@ -32,14 +28,12 @@ var Stats = {
 				this._unsetCommunityIdCommand(),
 			],
 		};
-		
 		chrome.extension.sendRequest(request);
 	},
 	
 	
 	topicMessagesPageview: function() {
 		var url = "/Main#CommMsgs";
-		
 		var request = {
 			type: 'stats',
 			commands: [
@@ -52,7 +46,54 @@ var Stats = {
 				this._unsetCommunityIdCommand(),
 			],
 		};
-		
+		chrome.extension.sendRequest(request);
+	},
+	
+	
+	markMessageRead: function() {
+		this._topicEvent('message', 'read');
+	},
+	
+	
+	markMessageUnread: function() {
+		this._topicEvent('message', 'unread');
+	},
+	
+	markTopicIgnored: function() {
+		this._topicEvent('topic', 'ignored');
+	},
+	
+	markTopicNotIgnored: function() {
+		this._topicEvent('topic', 'not ignored');
+	},
+	
+	
+	topicError: function(msg) {
+		var request = {
+			type: 'stats',
+			commands: [
+	   			this._setOldOrkutCommand(),
+				['_trackEvent', 'topic', 'error', msg],
+	   			this._unsetOldOrkutCommand(),
+			],
+		};
+		chrome.extension.sendRequest(request);
+	},
+	
+	
+	_topicEvent: function(category, action) {
+		var request = {
+			type: 'stats',
+			commands: [
+	   			this._setCommunityIdCommand(),
+	   			this._setTopicIdCommand(),
+	   			this._setOldOrkutCommand(),
+				['_trackEvent', category, action],
+	   			this._unsetOldOrkutCommand(),
+				this._unsetTopicIdCommand(),
+				this._unsetCommunityIdCommand(),
+			],
+		};
 		chrome.extension.sendRequest(request);
 	},
 	
@@ -61,28 +102,23 @@ var Stats = {
 		return ['_setCustomVar', 2/*slot*/, 'cmm', this.communityId, 3/*scope:page*/];
 	},
 	
-	
 	_unsetCommunityIdCommand: function() {
 		return ['_deleteCustomVar', 2/*slot*/];
 	},
-	
 	
 	_setTopicIdCommand: function() {
 		var tid = this.communityId + ':' + this.topicId;
 		return ['_setCustomVar', 3/*slot*/, 'tid', tid, 3/*scope:page*/];
 	},
 	
-	
 	_unsetTopicIdCommand: function() {
 		return ['_deleteCustomVar', 3/*slot*/];
 	},
-	
 	
 	_setOldOrkutCommand: function() {
 		var orkutVer = this.isOldOrkut ? 'old' : 'new';
 		return ['_setCustomVar', 5/*slot*/, 'orkut version', orkutVer, 3/*scope:page*/];
 	},
-	
 	
 	_unsetOldOrkutCommand: function() {
 		return ['_deleteCustomVar', 5/*slot*/];

@@ -228,6 +228,8 @@ TopicMessagesPageProcessor.prototype.updateTopicActionsGroup = function() {
 			span.appendChild(this.createIcon('warning'));
 		this.topicActionsGroup.appendChild(span);
 		
+		Stats.topicError("unknown message range");
+		
 		return;
 	}
 	
@@ -261,6 +263,7 @@ TopicMessagesPageProcessor.prototype.updateTopicActionsGroup = function() {
 					TopicData.set(this.topicData, function() {
 						this.updateActionsGroups();
 					}.bind(this));
+					Stats.markTopicNotIgnored();
 				}.bind(this)
 			)
 		);
@@ -280,6 +283,7 @@ TopicMessagesPageProcessor.prototype.updateTopicActionsGroup = function() {
 							this.goToTopicsList();
 						}
 					}.bind(this));
+					Stats.markTopicIgnored();
 				}.bind(this)
 			)
 		);
@@ -303,6 +307,7 @@ TopicMessagesPageProcessor.prototype.updateMessageActionsGroup = function(messag
 					TopicData.set(this.topicData, function() {
 						this.updateActionsGroups();
 					}.bind(this));
+					Stats.markMessageUnread();
 				}.bind(this)
 			)
 		);
@@ -341,6 +346,7 @@ TopicMessagesPageProcessor.prototype.updateMessageActionsGroup = function(messag
 							additionalAction();
 						}
 					}.bind(this));
+					Stats.markMessageRead();
 				}.bind(this)
 			)
 		);
@@ -731,6 +737,7 @@ TopicMessagesPageProcessorOld.prototype.updateTopicActionsGroups = function() {
 						TopicData.set(self.topicData, function() {
 							self.updateActionsGroups();
 						});
+						Stats.markTopicNotIgnored();
 					}
 				)
 			);
@@ -750,6 +757,7 @@ TopicMessagesPageProcessorOld.prototype.updateTopicActionsGroups = function() {
 								self.goToTopicsList();
 							}
 						});
+						Stats.markTopicIgnored();
 					}
 				)
 			);
@@ -798,6 +806,7 @@ TopicMessagesPageProcessorOld.prototype.updateMessageActionsGroup = function(mes
 					TopicData.set(self.topicData, function() {
 						self.updateActionsGroups();
 					});
+					Stats.markMessageUnread();
 				}
 			)
 		);
@@ -831,6 +840,7 @@ TopicMessagesPageProcessorOld.prototype.updateMessageActionsGroup = function(mes
 							additionalAction();
 						}
 					});
+					Stats.markMessageRead();
 				}
 			)
 		);
