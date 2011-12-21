@@ -1,0 +1,75 @@
+Pageviews
+---------
+	Páginas: /background/options.html#{instructions,options,limitations}
+		Variáveis: "ver"
+		
+	Páginas: [http://www.orkut.*]/Main#{Community,CommTopics}
+		Variáveis: "ver", "cmm", "orkut version"
+
+	Páginas: [http://www.orkut.*]/Main#CommMsgs
+		Variáveis: "ver", "cmm", "tid", "orkut version"
+
+
+Eventos
+-------
+	Página: /background/main.html
+		Evento: quando a extensão é carregada.
+			Categoria: "main page"
+			Ação     : "loaded"
+			Variáveis: "ver"
+		Evento: na primeira instalação da extensão.
+			Categoria: "install"
+			Ação     : "new"
+			Rótulo   : a versão da extensão (ex.: "2.0.2").
+			Variáveis: "ver"
+		Evento: quando a extensão é atualizada.
+			Categoria: "install"
+			Ação     : "update"
+			Rótulo   : a nova versão da extensão + "<-" a versão antrior da extensão
+			Variáveis: "ver"
+		Evento: quando a página de instruções é exibida após a extensão ser instalada ou atualizada.
+			Categoria: "instructions page"
+			Ação     : "on install"
+			Variáveis: "ver"
+	
+	Página: /background/options.html
+		Evento: alguma opção foi alterada ou dados foram importados.
+			Categoria: "options page"
+			Ação     : "options saved" ou "data imported"
+			Variáveis: "ver"
+	
+	Página: [http://www.orkut.*]/Main#CommMsgs
+		Os eventos abaixo são registrados como sendo de /background/main.html.
+		Evento: quando uma mensagem é marcada como lida ou não-lida.
+			Categoria: "message"
+			Ação     : "read" ou "unread"
+			Variáveis: "ver", "cmm", "tid", "orkut version"
+		Evento: quando um tópico é marcado como ignorado ou não-ignorado.
+			Categoria: "topic"
+			Ação     : "ignored" ou "not ignored"
+			Variáveis: "ver", "cmm", "tid", "orkut version"
+		Evento: quando um erro ocorre no tópico.
+			Categoria: "topic"
+			Ação     : "error"
+			Rótulo   : "unknown message range"
+			Variáveis: "ver", "orkut version"
+	
+
+Variáveis
+---------
+	"ver"
+		Slot  : 1
+		Valor : Versão da extensão (ex.: "2.0.2")
+		Escopo: sessão
+	"cmm"
+		Slot  : 2
+		Valor : ID da comunidade
+		Escopo: página
+	"tid"
+		Slot  : 3
+		Valor : ID do tópico
+		Escopo: página
+	"orkut version"
+		Slot  : 5 
+		Valor : "new" ou "old
+		Escopo: página
