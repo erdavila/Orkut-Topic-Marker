@@ -17,9 +17,6 @@ TopicMessagesPage
 
 Geral
 -----
-	Analytics
-		Unificar Stats_begin.js + Stats_end.js (?).
-	
 	Refatorar todo o código!
 		Hierarquia de classes.
 		Reaproveitamento de código.
