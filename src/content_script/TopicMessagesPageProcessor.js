@@ -217,6 +217,16 @@ TopicMessagesPageProcessor.prototype.createMessagesActionsGroups = function() {
 };
 
 
+TopicMessagesPageProcessor.prototype.expandMessages = function() {
+	setTimeout(function() {
+		var links = this.doc.evaluate('//*[contains(text(), "ler postagem completa")]', this.doc, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+		for(var i = 0; i < links.snapshotLength; i++) {
+			links.snapshotItem(i).click();
+		}
+	}.bind(this), 1);
+};
+
+
 TopicMessagesPageProcessor.prototype.updateTopicActionsGroup = function() {
 	removeChildren(this.topicActionsGroup);
 	
@@ -396,6 +406,10 @@ TopicMessagesPageProcessor.prototype.process = function() {
 		
 		this.createTopicActionsGroup();
 		this.createMessagesActionsGroups();
+		
+		if(options.expandMessages) {
+			this.expandMessages();
+		}
 		
 		this.updateActionsGroups();
 		

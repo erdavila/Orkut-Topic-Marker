@@ -7,12 +7,13 @@ var Options = {
 			options = null;
 		}
 		
-		// Define valores padr„o
+		// Define valores padr√£o
 		if(options == null  ||   typeof(options) != 'object')    options = {};
 		if(typeof(options.leaveOnTopicAllRead)   == 'undefined') options.leaveOnTopicAllRead = true;
 		if(typeof(options.nextPageOnPageAllRead) == 'undefined') options.nextPageOnPageAllRead = true;
 		if(typeof(options.leaveOnIgnore)         == 'undefined') options.leaveOnIgnore = true;
 		if(typeof(options.openLastPage)          == 'undefined') options.openLastPage = true;
+		if(typeof(options.expandMessages)        == 'undefined') options.expandMessages = true;
 		
 		handler(options);
 	},
