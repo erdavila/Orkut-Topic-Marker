@@ -71,10 +71,17 @@ TopicListPageProcessor.prototype.processItem = function(item, topicTitleLink) {
 	
 	// Obtém o total de mensagens
 	var totalMsgsNodes = this.doc.evaluate('.//*[contains(text(), " respostas.") or contains(text(), " resposta.")]', item, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-	if(totalMsgsNodes.snapshotLength != 1) {
+	if(totalMsgsNodes.snapshotLength < 1) {
 		throw 'Não encontrou total de mensagens!';
 	}
-	var totalMsgs = parseInt(totalMsgsNodes.snapshotItem(0).innerText);
+	var totalMsgs = null;
+	for(var i = 0; i < totalMsgsNodes.snapshotLength; i++) {
+		var m = totalMsgsNodes.snapshotItem(i).innerText.match(/^(\d+) respostas?.$/);
+		if(m) {
+			totalMsgs = parseInt(m[1]);
+			break;
+		}
+	}
 	if(isNaN(totalMsgs)) {
 		console.log("Nenhuma mensagem?", JSON.stringify(totalMsgsNodes.snapshotItem(0).innerText));
 		totalMsgs = 0;
