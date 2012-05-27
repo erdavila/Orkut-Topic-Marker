@@ -209,7 +209,7 @@ TopicMessagesPageProcessor.prototype.createMessagesActionsGroups = function() {
 		messageActionsGroup.className = 'otmActionBar';
 		
 		//insertAfter(messageActionsGroup, links[0]);
-		message.children[2].appendChild(messageActionsGroup);
+		message.children[message.children.length - 1].appendChild(messageActionsGroup);
 		
 		//message.style.position = "relative";
 		this.messagesActionsGroups.push(messageActionsGroup);
