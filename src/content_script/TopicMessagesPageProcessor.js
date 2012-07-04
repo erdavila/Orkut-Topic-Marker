@@ -94,8 +94,11 @@ TopicMessagesPageProcessor.prototype.extractInfo = function() {
 	var q = this.doc.evaluate('//*[div/a[starts-with(@href, "Main#Profile?uid=")]/div/img]', this.doc, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
 	this.messages = [];
 	for(var i = 0; i < q.snapshotLength; i++) {
-		this.messages.push(q.snapshotItem(i));
+		var message = q.snapshotItem(i);
+		this.messages.push(message);
 	}
+	
+	this.removePopularMessage();
 	
 	// Identifica links para páginas
 	var links = navLinkGroupTop.getElementsByTagName("a");
@@ -109,6 +112,40 @@ TopicMessagesPageProcessor.prototype.extractInfo = function() {
 			this.nextPageLink = link;
 		} else if(this.isLastPageLink(link)) {
 			this.lastPageLink = link;
+		}
+	}
+};
+
+
+TopicMessagesPageProcessor.prototype.removePopularMessage = function() {
+	/*
+	 * Para encontrar a mensagem popular, as três primeiras mensagens são
+	 * verificadas. A que tiver parentNode.className diferente das outras duas
+	 * é a marcada como popular.
+	 * Se a mensagem que originou o tópico foi excluída, a mensagem popular será
+	 * a primeira mensagem (índice 0). Se a mensagem que originou o tópico não
+	 * foi excluída, então a mensagem popular aparece imediatamente após a
+	 * mensagem que originou o tópico (mensagem popular no índice 1).
+	 */
+	
+	if(this.messages.length >= 3) {
+		var parentClassNames = [];
+		for(var i = 0; i < 3; i++) {
+			parentClassNames[i] = this.messages[i].parentNode.className;
+		}
+		
+		if(parentClassNames[0] != parentClassNames[1]) {
+			var popularMessagePosition = null;
+			
+			if(parentClassNames[0] == parentClassNames[2]) {
+				popularMessagePosition = 1;
+			} else if(parentClassNames[1] == parentClassNames[2]) {
+				popularMessagePosition = 0;
+			}
+			
+			if(popularMessagePosition != null) {
+				this.messages.splice(popularMessagePosition, 1);
+			}
 		}
 	}
 };
