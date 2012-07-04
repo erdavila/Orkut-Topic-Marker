@@ -1,6 +1,7 @@
 ﻿{
 	"name" : "Marcador de Tópicos para o Orkut™",
 	"version" : "2.2.2",
+	"manifest_version": 2,
 	"description" : "Marque as mensagens lidas. Identifique facilmente mensagens e tópicos novos.",
 	"icons" : {
 		"16" : "icons/16.png",
@@ -9,7 +10,14 @@
 		"64" : "icons/64.png",
 		"128" : "icons/128.png"
 	},
-	"background_page" : "background/main.html",
+	"background" : {
+		"scripts" : [
+			"background/Stats.js",
+			"background/TopicData.js",
+			"background/Options.js",
+			"background/main.js"
+		]
+	},
 	"content_scripts" : [
 		{
 			"matches" : [
@@ -27,6 +35,14 @@
 			"run_at" : "document_idle"
 		}
 	],
-	"options_page" : "background/options.html",
+	"content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
+	"options_page" : "background/options-page.html",
+	"web_accessible_resources" : [
+		"images/check.png",
+		"images/exclamation.png",
+		"images/ignored.png",
+		"images/star.png",
+		"images/warning.png"
+	],
 	"key" : "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDQWI1HHbUAfKSEQIXYklmJe+taCCx2N2Q0IIQ27nzPETJ2rZx+WyA6ZZKUV9vhTJoFFREIiSHgfYLwrYNzaUSP/189KgpUjev1K4BXJdDx77KiK2VmqjE6BSlAf/AmAb8ByepOo3IyijP6eOt3Vr8K3LdD+5fjFi7WMRcuHc5AKQIDAQAB"
 }

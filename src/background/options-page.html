@@ -1,202 +1,17 @@
+<!DOCTYPE html>
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 		<title>Marcador de Tópicos para o Orkut™</title>
+		<link rel="stylesheet" type="text/css" href="options-page.css"/>
 		<style>
-			body {
-				font-family: Arial;
-				font-size: small;
-				padding: 0;
-				margin: 0;
-			}
-			
-			#navbar {
-				position: fixed;
-				width: 250px;
-				height: 100%;
-				margin: 10px;
-				text-align: center;
-			}
-			
-			.navbar-item {
-				display: block;
-				cursor: pointer;
-				text-align: right;
-				list-style: none;
-				padding: 10px;
-				text-decoration: none;
-				color: black;
-			}
-			
-			.navbar-item.selected {
-				font-weight: bold;
-				background-color: lightgrey;
-			}
-			
-			#content {
-				position: absolute;
-				left: 270px;
-				right: 0px;
-				top: 0px;
-			}
-			
-			.content-panel {
-				display:none;
-			}
-			
-			#export-import-panel {
-				width:100%;
-			}
-			
-			#export-import-panel div {
-				float: right;
-				width: 60%;
-				padding-right: 10px;
-				padding-left: 10px;
-			}
-			
-			#export-import-data {
-				width: 100%;
-				height: 200px;
-			}
-			
-			img.screenshot {
-				border: 1px solid black;
-				text-align: center;
-				margin-left: 20px;
-			}
-			
-			img.off {
-				opacity: 0.15;
-			}
-			
-			.warning {
-				border: 4px solid red;
-				background-color: lightyellow;
-				padding: 2px; 
-			}
 		</style>
 		
 		<script src="Stats.js"></script>
 		<script src="Options.js"></script>
-		<script>
-			var contentTitle;
-			
-			var activeNavBarItem;
-			var activeContentPanel;
-			var exportImportPanel;
-			var exportImportData;
-			
-			
-			function automaticCheckboxOptionClick(evt) {
-				var checkbox = evt.target;
-				var option = checkbox.id.substring(checkbox.id.indexOf("-") + 1);
-				
-				Options.get(function(options) {
-					options[option] = checkbox.checked;
-					Options.set(options);
-					Stats.optionsSaved();
-				});
-			}
-			
-			
-			function loaded() {
-				window.addEventListener("hashchange", hashChange, false);
-				
-				contentTitle = document.getElementById("content-title");
-				
-				// Configura opções automáticas em checkboxes
-				var checkboxes = document.getElementsByClassName("automatic-checkbox-option");
-				Options.get(function(options) {
-					for(var i = 0; i < checkboxes.length; i++) {
-						var checkbox = checkboxes[i];
-						checkbox.addEventListener("click", automaticCheckboxOptionClick, true);
-												
-						// Inicializa o checkbox
-						var option = checkbox.id.substring(checkbox.id.indexOf("-") + 1);
-						checkbox.checked = options[option]
-					}
-				});
-				
-				
-				exportImportPanel = document.getElementById("export-import-panel");
-				exportImportData = document.getElementById("export-import-data");
-				
-				// Força exibição de conteúdo
-				hashChange();
-			}
-			
-			
-			function hashChange() {
-				var hash = window.location.hash;
-				if(! hash) {
-					// Seleciona o primeiro item
-					hash = document.getElementsByClassName("navbar-item")[0].hash;
-				}
-				
-				// Ignora o caractere "#"
-				var content = hash.substring(1);
-				
-				if(activeNavBarItem) activeNavBarItem.className = "navbar-item";
-				if(activeContentPanel) activeContentPanel.style.display = "none";
-				
-				activeNavBarItem = document.getElementById("nav-" + content);
-				activeNavBarItem.className = "navbar-item selected";
-				
-				var activeContentPanelId = "cont-" + content;
-				activeContentPanel = document.getElementById(activeContentPanelId);
-				activeContentPanel.style.display = "block";
-				
-				contentTitle.textContent = activeNavBarItem.textContent;
-				document.title = "Marcador de Tópicos para o Orkut™ - " + activeNavBarItem.textContent;
-				
-				Stats.pageview(document.location.pathname + hash);
-			}
-			
-			
-			function toggleExportImport() {
-				if(exportImportPanel.style.display == 'none') {
-					// Show
-					var str = '';
-					for(var key in localStorage) {
-						var val = localStorage[key];
-						if(key  &&  key != "USER_OPTIONS"  &&  val) {
-							str += key + ' ' + val + "\n";
-						}
-					}
-					exportImportData.value = str;
-					exportImportPanel.style.display = 'block';
-					exportImportData.focus();
-				} else {
-					// Hide
-					exportImportPanel.style.display = 'none';
-				}
-			}
-			
-			
-			function importData() {
-				var userOptions = localStorage['USER_OPTIONS'];
-				localStorage.clear();
-				localStorage['USER_OPTIONS'] = userOptions;
-				
-				var str = exportImportData.value;
-				var values = str.split('\n');
-				for(var i = 0; i < values.length; i++) {
-					var value = values[i];
-					var parts = value.split(' ');
-					var key = parts[0];
-					var val = parts[1];
-					if(key  &&  val) {
-						localStorage[key] = val;
-					}
-				}
-				
-				alert("Os dados foram importados corretamente.");
-				Stats.dataImported();
-			}
-		</script>
+		<script src="options-page.js"></script>
 	</head>
-	<body onload="loaded();">
+	<body>
 		<div id="navbar">
 			<img src="../icons/128.png"/>
 			<h1>Marcador de Tópicos</h1>
@@ -233,11 +48,11 @@
 				
 				<hr/>
 				
-				<a href="javascript:void(0);" onclick="toggleExportImport();">Exportar / Importar dados</a>
+				<span id="export-import-toggle" tabindex="0">Exportar / Importar dados</span>
 				<div id="export-import-panel" style="display: none;">
 					<div>
 						<textarea id="export-import-data"></textarea>
-						<button onclick="importData()">Salvar</button>
+						<button id="import-button">Salvar</button>
 					</div>
 					<ul>
 						<li>Para <b>exportar</b> os dados, copie o texto ao lado, cole em um arquivo e salve-o.</li>
